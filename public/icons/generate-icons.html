@@ -1,0 +1,50 @@
+<!-- Abre este archivo en un navegador para generar los iconos PWA -->
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<script>
+function drawIcon(canvas, size) {
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, size, size);
+  const r = size * 0.15;
+  ctx.beginPath();
+  ctx.moveTo(r, 0); ctx.lineTo(size - r, 0);
+  ctx.arcTo(size, 0, size, r, r);
+  ctx.lineTo(size, size - r);
+  ctx.arcTo(size, size, size - r, size, r);
+  ctx.lineTo(r, size);
+  ctx.arcTo(0, size, 0, size - r, r);
+  ctx.lineTo(0, r);
+  ctx.arcTo(0, 0, r, 0, r);
+  ctx.closePath();
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fill();
+  ctx.strokeStyle = '#e94560';
+  ctx.lineWidth = size * 0.02;
+  ctx.stroke();
+  ctx.font = `${size * 0.5}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('⚔️', size/2, size/2);
+}
+const c192 = document.getElementById('c192');
+const c512 = document.getElementById('c512');
+drawIcon(c192, 192);
+drawIcon(c512, 512);
+const a192 = document.createElement('a');
+a192.href = c192.toDataURL('image/png');
+a192.download = 'icon-192.png';
+a192.textContent = 'Descargar icon-192.png';
+document.body.appendChild(a192);
+document.body.appendChild(document.createElement('br'));
+const a512 = document.createElement('a');
+a512.href = c512.toDataURL('image/png');
+a512.download = 'icon-512.png';
+a512.textContent = 'Descargar icon-512.png';
+document.body.appendChild(a512);
+</script>
+</body>
+</html>
