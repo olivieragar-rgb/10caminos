@@ -22,9 +22,9 @@ export default {
         'blue-mana':     '#4488cc',
       },
       fontFamily: {
-        pixel: ['"Press Start 2P"', 'cursive'],
+        pixel: ['"Cinzel"', 'serif'],
+        mono:  ['"Share Tech Mono"', 'monospace'],
         body:  ['Inter', 'system-ui', 'sans-serif'],
-        mono:  ['Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         'pixel':  '4px 4px 0px rgba(0,0,0,0.6)',

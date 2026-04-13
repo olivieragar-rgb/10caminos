@@ -256,3 +256,41 @@
     background: linear-gradient(180deg, #342848 0%, #2a2035 100%);
   }
 }
+
+/* ── NUEVAS ANIMACIONES FASE 1 ────────────────────────────────────────────── */
+
+@keyframes celebJump {
+  0%   { transform: translateY(0) scale(1); }
+  25%  { transform: translateY(-10px) scale(1.1); }
+  50%  { transform: translateY(0) scale(1); }
+  75%  { transform: translateY(-6px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes unlockAppear {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-10deg); }
+  60%  { opacity: 1; transform: scale(1.1) rotate(3deg); }
+  80%  { transform: scale(0.95) rotate(-1deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes neonPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+@keyframes starFloat {
+  0%   { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-40px) scale(0.5); opacity: 0; }
+}
+
+@keyframes xpRise {
+  0%   { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-28px); opacity: 0; }
+}
+
+.animate-celeb-jump    { animation: celebJump 0.7s ease-in-out; }
+.animate-unlock-appear { animation: unlockAppear 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.animate-neon-pulse    { animation: neonPulse 2s ease-in-out infinite; }
+.animate-star-float    { animation: starFloat 1s ease-out forwards; }
+.animate-xp-rise       { animation: xpRise 1s ease-out forwards; }
