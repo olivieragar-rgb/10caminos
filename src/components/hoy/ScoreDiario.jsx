@@ -13,8 +13,8 @@ export default function ScoreDiario({ avances, total, pct }) {
     <div className="mx-4 mt-2 mb-3 p-3"
          style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px', boxShadow: '4px 4px 0px rgba(0,0,0,0.5)' }}>
       <div className="flex items-center justify-between mb-2">
-        <span className="font-body text-[11px] text-text-muted italic">{mensaje}</span>
-        <span className="font-pixel text-[10px]" style={{ color: barColor }}>
+        <span className="font-body text-[13px] text-text-muted italic">{mensaje}</span>
+        <span className="font-pixel text-[12px]" style={{ color: barColor }}>
           {avances}/{total}
         </span>
       </div>

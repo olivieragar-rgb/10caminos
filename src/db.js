@@ -42,6 +42,18 @@ db.version(2).stores({
   })
 })
 
+db.version(3).stores({
+  caminos:       '++id, activo, orden',
+  rutas:         'id, caminoId, estado',
+  registros:     'id, fecha, caminoId',
+  planificacion: 'id, fecha',
+  recompensas:   'id, caminoId, desbloqueada',
+  chatHistorial: 'id, fecha',
+  configuracion: 'key',
+  reflexiones:   'id, fecha, tipo',
+  retos:         'id, caminoId, estado, fechaInicio, fechaFin, personajeId',
+})
+
 /** Seed inicial — solo se ejecuta si la DB está vacía */
 export async function seedIfEmpty() {
   const count = await db.caminos.count()

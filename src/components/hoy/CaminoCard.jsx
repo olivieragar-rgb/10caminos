@@ -1,18 +1,20 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import XpBar from './XpBar'
 import XpAnimation from './XpAnimation'
+import CelebrationFlash from './CelebrationFlash'
 import LevelBadge from '../shared/LevelBadge'
 import { marcarCamino, agregarNotaRegistro } from '../../hooks/useRegistros'
 import { MENSAJES_WABI_SABI } from '../../constants'
 import { db } from '../../db'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { haceNDiasISO } from '../../utils/dates'
+import { haceNDiasISO, hoyISO } from '../../utils/dates'
+import { useRetoCamino, evaluarRetosExpirados, abandonarReto } from '../../hooks/useRetos'
 import RecompensaUnlockModal from '../shared/RecompensaUnlockModal'
 
 const MARCAS = [
-  { id: 'avance', label: '✓', full: 'AVANCE', color: '#50c878', bg: 'rgba(80,200,120,0.12)', border: '#50c878' },
-  { id: 'pausa',  label: '→', full: 'PAUSA',  color: '#f0c040', bg: 'rgba(240,192,64,0.12)',  border: '#f0c040' },
-  { id: 'nada',   label: '○', full: 'NADA',   color: '#706060', bg: 'rgba(112,96,96,0.12)',   border: '#706060' },
+  { id: 'avance', label: '✓', full: 'LOGRADO!', color: '#50c878', bg: 'rgba(80,200,120,0.12)', border: '#50c878' },
+  { id: 'pausa',  label: '→', full: 'PEND.HOY', color: '#f0c040', bg: 'rgba(240,192,64,0.12)',  border: '#f0c040' },
+  { id: 'nada',   label: '○', full: 'HOY NO',   color: '#706060', bg: 'rgba(112,96,96,0.12)',   border: '#706060' },
 ]
 
 function mensajeWabiSabi() {
@@ -72,20 +74,20 @@ function MenuContextual({ camino, rutaActiva, onEditar, onClose }) {
       onClick={e => e.stopPropagation()}
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="font-pixel text-[8px] text-xp-bar truncate">{camino.icono} {camino.nombre}</span>
-        <button onClick={onClose} className="font-pixel text-[8px] text-text-muted px-1">✕</button>
+        <span className="font-pixel text-[10px] text-xp-bar truncate">{camino.icono} {camino.nombre}</span>
+        <button onClick={onClose} className="font-pixel text-[10px] text-text-muted px-1">✕</button>
       </div>
       <div className="flex flex-col gap-1">
         <button
           onClick={onEditar}
-          className="text-left px-2 py-2 font-pixel text-[8px] active:translate-x-[1px]"
+          className="text-left px-2 py-2 font-pixel text-[10px] active:translate-x-[1px]"
           style={{ border: '2px solid #6a5880', borderRadius: '2px', color: '#c4a882', background: '#2a2035' }}
         >✏ EDITAR CAMINO</button>
 
         {rutaActiva && (
           <button
             onClick={onClose}
-            className="text-left px-2 py-2 font-pixel text-[8px] active:translate-x-[1px]"
+            className="text-left px-2 py-2 font-pixel text-[10px] active:translate-x-[1px]"
             style={{ border: '2px solid #4488cc', borderRadius: '2px', color: '#4488cc', background: '#2a2035' }}
           >🗺 {rutaActiva.nombre.slice(0, 18)}</button>
         )}
@@ -109,21 +111,79 @@ function HistorialRapido({ caminoId, onClose }) {
   return (
     <div className="mt-2 pt-2" style={{ borderTop: '1px solid #4a3860' }}>
       <div className="flex items-center justify-between mb-1.5">
-        <span className="font-pixel text-[7px] text-text-muted">ÚLTIMOS 7 DÍAS</span>
+        <span className="font-pixel text-[9px] text-text-muted">ÚLTIMOS 7 DÍAS</span>
         <button onClick={onClose} className="text-text-muted text-xs px-1">✕</button>
       </div>
       {sorted.length === 0
         ? <p className="font-body text-[10px] text-text-muted italic">Sin registros recientes.</p>
         : sorted.map(r => (
           <div key={r.id} className="flex items-center gap-2 mb-1">
-            <span className="font-pixel text-[7px] text-text-muted w-20 flex-shrink-0">{r.fecha}</span>
-            <span className="font-pixel text-[10px]" style={{ color: MARCA_COL[r.marca] }}>
+            <span className="font-pixel text-[9px] text-text-muted w-20 flex-shrink-0">{r.fecha}</span>
+            <span className="font-pixel text-[12px]" style={{ color: MARCA_COL[r.marca] }}>
               {MARCA_SIM[r.marca]}
             </span>
             {r.nota && <span className="font-body text-[10px] text-text-secondary italic truncate">"{r.nota}"</span>}
           </div>
         ))
       }
+    </div>
+  )
+}
+
+// ── Indicador de reto activo ────────────────────────────────────────────────
+function RetoIndicator({ reto, onAbandonar }) {
+  const [confirmando, setConfirmando] = useState(false)
+  const hoy = hoyISO()
+
+  // Calcular días restantes
+  const fechaFin = new Date(reto.fechaFin + 'T23:59:59')
+  const hoyDate = new Date(hoy + 'T00:00:00')
+  const diasRestantes = Math.max(0, Math.ceil((fechaFin - hoyDate) / (1000 * 60 * 60 * 24)))
+
+  return (
+    <div className="mb-2" style={{
+      background: 'linear-gradient(135deg, rgba(255,215,0,0.06) 0%, rgba(42,32,53,0.8) 100%)',
+      border: '2px solid #b8960c',
+      borderRadius: '2px',
+      padding: '8px 10px',
+    }}>
+      <div className="flex items-center justify-between mb-1">
+        <div className="flex items-center gap-1.5">
+          <span style={{
+            fontFamily: '"Press Start 2P", cursive', fontSize: '6px',
+            color: '#ffd700', background: 'rgba(255,215,0,0.12)',
+            border: '1px solid #b8960c60', padding: '2px 4px', borderRadius: '1px',
+          }}>RETO</span>
+          <span className="font-body text-[11px]" style={{ color: '#c4a882', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {reto.titulo}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-pixel text-[8px]" style={{ color: diasRestantes <= 1 ? '#e94560' : '#ffd700' }}>
+            {diasRestantes}d
+          </span>
+          {confirmando ? (
+            <button onClick={() => { abandonarReto(reto.id); setConfirmando(false) }}
+              className="font-pixel text-[7px] px-1 py-0.5" style={{ color: '#e94560', border: '1px solid #e94560', borderRadius: '1px' }}>
+              ✓
+            </button>
+          ) : (
+            <button onClick={() => setConfirmando(true)}
+              className="font-pixel text-[7px] px-1 py-0.5 text-text-muted"
+              style={{ border: '1px solid #4a3860', borderRadius: '1px' }}>
+              ✕
+            </button>
+          )}
+        </div>
+      </div>
+      <p className="font-body text-[10px] leading-snug" style={{ color: '#8a8080' }}>
+        {reto.descripcion}
+      </p>
+      <div className="flex items-center justify-between mt-1">
+        <span className="font-pixel text-[7px]" style={{ color: '#50c878' }}>+{reto.xpPremio} XP</span>
+        <span className="font-pixel text-[7px]" style={{ color: '#6b5e52' }}>si logras la meta</span>
+        <span className="font-pixel text-[7px]" style={{ color: '#e94560' }}>-{reto.xpPenalty} XP si no</span>
+      </div>
     </div>
   )
 }
@@ -139,8 +199,15 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
   const [showMenu, setShowMenu]   = useState(false)
   const [showHistorial, setShowHistorial] = useState(false)
   const [recompensaUnlock, setRecompensaUnlock] = useState(null) // recompensa a mostrar
+  const [showCelebration, setShowCelebration] = useState(false)
+  const [celebData, setCelebData] = useState({ xpGanado: 0, subioNivel: false, nuevoNivel: 0 })
 
   const longPressTimer = useRef(null)
+  const retoActivo = useRetoCamino(camino.id)
+
+  useEffect(() => {
+    evaluarRetosExpirados().catch(console.error)
+  }, [])
 
   // ── Long press handlers ──
   const startLongPress = () => {
@@ -160,6 +227,14 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
       if (result?.recompensasDesbloqueadas?.length > 0) {
         // Mostrar de a una; si hay varias, la primera (las siguientes aparecerán en la próxima acción)
         setRecompensaUnlock(result.recompensasDesbloqueadas[0])
+      }
+      if (marca === 'avance' && result?.xpGanado > 0) {
+        setCelebData({
+          xpGanado: result.xpGanado || 0,
+          subioNivel: !!result.subioNivel,
+          nuevoNivel: camino.nivel + (result.subioNivel ? 1 : 0),
+        })
+        setShowCelebration(true)
       }
       if (marca === 'avance') {
         setShowNota(true); setNotaInput(registroHoy?.nota || ''); setWabiMsg(null)
@@ -203,6 +278,16 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
       {/* XP Animation */}
       {xpAnim && <XpAnimation amount={xpAnim.amount} animKey={xpAnim.key} />}
 
+      {/* Celebration flash */}
+      {showCelebration && (
+        <CelebrationFlash
+          xpGanado={celebData.xpGanado}
+          subioNivel={celebData.subioNivel}
+          nuevoNivel={celebData.nuevoNivel}
+          onDone={() => setShowCelebration(false)}
+        />
+      )}
+
       {/* Menú contextual (long-press) */}
       {showMenu && (
         <MenuContextual
@@ -218,11 +303,11 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
         <div className="flex items-center gap-2 min-w-0">
           <PixelShield numero={camino.id} />
           <span className="text-lg leading-none flex-shrink-0">{camino.icono}</span>
-          <span className="font-pixel text-[10px] text-text-primary leading-tight truncate">{camino.nombre}</span>
+          <span className="font-pixel text-[12px] text-text-primary leading-tight truncate">{camino.nombre}</span>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
           {camino.rachaActual > 0 && (
-            <span className="font-pixel text-[8px] text-racha-fire animate-racha-pulse leading-none">
+            <span className="font-pixel text-[10px] text-racha-fire animate-racha-pulse leading-none">
               🔥{camino.rachaActual}
             </span>
           )}
@@ -304,34 +389,47 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
         )
       })()}
 
+      {/* Reto activo */}
+      {retoActivo && (
+        <RetoIndicator reto={retoActivo} onAbandonar={() => abandonarReto(retoActivo.id)} />
+      )}
+
       {/* Botones de marca */}
-      <div className="flex gap-1.5">
-        {MARCAS.map(m => {
-          const activo = marcaHoy === m.id
-          return (
-            <button
-              key={m.id}
-              onClick={() => handleMarcar(m.id)}
-              disabled={procesando}
-              className="flex-1 py-2.5 font-pixel select-none min-h-[44px]
-                         flex flex-col items-center justify-center gap-0.5
-                         active:translate-y-[1px] active:translate-x-[1px]"
-              style={{
-                background: activo ? m.bg : 'rgba(52,40,72,0.5)',
-                border: `2px solid ${activo ? m.border : '#4a3860'}`,
-                borderRadius: '2px',
-                boxShadow: activo ? '2px 2px 0 rgba(0,0,0,0.6)' : '2px 2px 0 rgba(0,0,0,0.4)',
-                color: activo ? m.color : '#6b5e52',
-                opacity: procesando ? 0.5 : 1,
-                cursor: procesando ? 'not-allowed' : 'pointer',
-              }}
-            >
-              <span className="text-sm leading-none">{m.label}</span>
-              <span style={{ fontSize: '7px' }}>{m.full}</span>
-            </button>
-          )
-        })}
-      </div>
+      {!rutaActiva ? (
+        <div className="flex flex-col items-center justify-center py-3 gap-1"
+             style={{ border: '2px dashed #4a3860', borderRadius: '2px', background: 'rgba(42,32,53,0.3)' }}>
+          <p className="font-pixel text-[8px]" style={{ color: '#6b5e52' }}>Sin misión asignada</p>
+          <p className="font-body text-[11px]" style={{ color: '#4a3860' }}>Ve a Rutas para añadir una misión</p>
+        </div>
+      ) : (
+        <div className="flex gap-1.5">
+          {MARCAS.map(m => {
+            const activo = marcaHoy === m.id
+            return (
+              <button
+                key={m.id}
+                onClick={() => handleMarcar(m.id)}
+                disabled={procesando}
+                className="flex-1 py-2.5 font-pixel select-none min-h-[44px]
+                           flex flex-col items-center justify-center gap-0.5
+                           active:translate-y-[1px] active:translate-x-[1px]"
+                style={{
+                  background: activo ? m.bg : 'rgba(52,40,72,0.5)',
+                  border: `2px solid ${activo ? m.border : '#4a3860'}`,
+                  borderRadius: '2px',
+                  boxShadow: activo ? '2px 2px 0 rgba(0,0,0,0.6)' : '2px 2px 0 rgba(0,0,0,0.4)',
+                  color: activo ? m.color : '#6b5e52',
+                  opacity: procesando ? 0.5 : 1,
+                  cursor: procesando ? 'not-allowed' : 'pointer',
+                }}
+              >
+                <span className="text-sm leading-none">{m.label}</span>
+                <span style={{ fontSize: '9px' }}>{m.full}</span>
+              </button>
+            )
+          })}
+        </div>
+      )}
 
       {/* Wabi-Sabi */}
       {wabiMsg && (
@@ -358,7 +456,7 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
             style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}
           />
           <button onClick={handleGuardarNota}
-            className="px-3 py-1.5 font-pixel text-[9px] min-h-[36px] active:translate-y-[1px]"
+            className="px-3 py-1.5 font-pixel text-[11px] min-h-[36px] active:translate-y-[1px]"
             style={{ background: 'rgba(80,200,120,0.15)', border: '2px solid #50c878', borderRadius: '2px', color: '#50c878', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
             OK
           </button>

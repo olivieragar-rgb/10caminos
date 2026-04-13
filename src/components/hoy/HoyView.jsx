@@ -15,6 +15,8 @@ import FraseIkigai from './FraseIkigai'
 import CaminosManager from './CaminosManager'
 import PersonajeHeader from './PersonajeHeader'
 import AcertijoDelDia, { debeAparecerHoy } from './AcertijoDelDia'
+import EventoDelDia from './EventoDelDia'
+import DashboardSemanal from './DashboardSemanal'
 
 export default function HoyView() {
   // ── TODOS los hooks primero, sin excepciones ──────────────────────────────
@@ -111,8 +113,14 @@ export default function HoyView() {
         <FraseIkigai />
       </div>
 
+      {/* Evento del día */}
+      <EventoDelDia />
+
       {/* Acertijo (cada 3 días) */}
       {debeAparecerHoy() && <AcertijoDelDia />}
+
+      {/* Dashboard semanal */}
+      <DashboardSemanal />
 
       {/* Plan banner */}
       <PlanBanner texto={planHoy?.texto} />

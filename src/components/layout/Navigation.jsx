@@ -18,7 +18,7 @@ export default function Navigation({ tabActivo, onTabChange }) {
             <span
               className="font-pixel leading-none"
               style={{
-                fontSize: '6px',
+                fontSize: '8px',
                 color: activo ? '#ffd700' : '#6b5e52',
                 letterSpacing: '0.02em',
               }}
