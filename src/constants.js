@@ -39,11 +39,11 @@ export const MARCA_SIMBOLOS = {
 
 // Tabs
 export const TABS = [
-  { id: 'hoy',      label: 'Hoy',      emoji: '☀️'  },
-  { id: 'semana',   label: 'Semana',   emoji: '📅'  },
-  { id: 'rutas',    label: 'Rutas',    emoji: '🗺️'  },
-  { id: 'progreso', label: 'Progreso', emoji: '📊'  },
-  { id: 'chat',     label: 'Chat IA',  emoji: '🤖'  },
+  { id: 'hoy',      label: 'HOY',      emoji: '⚔️'  },
+  { id: 'semana',   label: 'SEMANA',   emoji: '📅'  },
+  { id: 'rutas',    label: 'RUTAS',    emoji: '🗺️'  },
+  { id: 'progreso', label: 'STATS',    emoji: '📊'  },
+  { id: 'chat',     label: 'CHAT',     emoji: '💬'  },
 ]
 
 // Frases Ikigai — rotación diaria (fácil de editar)
@@ -154,20 +154,85 @@ export const CAMINOS_SEED = [
   },
 ]
 
-// Seed: Recompensas
+// Seed: Recompensas — hitos distribuidos por el camino como sorpresas
 export const RECOMPENSAS_SEED = [
-  {
-    caminoId: 3,
-    nombre: 'Date un capricho fitness',
-    descripcion: null,
-    nivelRequerido: 5,
-    icono: '👟',
-  },
-  {
-    caminoId: null,
-    nombre: 'Cena de celebración',
-    descripcion: null,
-    nivelRequerido: 10,
-    icono: '🎉',
-  },
+  // ── Hitos globales (nivel promedio de todos los caminos) ──────────────────
+  { caminoId: null, nombre: 'Primer café especial del mes',    nivelRequerido: 1,  icono: '☕' },
+  { caminoId: null, nombre: 'Tarde libre sin culpa',           nivelRequerido: 3,  icono: '🌅' },
+  { caminoId: null, nombre: 'Cena especial en familia',        nivelRequerido: 5,  icono: '🍽️' },
+  { caminoId: null, nombre: 'Un día de aventura con los niños',nivelRequerido: 8,  icono: '🎡' },
+  { caminoId: null, nombre: 'Fin de semana de desconexión',    nivelRequerido: 10, icono: '🏕️' },
+  { caminoId: null, nombre: 'Viaje de un día con Lou',         nivelRequerido: 15, icono: '🚗' },
+  { caminoId: null, nombre: 'Gran celebración (tú decides)',   nivelRequerido: 20, icono: '🏆' },
+
+  // ── Camino 1: Presente con mis hijos ─────────────────────────────────────
+  { caminoId: 1, nombre: 'Juego de mesa especial juntos',      nivelRequerido: 3,  icono: '🎲' },
+  { caminoId: 1, nombre: 'Excursión con los niños',            nivelRequerido: 7,  icono: '🌳' },
+
+  // ── Camino 2: Feliz con Lou ───────────────────────────────────────────────
+  { caminoId: 2, nombre: 'Cita sorpresa para Lou',             nivelRequerido: 3,  icono: '💛' },
+  { caminoId: 2, nombre: 'Escapada de pareja (1 noche)',       nivelRequerido: 8,  icono: '🌙' },
+
+  // ── Camino 3: Sano y en forma ─────────────────────────────────────────────
+  { caminoId: 3, nombre: 'Zapatillas nuevas para entrenar',    nivelRequerido: 5,  icono: '👟' },
+  { caminoId: 3, nombre: 'Inscripción a una carrera',          nivelRequerido: 10, icono: '🏃' },
+
+  // ── Camino 4: Bienestar económico ─────────────────────────────────────────
+  { caminoId: 4, nombre: 'Libro de finanzas que quieres',      nivelRequerido: 3,  icono: '📚' },
+  { caminoId: 4, nombre: 'Inversión simbólica de celebración', nivelRequerido: 8,  icono: '📈' },
+
+  // ── Camino 5: Niño interior ───────────────────────────────────────────────
+  { caminoId: 5, nombre: 'Videojuego o juguete que te apetece',nivelRequerido: 4,  icono: '🎮' },
+
+  // ── Camino 8: Gratitud y humildad ─────────────────────────────────────────
+  { caminoId: 8, nombre: 'Carta escrita a alguien importante', nivelRequerido: 5,  icono: '✉️' },
+]
+
+// Acertijos del día
+export const ACERTIJOS = [
+  { pregunta: 'Tengo ciudades, pero no casas. Tengo montañas, pero no árboles. Tengo agua, pero no peces. ¿Qué soy?', respuesta: 'Un mapa' },
+  { pregunta: 'Cuanto más secas, más moja. ¿Qué es?', respuesta: 'Una toalla' },
+  { pregunta: 'Soy ligero como una pluma, pero ni el hombre más fuerte puede sostenerme más de unos minutos. ¿Qué soy?', respuesta: 'El aliento' },
+  { pregunta: 'Tengo manos pero no puedo aplaudir. ¿Qué soy?', respuesta: 'Un reloj' },
+  { pregunta: 'Siempre delante de ti, pero nunca puedes verme. ¿Qué soy?', respuesta: 'El futuro' },
+  { pregunta: 'Rompo al caer, pero no al hervir. ¿Qué soy?', respuesta: 'Un huevo' },
+  { pregunta: 'Soy tuyo, pero los demás lo usan más que tú. ¿Qué soy?', respuesta: 'Tu nombre' },
+  { pregunta: 'Entre más me quitas, más grande me hago. ¿Qué soy?', respuesta: 'Un hoyo' },
+  { pregunta: 'Puedo volar sin alas, llorar sin ojos, y donde voy, oscurece todo. ¿Qué soy?', respuesta: 'Una nube' },
+  { pregunta: 'Tengo cabeza y cola pero no tengo cuerpo. ¿Qué soy?', respuesta: 'Una moneda' },
+  { pregunta: 'Dos hermanos somos, juntos vivimos, sin vernos estamos. ¿Qué somos?', respuesta: 'Los ojos' },
+  { pregunta: 'Primero comes, luego te comes a mí. ¿Quién soy?', respuesta: 'El anzuelo' },
+  { pregunta: 'Tengo hojas pero no soy árbol, tengo lomo pero no soy animal. ¿Qué soy?', respuesta: 'Un libro' },
+  { pregunta: 'Voy y vengo todo el día, pero siempre en el mismo lugar. ¿Qué soy?', respuesta: 'Una puerta' },
+  { pregunta: 'Sin que nadie me llame, vengo; sin que nadie me diga, hablo. ¿Qué soy?', respuesta: 'El eco' },
+  { pregunta: 'Tengo patas pero no camino, tengo espalda pero no me doblo. ¿Qué soy?', respuesta: 'Una silla' },
+  { pregunta: 'Me compras para comer, pero nunca me comes. ¿Qué soy?', respuesta: 'Un plato' },
+  { pregunta: 'Soy redondo como el sol, blanco como la nieve y amargo como la hiel. ¿Qué soy?', respuesta: 'El ajo' },
+  { pregunta: 'Tengo dientes pero no muerdo. ¿Qué soy?', respuesta: 'Un peine' },
+  { pregunta: 'Cuantas más hay, menos ves. ¿Qué son?', respuesta: 'Las tinieblas' },
+  { pregunta: 'Nací de madre que no tenía, vivo y no respiro, bebo sin sed y sin boca. ¿Qué soy?', respuesta: 'Un pez' },
+  { pregunta: 'Soy invisible pero puedes sentirme, no tengo forma pero puedo doblar árboles. ¿Qué soy?', respuesta: 'El viento' },
+  { pregunta: 'Tengo un ojo pero no veo. ¿Qué soy?', respuesta: 'Una aguja' },
+  { pregunta: 'Soy tan frágil que al pronunciar mi nombre me rompo. ¿Qué soy?', respuesta: 'El silencio' },
+  { pregunta: 'Vuelo sin alas, corro sin patas, siempre hacia adelante, nunca puedes atraparme. ¿Qué soy?', respuesta: 'El tiempo' },
+  { pregunta: 'Tengo piel sin cuerpo, sin voz puedo hablar, viajo por el mundo y no me puedo parar. ¿Qué soy?', respuesta: 'Una carta' },
+  { pregunta: 'Me ves una vez en un minuto, dos veces en un momento y nunca en cien años. ¿Qué soy?', respuesta: 'La letra M' },
+  { pregunta: 'Soy más útil cuando estoy roto. ¿Qué soy?', respuesta: 'Un huevo' },
+  { pregunta: 'Tengo raíces que nadie ve, soy más alta que los árboles, arriba no crece nada, pero nunca me iré. ¿Qué soy?', respuesta: 'Una montaña' },
+  { pregunta: 'Corro, pero no tengo piernas. Tengo boca, pero no hablo. ¿Qué soy?', respuesta: 'Un río' },
+  { pregunta: 'Lleno un cuarto pero no ocupo espacio. ¿Qué soy?', respuesta: 'La luz' },
+  { pregunta: 'Soy el principio de todo, el final del tiempo y del espacio, el inicio de cada lugar. ¿Qué soy?', respuesta: 'La letra E' },
+  { pregunta: 'Nací de padre y madre pero nunca nací. ¿Qué soy?', respuesta: 'Adán y Eva' },
+  { pregunta: 'Puedo correr pero no caminar. ¿Dónde estoy siempre delante de ti pero nunca atrás?', respuesta: 'Tu nariz (cuando corres)' },
+  { pregunta: 'Sin dinero, sin precio, te lo doy si eres mi amigo, lo pierdo si lo exijo. ¿Qué soy?', respuesta: 'El respeto' },
+  { pregunta: 'Nace grande y muere pequeño. ¿Qué es?', respuesta: 'Una vela' },
+  { pregunta: 'Estoy lleno de agujeros pero retengo el agua. ¿Qué soy?', respuesta: 'Una esponja' },
+  { pregunta: 'Un hombre entra bajo la lluvia sin paraguas ni sombrero y no se moja ni un pelo. ¿Cómo?', respuesta: 'Porque es calvo' },
+  { pregunta: '¿Qué empieza con "E", termina con "E" y solo tiene una letra?', respuesta: 'Un sobre' },
+  { pregunta: '¿Cuántos meses del año tienen 28 días?', respuesta: 'Todos (todos los meses tienen al menos 28 días)' },
+  { pregunta: 'Un gallo pone un huevo en lo más alto de un tejado. ¿Hacia qué lado cae?', respuesta: 'Los gallos no ponen huevos' },
+  { pregunta: 'Si 5 gatos cazan 5 ratones en 5 minutos, ¿cuántos gatos necesitas para cazar 100 ratones en 100 minutos?', respuesta: '5 gatos' },
+  { pregunta: 'Cuanto más rápido corres hacia ella, más rápido huye. ¿Qué es?', respuesta: 'El horizonte' },
+  { pregunta: 'Puedo capturar recuerdos pero no tengo manos. Guardo momentos pero no tengo corazón. ¿Qué soy?', respuesta: 'Una fotografía' },
+  { pregunta: 'Todos la buscan, nadie la quiere cuando la encuentra, y una vez que la tiene, no la cambia por nada. ¿Qué es?', respuesta: 'La vejez (la sabiduría del tiempo)' },
 ]

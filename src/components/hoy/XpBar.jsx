@@ -6,17 +6,20 @@ export default function XpBar({ xp, className = '' }) {
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <div className="flex-1 h-1.5 bg-bg-surface rounded-full overflow-hidden">
+      {/* Barra exterior con borde dorado */}
+      <div className="flex-1" style={{ border: '2px solid #b8960c', borderRadius: '2px', padding: '1px', background: '#1a1520' }}>
         <div
-          className="h-full rounded-full glow-xp transition-all duration-500"
+          className="h-2 transition-all duration-500 relative overflow-hidden xp-shimmer"
           style={{
             width: `${pct}%`,
-            background: 'linear-gradient(90deg, #ffd700, #ffab00)',
+            background: 'linear-gradient(90deg, #ffd700, #ffec80)',
+            borderRadius: '1px',
+            minWidth: pct > 0 ? '4px' : '0',
           }}
         />
       </div>
-      <span className="font-mono text-[10px] text-text-muted whitespace-nowrap">
-        {enNivel}<span className="text-text-muted">/100</span>
+      <span className="font-pixel text-[8px] text-text-muted whitespace-nowrap leading-none">
+        {enNivel}<span className="text-text-muted opacity-60">/100</span>
       </span>
     </div>
   )

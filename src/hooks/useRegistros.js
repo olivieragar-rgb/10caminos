@@ -80,7 +80,27 @@ export async function marcarCamino(caminoId, marca, nota = null, rutaId = null) 
   const rachaMejor = Math.max(rachaActual, camino.rachaMejor)
   await db.caminos.update(caminoId, { rachaActual, rachaMejor })
 
-  return { xpGanado: delta, nivelAnterior, nuevoNivel, subioNivel: nuevoNivel > nivelAnterior }
+  // Detectar recompensas recién desbloqueadas
+  const recompensasDesbloqueadas = []
+  if (nuevoNivel > nivelAnterior) {
+    const todasRecompensas = await db.recompensas
+      .filter(r => !r.reclamada && (r.caminoId === caminoId || r.caminoId === null))
+      .toArray()
+    // Nivel global para recompensas globales
+    const todosActivos = await db.caminos.filter(c => c.activo).toArray()
+    const nivelGlobal = todosActivos.length
+      ? Math.floor(todosActivos.reduce((s, c) => s + xpANivel(c.id === caminoId ? nuevoXp : c.xp), 0) / todosActivos.length)
+      : 0
+    for (const r of todasRecompensas) {
+      const nivelRef  = r.caminoId === null ? nivelGlobal : nuevoNivel
+      const nivelPrev = r.caminoId === null ? nivelGlobal - (nuevoNivel - nivelAnterior) : nivelAnterior
+      if (nivelPrev < r.nivelRequerido && nivelRef >= r.nivelRequerido) {
+        recompensasDesbloqueadas.push(r)
+      }
+    }
+  }
+
+  return { xpGanado: delta, nivelAnterior, nuevoNivel, subioNivel: nuevoNivel > nivelAnterior, recompensasDesbloqueadas }
 }
 
 export async function agregarNotaRegistro(caminoId, nota) {

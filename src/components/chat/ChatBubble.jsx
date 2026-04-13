@@ -2,11 +2,14 @@ export default function ChatBubble({ mensaje }) {
   const esUser = mensaje.rol === 'user'
   return (
     <div className={`flex ${esUser ? 'justify-end' : 'justify-start'} mb-2 px-4`}>
-      <div className={`max-w-[80%] rounded-2xl px-3 py-2
-        ${esUser
-          ? 'bg-accent/20 border border-accent/30 rounded-br-sm'
-          : 'bg-bg-surface border border-border-dark rounded-bl-sm'}`}>
-        <p className="text-sm text-text-primary leading-relaxed whitespace-pre-wrap">
+      <div className="max-w-[80%] px-3 py-2"
+        style={{
+          background: esUser ? 'rgba(233,69,96,0.15)' : '#342848',
+          border: `2px solid ${esUser ? 'rgba(233,69,96,0.4)' : '#4a3860'}`,
+          borderRadius: '2px',
+          boxShadow: '2px 2px 0 rgba(0,0,0,0.4)',
+        }}>
+        <p className="font-body text-sm text-text-primary leading-relaxed whitespace-pre-wrap">
           {mensaje.mensaje}
         </p>
         {mensaje.accionEjecutada && (

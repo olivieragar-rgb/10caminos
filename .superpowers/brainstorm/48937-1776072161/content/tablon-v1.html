@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tablón Medieval</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:#04040c;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(0,200,255,0.01) 48px,rgba(0,200,255,0.01) 49px),
+    repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(0,200,255,0.007) 48px,rgba(0,200,255,0.007) 49px);
+  color:#e8e6e3; padding:14px; min-height:100vh;
+  font-family:'Share Tech Mono',monospace;
+}
+
+h1 { font-family:'Cinzel',serif; font-size:12px; color:#00d4ff; text-align:center; letter-spacing:4px; margin-bottom:3px; text-shadow:0 0 16px #00d4ff50; }
+.sub { font-size:9px; color:#1e2440; text-align:center; margin-bottom:16px; letter-spacing:2px; }
+
+/* ══════════════════════════════════════
+   TABLÓN — diseño A: Pergamino cyberpunk
+══════════════════════════════════════ */
+.tablon-a {
+  max-width:380px; margin:0 auto 24px;
+  background: linear-gradient(175deg, #0f0e1c 0%, #0a0916 100%);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius:3px;
+  box-shadow:
+    0 0 10px rgba(255,215,0,0.1),
+    0 0 30px rgba(255,215,0,0.04),
+    inset 0 0 20px rgba(0,0,0,0.4);
+  position:relative; overflow:hidden;
+  cursor:pointer; transition: box-shadow 0.2s;
+}
+.tablon-a:hover { box-shadow: 0 0 16px rgba(255,215,0,0.2), 0 0 40px rgba(255,215,0,0.07), inset 0 0 20px rgba(0,0,0,0.4); }
+.tablon-a.selected { outline: 2px solid #ffd700; }
+.tablon-a.selected::after { content:'✓ ELEGIDO'; position:absolute; top:8px; right:10px; font-size:8px; color:#ffd700; letter-spacing:1px; }
+
+/* línea dorada top */
+.tablon-a::before {
+  content:''; position:absolute; top:0; left:8%; right:8%; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,0.6),transparent);
+  box-shadow: 0 0 8px rgba(255,215,0,0.4);
+}
+
+.tab-header {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid rgba(255,215,0,0.12);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.tab-title {
+  font-family:'Cinzel',serif; font-weight:900; font-size:11px;
+  color:#ffd700; letter-spacing:3px;
+  text-shadow: 0 0 10px rgba(255,215,0,0.4);
+}
+.tab-week {
+  font-size:8px; color:#4a4030; letter-spacing:1px;
+}
+.tab-body { padding:10px 14px 12px; }
+
+/* Score global grande */
+.score-global {
+  display:flex; align-items:baseline; gap:6px; margin-bottom:10px;
+}
+.score-num {
+  font-family:'Cinzel',serif; font-size:36px; font-weight:900;
+  color:#ffd700; line-height:1;
+  text-shadow: 0 0 20px rgba(255,215,0,0.5);
+}
+.score-of { font-size:14px; color:#4a4030; font-family:'Cinzel',serif; }
+.score-label { font-size:8px; color:#3a3020; letter-spacing:2px; margin-left:4px; }
+
+/* Barra semanal global */
+.week-bar-wrap { margin-bottom:10px; }
+.week-bar { height:6px; background:rgba(0,0,0,0.4); border-radius:2px; overflow:hidden; margin-bottom:4px; }
+.week-bar-fill {
+  height:100%; border-radius:2px;
+  background:linear-gradient(90deg,#ffd700,#ff8c00);
+  box-shadow:0 0 8px rgba(255,215,0,0.5);
+  position:relative;
+}
+.week-bar-fill::after { content:''; position:absolute; right:0; top:0; bottom:0; width:3px; background:#fff; opacity:0.7; }
+.week-days { display:flex; gap:3px; }
+.day-dot {
+  flex:1; height:18px; border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:7px; font-family:'Cinzel',serif;
+}
+.day-good  { background:rgba(0,168,74,0.2);  color:#00a84a; border:1px solid rgba(0,168,74,0.3); }
+.day-ok    { background:rgba(200,150,0,0.15); color:#c89600; border:1px solid rgba(200,150,0,0.25); }
+.day-miss  { background:rgba(60,60,80,0.15);  color:#303050; border:1px solid rgba(60,60,80,0.2); }
+.day-today { background:rgba(0,212,255,0.12); color:#00d4ff; border:1px solid rgba(0,212,255,0.3); }
+
+/* Mini stats caminos */
+.caminos-mini { display:flex; flex-direction:column; gap:4px; margin-top:10px; }
+.camino-mini-row {
+  display:flex; align-items:center; gap:8px;
+}
+.cm-icon { font-size:12px; width:18px; text-align:center; flex-shrink:0; }
+.cm-name { font-family:'Cinzel',serif; font-size:8px; color:#8a8690; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cm-dots { display:flex; gap:2px; flex-shrink:0; }
+.cm-dot { width:9px; height:9px; border-radius:1px; }
+.cm-dot-v { background:rgba(0,168,74,0.5); border:1px solid rgba(0,168,74,0.6); }
+.cm-dot-p { background:rgba(200,150,0,0.4); border:1px solid rgba(200,150,0,0.5); }
+.cm-dot-n { background:rgba(204,0,68,0.3);  border:1px solid rgba(204,0,68,0.4); }
+.cm-dot-e { background:rgba(30,30,50,0.3);  border:1px solid rgba(40,40,60,0.4); }
+.cm-xp { font-size:8px; color:#3a3020; flex-shrink:0; width:30px; text-align:right; }
+
+/* Personajes al costado */
+.layout-with-chars {
+  display:flex; gap:0; max-width:380px; margin:0 auto 10px; align-items:flex-start;
+}
+.chars-col {
+  display:flex; flex-direction:column; gap:4px;
+  padding-top:20px; width:44px; flex-shrink:0;
+}
+.char-sprite {
+  width:36px; height:36px; border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; position:relative;
+  border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.02);
+}
+.char-glow { box-shadow:0 0 8px rgba(0,212,255,0.3); }
+.char-locked { opacity:0.15; filter:grayscale(1); }
+
+.tag { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:2px; color:#1a1e30; text-align:center; margin-bottom:8px; }
+
+/* Opción B — diseño más minimalista */
+.tablon-b {
+  max-width:380px; margin:0 auto 24px;
+  background: linear-gradient(175deg,#0c0c1a 0%,#090910 100%);
+  border-top: 2px solid rgba(255,215,0,0.5);
+  border-bottom: 1px solid rgba(255,215,0,0.1);
+  border-left: 1px solid rgba(255,215,0,0.08);
+  border-right: 1px solid rgba(255,215,0,0.08);
+  border-radius:2px;
+  box-shadow: 0 0 16px rgba(255,215,0,0.08), inset 0 0 20px rgba(0,0,0,0.3);
+  position:relative; overflow:hidden;
+  cursor:pointer; transition: box-shadow 0.2s;
+}
+.tablon-b.selected { outline:2px solid #ffd700; }
+.tablon-b.selected::after { content:'✓ ELEGIDO'; position:absolute; top:8px; right:10px; font-size:8px; color:#ffd700; letter-spacing:1px; }
+.tablon-b::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,rgba(255,215,0,0.7),transparent); box-shadow:0 0 10px rgba(255,215,0,0.5); }
+</style>
+</head>
+<body>
+
+<h1>TABLÓN DE CAMINOS</h1>
+<p class="sub">// con personajes al lado · dos variantes //</p>
+
+<!-- ════ OPCIÓN A: TABLÓN COMPLETO con personajes ════ -->
+<p class="tag">OPCIÓN A · tablón ancho con personajes al costado</p>
+<div class="layout-with-chars">
+  <!-- Personajes desbloqueados -->
+  <div class="chars-col">
+    <div class="char-sprite char-glow" title="Goku — desbloqueado NV.5">🐉</div>
+    <div class="char-sprite" title="Killua — desbloqueado NV.3" style="box-shadow:0 0 8px rgba(200,200,255,0.2)">⚡</div>
+    <div class="char-sprite char-locked" title="??? · se desbloquea en NV.8">❓</div>
+    <div class="char-sprite char-locked" title="??? · se desbloquea en NV.12">❓</div>
+  </div>
+
+  <!-- Tablón principal -->
+  <div class="tablon-a" style="flex:1;border-radius:0 3px 3px 0" onclick="toggleSelect(this)" data-choice="a">
+    <div class="tab-header">
+      <span class="tab-title">⚔ CRÓNICA SEMANAL</span>
+      <span class="tab-week">7–13 ABR · 2026</span>
+    </div>
+    <div class="tab-body">
+      <div class="score-global">
+        <span class="score-num">34</span>
+        <span class="score-of">/56</span>
+        <span class="score-label">AVANCES ESTA SEMANA</span>
+      </div>
+      <div class="week-bar-wrap">
+        <div class="week-bar"><div class="week-bar-fill" style="width:61%"></div></div>
+        <div class="week-days">
+          <div class="day-dot day-good">L</div>
+          <div class="day-dot day-good">M</div>
+          <div class="day-dot day-ok">X</div>
+          <div class="day-dot day-good">J</div>
+          <div class="day-dot day-miss">V</div>
+          <div class="day-dot day-miss">S</div>
+          <div class="day-dot day-today">H</div>
+        </div>
+      </div>
+      <div class="caminos-mini">
+        <div class="camino-mini-row">
+          <span class="cm-icon">👨‍👧‍👦</span><span class="cm-name">Presente con mis hijos</span>
+          <div class="cm-dots"><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-p"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-n"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div></div>
+          <span class="cm-xp">+52</span>
+        </div>
+        <div class="camino-mini-row">
+          <span class="cm-icon">💛</span><span class="cm-name">Feliz con Lou</span>
+          <div class="cm-dots"><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-n"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div></div>
+          <span class="cm-xp">+62</span>
+        </div>
+        <div class="camino-mini-row">
+          <span class="cm-icon">💪</span><span class="cm-name">Sano y en forma</span>
+          <div class="cm-dots"><div class="cm-dot cm-dot-p"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-n"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div></div>
+          <span class="cm-xp">+44</span>
+        </div>
+        <div class="camino-mini-row">
+          <span class="cm-icon">📈</span><span class="cm-name">Bienestar económico</span>
+          <div class="cm-dots"><div class="cm-dot cm-dot-n"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-p"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div></div>
+          <span class="cm-xp">+28</span>
+        </div>
+        <div class="camino-mini-row">
+          <span class="cm-icon">🎮</span><span class="cm-name">Niño interior</span>
+          <div class="cm-dots"><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-v"></div><div class="cm-dot cm-dot-n"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div><div class="cm-dot cm-dot-e"></div></div>
+          <span class="cm-xp">+38</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ OPCIÓN B: TABLÓN COMPACTO con borde superior gold ════ -->
+<p class="tag" style="margin-top:8px">OPCIÓN B · más compacto · borde superior dorado prominente</p>
+<div class="layout-with-chars">
+  <div class="chars-col">
+    <div class="char-sprite" style="box-shadow:0 0 8px rgba(255,215,0,0.3)">🐉</div>
+    <div class="char-sprite" style="box-shadow:0 0 8px rgba(180,180,255,0.2)">⚡</div>
+    <div class="char-sprite char-locked">❓</div>
+    <div class="char-sprite char-locked">❓</div>
+  </div>
+
+  <div class="tablon-b" style="flex:1;border-radius:0 2px 2px 0" onclick="toggleSelect(this)" data-choice="b">
+    <div class="tab-header" style="padding:8px 12px 6px;border-bottom:1px solid rgba(255,215,0,0.08)">
+      <span class="tab-title" style="font-size:10px;letter-spacing:2px">⚔ CRÓNICA SEMANAL</span>
+      <span class="tab-week" style="font-size:7px">7–13 ABR</span>
+    </div>
+    <div style="padding:8px 12px">
+      <!-- Score + días compactos -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <div>
+          <span style="font-family:'Cinzel',serif;font-size:28px;font-weight:900;color:#ffd700;line-height:1;text-shadow:0 0 16px rgba(255,215,0,0.4)">34</span>
+          <span style="font-family:'Cinzel',serif;font-size:11px;color:#3a3020">/56</span>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:7px;color:#3a3020;letter-spacing:2px;margin-bottom:4px">AVANCES</div>
+          <div class="week-days">
+            <div class="day-dot day-good">L</div><div class="day-dot day-good">M</div><div class="day-dot day-ok">X</div><div class="day-dot day-good">J</div><div class="day-dot day-miss">V</div><div class="day-dot day-miss">S</div><div class="day-dot day-today">H</div>
+          </div>
+        </div>
+      </div>
+      <!-- Caminos en 2 col -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
+        <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">👨‍👧‍👦</span><div style="flex:1;height:3px;background:rgba(0,168,74,0.5);border-radius:1px"></div><span style="font-size:7px;color:#3a3020">+52</span></div>
+        <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">💛</span><div style="flex:1;height:3px;background:rgba(0,168,74,0.7);border-radius:1px"></div><span style="font-size:7px;color:#3a3020">+62</span></div>
+        <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">💪</span><div style="flex:1;height:3px;background:rgba(0,168,74,0.4);border-radius:1px"></div><span style="font-size:7px;color:#3a3020">+44</span></div>
+        <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">📈</span><div style="flex:1;height:3px;background:rgba(200,150,0,0.5);border-radius:1px"></div><span style="font-size:7px;color:#3a3020">+28</span></div>
+        <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">🎮</span><div style="flex:1;height:3px;background:rgba(0,168,74,0.35);border-radius:1px"></div><span style="font-size:7px;color:#3a3020">+38</span></div>
+        <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px">🏠</span><div style="flex:1;height:3px;background:rgba(204,0,68,0.3);border-radius:1px"></div><span style="font-size:7px;color:#3a3020">+10</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center;font-size:8px;color:#10101e;margin-top:6px;letter-spacing:2px">// haz click en la que prefieras //</p>
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberpunk Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #04040c;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,200,255,0.015) 40px, rgba(0,200,255,0.015) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,200,255,0.01) 40px, rgba(0,200,255,0.01) 41px);
+  color: #e8e6e3;
+  padding: 16px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: #00d4ff;
+  text-align: center;
+  letter-spacing: 4px;
+  margin-bottom: 4px;
+  text-shadow: 0 0 20px #00d4ff80;
+}
+.sub { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: #4a5068; text-align:center; margin-bottom:20px; letter-spacing:2px; }
+
+/* ─── CARD BASE ─── */
+.cyb-card {
+  position: relative;
+  max-width: 360px;
+  margin: 0 auto 28px;
+  padding: 0;
+}
+
+/* Clip diagonal + borde neon */
+.cyb-inner {
+  background: linear-gradient(160deg, #0e0e1e 0%, #080812 60%, #0c0a18 100%);
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Línea neon superior */
+.cyb-inner::before {
+  content:'';
+  position:absolute; top:0; left:0; right:16px; height:2px;
+  background: var(--accent-color, linear-gradient(90deg, #00d4ff, #0066ff));
+  box-shadow: 0 0 12px var(--accent-glow, #00d4ff);
+}
+/* Línea neon izquierda */
+.cyb-inner::after {
+  content:'';
+  position:absolute; top:0; left:0; bottom:16px; width:2px;
+  background: var(--accent-color, linear-gradient(180deg, #00d4ff, #0066ff));
+  box-shadow: 0 0 12px var(--accent-glow, #00d4ff);
+}
+
+/* Esquina cortada decorativa */
+.corner-deco {
+  position:absolute; top:0; right:0;
+  width:16px; height:16px;
+  background: var(--accent-base, #00d4ff);
+  clip-path: polygon(0 0, 100% 100%, 100% 0);
+  opacity:0.7;
+}
+.corner-deco-br {
+  position:absolute; bottom:0; left:0;
+  width:16px; height:16px;
+  background: var(--accent-base, #00d4ff);
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+  opacity:0.3;
+}
+
+/* Scan line sutil */
+.scan-overlay {
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px);
+  pointer-events:none;
+}
+
+/* Header */
+.card-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:8px;
+}
+.card-name {
+  font-family:'Cinzel',serif;
+  font-weight:700; font-size:13px;
+  color:#e8e6e3;
+  display:flex; align-items:center; gap:8px;
+}
+.card-icon { font-size:18px; }
+.card-stats { display:flex; gap:6px; align-items:center; }
+.stat-chip {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  padding:2px 6px;
+  border:1px solid;
+  border-radius:0;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+.stat-xp { color:#ffd700; border-color:#ffd70060; background:rgba(255,215,0,0.08); }
+.stat-racha { color:#ff6d00; border-color:#ff6d0060; background:rgba(255,109,0,0.08); }
+
+/* XP bar */
+.xp-bar {
+  height:4px;
+  background:#0a0a18;
+  margin-bottom:10px;
+  position:relative;
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+}
+.xp-fill {
+  height:100%;
+  background: linear-gradient(90deg, #ffd700, #ff8c00);
+  box-shadow: 0 0 8px #ffd70080;
+  position:relative;
+}
+.xp-fill::after {
+  content:'';
+  position:absolute; right:0; top:0; bottom:0; width:3px;
+  background:#fff;
+  opacity:0.8;
+  box-shadow: 0 0 6px #fff;
+}
+
+/* ─── BLOQUE MISIÓN ─── */
+.mision-block {
+  position:relative;
+  padding:10px 12px;
+  margin-bottom:10px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+/* Estados de fondo */
+.estado-pendiente {
+  background: rgba(220,170,0,0.1);
+  border-top:2px solid rgba(220,170,0,0.6);
+  border-left:1px solid rgba(220,170,0,0.3);
+}
+.estado-pendiente::before {
+  content:'';
+  position:absolute; top:0; left:0; right:10px; height:2px;
+  background:linear-gradient(90deg, #dca800, #ffcc00);
+  box-shadow:0 0 10px #dca80080;
+}
+.estado-logrado {
+  background: rgba(0,160,60,0.1);
+  border-top:2px solid rgba(0,180,70,0.6);
+  border-left:1px solid rgba(0,160,60,0.3);
+}
+.estado-logrado::before {
+  content:'';
+  position:absolute; top:0; left:0; right:10px; height:2px;
+  background:linear-gradient(90deg, #00a03c, #00e676);
+  box-shadow:0 0 10px #00a03c80;
+}
+.estado-nohoy {
+  background: rgba(80,80,100,0.1);
+  border-top:2px solid rgba(100,100,130,0.4);
+  border-left:1px solid rgba(80,80,100,0.2);
+}
+.estado-nohoy::before {
+  content:'';
+  position:absolute; top:0; left:0; right:10px; height:2px;
+  background:linear-gradient(90deg, #505064, #8080a0);
+  box-shadow:0 0 6px #50506480;
+}
+
+.mision-label {
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;
+  letter-spacing:3px;
+  margin-bottom:6px;
+  display:flex; justify-content:space-between;
+}
+.mision-accion {
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:13px;
+  line-height:1.35;
+  margin-bottom:6px;
+}
+.mision-meta {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px;
+  color:#4a5068;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.edit-btn {
+  font-family:'Share Tech Mono',monospace;
+  font-size:7px;
+  padding:2px 7px;
+  border:1px solid rgba(0,212,255,0.3);
+  color:#00d4ff;
+  background:rgba(0,212,255,0.06);
+  cursor:pointer;
+  clip-path: polygon(3px 0, 100% 0, calc(100% - 3px) 100%, 0 100%);
+}
+
+/* Cola de pasos */
+.cola-pasos {
+  margin-top:8px;
+  padding-top:6px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex; flex-direction:column; gap:4px;
+}
+.cola-item {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  color:#2a3050;
+  display:flex; gap:6px; align-items:center;
+}
+.cola-item::before { content:'//'; color:#1a2040; }
+
+/* Sin acción */
+.sin-accion-msg {
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1px;
+  margin-bottom:8px;
+  font-style:normal;
+}
+.add-accion-btn {
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  padding:6px 12px;
+  width:100%;
+  text-align:center;
+  letter-spacing:2px;
+  cursor:pointer;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+/* Sin ruta */
+.ia-btn {
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  padding:8px 12px;
+  width:100%; text-align:center;
+  letter-spacing:2px;
+  cursor:pointer;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  margin-bottom:6px;
+}
+
+/* ─── BOTONES ACCIÓN ─── */
+.botones { display:flex; gap:6px; }
+.btn-accion {
+  flex:1;
+  padding:10px 2px;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  font-family:'Cinzel',serif; font-size:7px; font-weight:700; letter-spacing:0.5px;
+  cursor:pointer;
+  position:relative;
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+  transition: all 0.15s;
+}
+.btn-emoji { font-size:18px; line-height:1; }
+.btn-logrado { background:rgba(0,180,80,0.12); border:none; color:#00e676; }
+.btn-logrado::before {
+  content:''; position:absolute; top:0; left:5px; right:5px; height:1px;
+  background:linear-gradient(90deg,transparent,#00e676,transparent);
+  box-shadow: 0 0 8px #00e67680;
+}
+.btn-pendiente { background:rgba(220,170,0,0.1); border:none; color:#dca800; }
+.btn-pendiente::before {
+  content:''; position:absolute; top:0; left:5px; right:5px; height:1px;
+  background:linear-gradient(90deg,transparent,#dca800,transparent);
+  box-shadow: 0 0 8px #dca80080;
+}
+.btn-nohoy { background:rgba(80,80,100,0.1); border:none; color:#606080; }
+.btn-nohoy::before {
+  content:''; position:absolute; top:0; left:5px; right:5px; height:1px;
+  background:linear-gradient(90deg,transparent,#606080,transparent);
+}
+.btn-bloq {
+  flex:1; padding:10px 2px;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  font-family:'Cinzel',serif; font-size:7px;
+  background:#06060e; color:#1a1a2e;
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+  cursor:not-allowed;
+}
+
+.section-lbl {
+  font-family:'Share Tech Mono',monospace;
+  font-size:8px; letter-spacing:3px; color:#2a3050;
+  text-align:center; margin-bottom:10px; text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+
+<h1>SISTEMA DE CAMINOS</h1>
+<p class="sub">// DISEÑO CYBERPUNK · TRES ESTADOS //</p>
+
+<!-- ══ ESTADO 1: PENDIENTE ══ -->
+<p class="section-lbl">// estado_01 :: misión pendiente</p>
+<div class="cyb-card">
+  <div class="cyb-inner" style="--accent-color:linear-gradient(90deg,#00d4ff,#0055ff);--accent-glow:#00d4ff;--accent-base:#00d4ff">
+    <div class="corner-deco"></div>
+    <div class="corner-deco-br"></div>
+    <div class="scan-overlay"></div>
+
+    <div class="card-header">
+      <div class="card-name"><span class="card-icon">💪</span>Sano y en Forma</div>
+      <div class="card-stats">
+        <span class="stat-racha">🔥×5</span>
+        <span class="stat-xp">NV.3</span>
+      </div>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" style="width:42%"></div></div>
+
+    <div class="mision-block estado-pendiente">
+      <div class="mision-label">
+        <span style="color:#dca800">⚡ MISIÓN ACTIVA</span>
+        <span class="edit-btn">✏ EDITAR</span>
+      </div>
+      <div class="mision-accion" style="color:#ffe080">Hacer 30 min de cardio al despertar</div>
+      <div class="mision-meta">
+        <span>Ruta Maratón · paso 2/8</span>
+      </div>
+      <div class="cola-pasos">
+        <div class="cola-item">Sesión de fuerza · piernas</div>
+        <div class="cola-item">Día de descanso activo</div>
+      </div>
+    </div>
+
+    <div class="botones">
+      <div class="btn-accion btn-logrado"><span class="btn-emoji">⚔</span>¡LOGRADO!</div>
+      <div class="btn-accion btn-pendiente"><span class="btn-emoji">⏳</span>PENDIENTE</div>
+      <div class="btn-accion btn-nohoy"><span class="btn-emoji">✗</span>HOY NO</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ESTADO 2: LOGRADO ══ -->
+<p class="section-lbl">// estado_02 :: misión completada hoy</p>
+<div class="cyb-card">
+  <div class="cyb-inner" style="--accent-color:linear-gradient(90deg,#00d4ff,#0055ff);--accent-glow:#00d4ff;--accent-base:#00d4ff">
+    <div class="corner-deco"></div>
+    <div class="corner-deco-br"></div>
+    <div class="scan-overlay"></div>
+
+    <div class="card-header">
+      <div class="card-name"><span class="card-icon">💛</span>Feliz con Lou</div>
+      <div class="card-stats">
+        <span class="stat-racha">🔥×12</span>
+        <span class="stat-xp">NV.5</span>
+      </div>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" style="width:72%"></div></div>
+
+    <div class="mision-block estado-logrado">
+      <div class="mision-label">
+        <span style="color:#00e676">✓ COMPLETADO</span>
+        <span class="edit-btn">✏ VER COLA</span>
+      </div>
+      <div class="mision-accion" style="color:#80ffb0;text-decoration:line-through;opacity:0.7">Preparar cena sorpresa para Lou</div>
+      <div class="mision-meta" style="color:#2a5040">Ruta Conexión · paso 4/6</div>
+    </div>
+
+    <div class="botones">
+      <div class="btn-accion btn-logrado" style="opacity:0.4;cursor:default"><span class="btn-emoji">⚔</span>¡LOGRADO!</div>
+      <div class="btn-accion btn-pendiente" style="opacity:0.4"><span class="btn-emoji">⏳</span>PENDIENTE</div>
+      <div class="btn-accion btn-nohoy" style="opacity:0.4"><span class="btn-emoji">✗</span>HOY NO</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ESTADO 3: HOY NO ══ -->
+<p class="section-lbl">// estado_03 :: hoy no se hará</p>
+<div class="cyb-card">
+  <div class="cyb-inner" style="--accent-color:linear-gradient(90deg,#606080,#404060);--accent-glow:#40405080;--accent-base:#505070">
+    <div class="corner-deco" style="background:#505070"></div>
+    <div class="corner-deco-br"></div>
+    <div class="scan-overlay"></div>
+
+    <div class="card-header">
+      <div class="card-name" style="opacity:0.5"><span class="card-icon">🏠</span>Familia</div>
+      <div class="card-stats">
+        <span class="stat-xp" style="color:#3a3a5a;border-color:#2a2a4a">NV.2</span>
+      </div>
+    </div>
+    <div class="xp-bar" style="opacity:0.4"><div class="xp-fill" style="width:25%;background:linear-gradient(90deg,#606080,#808090)"></div></div>
+
+    <div class="mision-block estado-nohoy">
+      <div class="mision-label">
+        <span style="color:#505070">— HOY NO —</span>
+      </div>
+      <div class="mision-accion" style="color:#404060;text-decoration:line-through">Llamar a mamá y ponerse al día</div>
+      <div class="mision-meta" style="color:#2a2a40">Ruta Lazos · paso 1/4</div>
+    </div>
+
+    <div class="botones">
+      <div class="btn-bloq"><span style="font-size:18px">⚔</span>¡LOGRADO!</div>
+      <div class="btn-bloq"><span style="font-size:18px">⏳</span>PENDIENTE</div>
+      <div class="btn-bloq" style="background:rgba(80,80,100,0.15);color:#252540"><span style="font-size:18px">✗</span>HOY NO</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ESTADO 4: SIN RUTA ══ -->
+<p class="section-lbl">// estado_04 :: sin ruta definida</p>
+<div class="cyb-card">
+  <div class="cyb-inner" style="--accent-color:linear-gradient(90deg,#ff0055,#cc0040);--accent-glow:#ff005580;--accent-base:#ff0055">
+    <div class="corner-deco" style="background:#ff0055"></div>
+    <div class="corner-deco-br" style="background:#ff0055"></div>
+    <div class="scan-overlay"></div>
+
+    <div class="card-header">
+      <div class="card-name"><span class="card-icon">🎒</span>Sin Mochila</div>
+      <div class="card-stats">
+        <span class="stat-xp">NV.1</span>
+      </div>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" style="width:8%;background:linear-gradient(90deg,#ff0055,#ff4080)"></div></div>
+
+    <div class="mision-block" style="background:rgba(255,0,85,0.06);border-top:2px solid rgba(255,0,85,0.4);position:relative;">
+      <div style="content:'';position:absolute;top:0;left:0;right:10px;height:2px;background:linear-gradient(90deg,#ff0055,#ff4080);box-shadow:0 0 10px #ff005580"></div>
+      <div class="mision-label"><span style="color:#ff0055">⚠ SIN RUTA ACTIVA</span></div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#602030;margin-bottom:10px;line-height:1.5">
+        Sin dirección no hay avance.<br>Define una ruta para desbloquear acciones.
+      </div>
+      <div class="ia-btn" style="background:rgba(0,212,255,0.08);color:#00d4ff;border:1px solid rgba(0,212,255,0.3)">
+        🤖 PEDIR RUTA AL ASISTENTE
+      </div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:8px;color:#2a2a40;text-align:center;cursor:pointer;padding:4px;letter-spacing:2px">
+        + CREAR MANUALMENTE
+      </div>
+    </div>
+
+    <div class="botones">
+      <div class="btn-bloq"><span style="font-size:18px">⚔</span>¡LOGRADO!</div>
+      <div class="btn-bloq"><span style="font-size:18px">⏳</span>PENDIENTE</div>
+      <div class="btn-bloq"><span style="font-size:18px">✗</span>HOY NO</div>
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:9px;color:#1a1a30;margin-top:4px;letter-spacing:2px">
+  // ¿TE GUSTA ESTE ESTILO? DIME QUÉ AJUSTAR //
+</p>
+</body>
+</html>

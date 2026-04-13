@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cyberpunk Card v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: #04040c;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(0,200,255,0.012) 48px,rgba(0,200,255,0.012) 49px),
+    repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(0,200,255,0.008) 48px,rgba(0,200,255,0.008) 49px);
+  color:#e8e6e3; padding:14px; min-height:100vh;
+}
+h1 { font-family:'Cinzel',serif; font-size:13px; color:#00d4ff; text-align:center; letter-spacing:4px; margin-bottom:3px; text-shadow:0 0 20px #00d4ff60; }
+.sub { font-family:'Share Tech Mono',monospace; font-size:9px; color:#1e2440; text-align:center; margin-bottom:18px; letter-spacing:2px; }
+.section-lbl { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:3px; color:#1a1e30; text-align:center; margin-bottom:8px; }
+
+/* ══ CARD ══ */
+.cyb-card {
+  max-width:360px; margin:0 auto 22px;
+  background: linear-gradient(160deg,#0d0d1c 0%,#080810 70%,#0b0918 100%);
+  border-radius: 3px;
+  padding: 13px;
+  position: relative;
+  overflow: hidden;
+  /* Borde neon via box-shadow externo + borde fino */
+  border: 1px solid var(--nc, #00d4ff);
+  box-shadow:
+    0 0 8px 0 var(--ng, rgba(0,212,255,0.25)),
+    0 0 20px 0 var(--ngf, rgba(0,212,255,0.08)),
+    inset 0 0 12px 0 var(--ni, rgba(0,212,255,0.04));
+}
+
+/* Scan lines */
+.cyb-card::after {
+  content:''; position:absolute; inset:0; pointer-events:none; border-radius:3px;
+  background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);
+}
+
+/* Línea decorativa superior más brillante */
+.cyb-card::before {
+  content:''; position:absolute; top:0; left:10%; right:10%; height:1px;
+  background: linear-gradient(90deg,transparent,var(--nc,#00d4ff),transparent);
+  box-shadow: 0 0 8px var(--nc,#00d4ff);
+  opacity: 0.7;
+}
+
+/* Variantes de color */
+.v-cyan  { --nc:#00d4ff; --ng:rgba(0,212,255,0.22); --ngf:rgba(0,212,255,0.07); --ni:rgba(0,212,255,0.04); }
+.v-amber { --nc:#c89600; --ng:rgba(200,150,0,0.22);  --ngf:rgba(200,150,0,0.07);  --ni:rgba(200,150,0,0.05); background:linear-gradient(160deg,#0d0c00 0%,#08080a 70%,#0b0a00 100%) !important; }
+.v-green { --nc:#00a84a; --ng:rgba(0,168,74,0.22);   --ngf:rgba(0,168,74,0.07);   --ni:rgba(0,168,74,0.05);  background:linear-gradient(160deg,#050d06 0%,#030806 70%,#050d06 100%) !important; }
+.v-gray  { --nc:#484860; --ng:rgba(72,72,96,0.18);   --ngf:rgba(72,72,96,0.06);   --ni:rgba(72,72,96,0.03);  background:linear-gradient(160deg,#0a0a0f 0%,#070709 70%) !important; }
+.v-red   { --nc:#cc0044; --ng:rgba(204,0,68,0.22);   --ngf:rgba(204,0,68,0.07);   --ni:rgba(204,0,68,0.05);  background:linear-gradient(160deg,#0d0006 0%,#080004 70%) !important; }
+
+/* ══ CONTENIDO ══ */
+.card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; position:relative; z-index:1; }
+.card-name { font-family:'Cinzel',serif; font-weight:700; font-size:13px; color:#e8e6e3; display:flex; align-items:center; gap:8px; }
+.card-icon { font-size:17px; }
+.chips { display:flex; gap:5px; }
+.chip { font-family:'Share Tech Mono',monospace; font-size:8px; padding:2px 7px; border-radius:2px; }
+.chip-xp { color:#ffd700; background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.2); }
+.chip-racha { color:#ff6d00; background:rgba(255,109,0,0.08); border:1px solid rgba(255,109,0,0.2); }
+
+.xp-bar { height:3px; background:rgba(0,0,0,0.4); margin-bottom:11px; border-radius:1px; overflow:hidden; position:relative; z-index:1; }
+.xp-fill { height:100%; border-radius:1px; position:relative; }
+.xp-fill::after { content:''; position:absolute; right:0; top:0; bottom:0; width:2px; background:#fff; opacity:0.8; border-radius:1px; }
+
+/* ══ BLOQUE MISIÓN ══ */
+.mision-block {
+  padding:10px 12px; margin-bottom:10px;
+  border-radius:2px; border-left:2px solid;
+  position:relative; z-index:1;
+}
+.m-pending { background:rgba(200,150,0,0.09);  border-left-color:rgba(200,150,0,0.6); }
+.m-done    { background:rgba(0,168,74,0.08);   border-left-color:rgba(0,168,74,0.5); }
+.m-nohoy   { background:rgba(60,60,90,0.08);   border-left-color:rgba(60,60,90,0.4); }
+.m-noruta  { background:rgba(200,0,60,0.07);   border-left-color:rgba(200,0,60,0.5); }
+
+.m-label { font-family:'Share Tech Mono',monospace; font-size:7px; letter-spacing:2px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; }
+.m-edit { font-family:'Share Tech Mono',monospace; font-size:7px; padding:2px 8px; color:#00d4ff; border:1px solid rgba(0,212,255,0.2); background:rgba(0,212,255,0.05); border-radius:2px; cursor:pointer; }
+.m-accion { font-family:'Cinzel',serif; font-weight:700; font-size:13px; line-height:1.35; margin-bottom:5px; }
+.m-meta { font-family:'Share Tech Mono',monospace; font-size:8px; color:#252840; }
+.m-cola { margin-top:7px; padding-top:6px; border-top:1px solid rgba(255,255,255,0.04); display:flex; flex-direction:column; gap:3px; }
+.m-cola-item { font-family:'Share Tech Mono',monospace; font-size:8px; color:#1a1e30; padding-left:2px; }
+.m-cola-item::before { content:'›› '; opacity:0.5; }
+
+.cta-btn { font-family:'Cinzel',serif; font-size:8px; letter-spacing:2px; padding:8px; width:100%; text-align:center; cursor:pointer; border-radius:2px; margin-bottom:5px; }
+.cta-sub { font-family:'Share Tech Mono',monospace; font-size:8px; color:#241020; text-align:center; cursor:pointer; letter-spacing:2px; }
+
+/* ══ BOTONES ══ */
+.botones { display:flex; gap:5px; position:relative; z-index:1; }
+.btn-a {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:9px 2px; font-family:'Cinzel',serif; font-size:7px; font-weight:700; letter-spacing:0.3px;
+  cursor:pointer; border-radius:2px; border:1px solid; transition:opacity 0.15s;
+}
+.btn-emoji-s { font-size:16px; line-height:1; }
+.b-log  { background:rgba(0,180,80,0.08);  border-color:rgba(0,180,80,0.3);  color:#00cc66; }
+.b-pend { background:rgba(200,150,0,0.08); border-color:rgba(200,150,0,0.3); color:#c89600; }
+.b-no   { background:rgba(60,60,90,0.08);  border-color:rgba(60,60,90,0.3);  color:#484860; }
+.b-lock { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:9px 2px; font-family:'Cinzel',serif; font-size:7px; color:#10101a; background:#06060e; border:1px solid #0c0c18; border-radius:2px; cursor:not-allowed; }
+</style>
+</head>
+<body>
+
+<h1>SISTEMA DE CAMINOS</h1>
+<p class="sub">// bordes neon suaves · sin esquinas agresivas //</p>
+
+<!-- PENDIENTE -->
+<p class="section-lbl">// misión pendiente</p>
+<div class="cyb-card v-cyan">
+  <div class="card-header">
+    <div class="card-name"><span class="card-icon">💪</span>Sano y en Forma</div>
+    <div class="chips"><span class="chip chip-racha">🔥×5</span><span class="chip chip-xp">NV.3</span></div>
+  </div>
+  <div class="xp-bar"><div class="xp-fill" style="width:43%;background:linear-gradient(90deg,#ffd700,#ff8c00);box-shadow:0 0 6px #ffd70060"></div></div>
+  <div class="mision-block m-pending">
+    <div class="m-label">
+      <span style="color:#c89600">⚡ MISIÓN PENDIENTE</span>
+      <span class="m-edit">✏ EDITAR</span>
+    </div>
+    <div class="m-accion" style="color:#ffe080">Hacer 30 min de cardio al despertar</div>
+    <div class="m-meta">Ruta Maratón · paso 2/8</div>
+    <div class="m-cola">
+      <div class="m-cola-item">Sesión de fuerza · piernas</div>
+      <div class="m-cola-item">Día de descanso activo</div>
+    </div>
+  </div>
+  <div class="botones">
+    <div class="btn-a b-log"><span class="btn-emoji-s">⚔</span>¡LOGRADO!</div>
+    <div class="btn-a b-pend"><span class="btn-emoji-s">⏳</span>PENDIENTE</div>
+    <div class="btn-a b-no"><span class="btn-emoji-s">✗</span>HOY NO</div>
+  </div>
+</div>
+
+<!-- LOGRADO -->
+<p class="section-lbl">// completado hoy</p>
+<div class="cyb-card v-green">
+  <div class="card-header">
+    <div class="card-name"><span class="card-icon">💛</span>Feliz con Lou</div>
+    <div class="chips"><span class="chip chip-racha">🔥×12</span><span class="chip chip-xp">NV.5</span></div>
+  </div>
+  <div class="xp-bar"><div class="xp-fill" style="width:71%;background:linear-gradient(90deg,#00a84a,#00e676);box-shadow:0 0 6px #00a84a60"></div></div>
+  <div class="mision-block m-done">
+    <div class="m-label"><span style="color:#00a84a">✓ LOGRADO HOY</span></div>
+    <div class="m-accion" style="color:#1a4030;text-decoration:line-through;opacity:0.6">Preparar cena sorpresa para Lou</div>
+    <div class="m-meta" style="color:#0e2018">Ruta Conexión · paso 4/6</div>
+  </div>
+  <div class="botones" style="opacity:0.25;pointer-events:none">
+    <div class="btn-a b-log"><span class="btn-emoji-s">⚔</span>¡LOGRADO!</div>
+    <div class="btn-a b-pend"><span class="btn-emoji-s">⏳</span>PENDIENTE</div>
+    <div class="btn-a b-no"><span class="btn-emoji-s">✗</span>HOY NO</div>
+  </div>
+</div>
+
+<!-- HOY NO -->
+<p class="section-lbl">// decidí no hacerlo hoy</p>
+<div class="cyb-card v-gray">
+  <div class="card-header" style="opacity:0.4">
+    <div class="card-name"><span class="card-icon">🏠</span>Familia</div>
+    <div class="chips"><span class="chip chip-xp" style="color:#282838;border-color:#202030">NV.2</span></div>
+  </div>
+  <div class="xp-bar" style="opacity:0.25"><div class="xp-fill" style="width:24%;background:linear-gradient(90deg,#404060,#606080)"></div></div>
+  <div class="mision-block m-nohoy">
+    <div class="m-label"><span style="color:#303045">— HOY NO —</span></div>
+    <div class="m-accion" style="color:#252535;text-decoration:line-through;opacity:0.5">Llamar a mamá y ponerse al día</div>
+    <div class="m-meta" style="color:#16162a">Ruta Lazos · paso 1/4</div>
+  </div>
+  <div class="botones" style="opacity:0.15;pointer-events:none">
+    <div class="btn-a b-log"><span class="btn-emoji-s">⚔</span>¡LOGRADO!</div>
+    <div class="btn-a b-pend"><span class="btn-emoji-s">⏳</span>PENDIENTE</div>
+    <div class="btn-a b-no"><span class="btn-emoji-s">✗</span>HOY NO</div>
+  </div>
+</div>
+
+<!-- SIN RUTA -->
+<p class="section-lbl">// sin ruta · bloqueado</p>
+<div class="cyb-card v-red">
+  <div class="card-header">
+    <div class="card-name"><span class="card-icon">🎒</span>Sin Mochila</div>
+    <div class="chips"><span class="chip chip-xp">NV.1</span></div>
+  </div>
+  <div class="xp-bar"><div class="xp-fill" style="width:8%;background:linear-gradient(90deg,#cc0044,#ff4080);box-shadow:0 0 5px #cc004460"></div></div>
+  <div class="mision-block m-noruta">
+    <div class="m-label"><span style="color:#cc0044">⚠ SIN RUTA ACTIVA</span></div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#4a1020;line-height:1.6;margin-bottom:10px">
+      Sin dirección no hay avance.<br>El asistente puede proponerte una ruta.
+    </div>
+    <div class="cta-btn" style="background:rgba(0,212,255,0.07);color:#00d4ff;border:1px solid rgba(0,212,255,0.2)">🤖 PEDIR RUTA AL ASISTENTE</div>
+    <div class="cta-sub">+ CREAR MANUALMENTE</div>
+  </div>
+  <div class="botones">
+    <div class="b-lock"><span style="font-size:16px">⚔</span>¡LOGRADO!</div>
+    <div class="b-lock"><span style="font-size:16px">⏳</span>PENDIENTE</div>
+    <div class="b-lock"><span style="font-size:16px">✗</span>HOY NO</div>
+  </div>
+</div>
+
+<p style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:8px;color:#10101e;margin-top:4px;letter-spacing:2px">// ¿te convence? dime qué ajustar //</p>
+</body>
+</html>

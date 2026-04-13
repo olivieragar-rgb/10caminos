@@ -2,7 +2,7 @@ import { useState } from 'react'
 import NotasRuta from './NotasRuta'
 import { avanzarPaso, pausarRuta, reanudarRuta, completarRuta, eliminarRuta } from '../../hooks/useRutas'
 
-const ESTADO_COLOR = { activa: '#00e676', pausa: '#ffab00', completada: '#8a8690' }
+const ESTADO_COLOR = { activa: '#50c878', pausa: '#f0c040', completada: '#706060' }
 const ESTADO_LABEL = { activa: 'Activa', pausa: 'Pausa', completada: 'Completada' }
 
 export default function RutaCard({ ruta, camino }) {
@@ -20,8 +20,9 @@ export default function RutaCard({ ruta, camino }) {
   }
 
   return (
-    <div className={`mx-4 mb-3 bg-bg-card border rounded-xl overflow-hidden
-      ${ruta.estado === 'completada' ? 'border-border-dark opacity-60' : 'border-border-dark'}`}>
+    <div className={`mx-4 mb-3 overflow-hidden
+      ${ruta.estado === 'completada' ? 'opacity-60' : ''}`}
+      style={{ background: '#2a2035', border: '2px solid #4a3860', borderRadius: '2px', boxShadow: '4px 4px 0 rgba(0,0,0,0.6)' }}>
 
       {/* Header */}
       <button onClick={() => setExpanded(e => !e)}
@@ -29,9 +30,9 @@ export default function RutaCard({ ruta, camino }) {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-medium text-text-primary truncate">{ruta.nombre}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full border flex-shrink-0"
-                style={{ color: ESTADO_COLOR[ruta.estado], borderColor: ESTADO_COLOR[ruta.estado] + '50' }}>
+              <span className="font-pixel text-[9px] text-text-primary truncate">{ruta.nombre}</span>
+              <span className="font-pixel text-[7px] px-1.5 py-0.5 flex-shrink-0"
+                style={{ color: ESTADO_COLOR[ruta.estado], border: `1px solid ${ESTADO_COLOR[ruta.estado]}80`, borderRadius: '2px' }}>
                 {ESTADO_LABEL[ruta.estado]}
               </span>
             </div>
@@ -41,8 +42,8 @@ export default function RutaCard({ ruta, camino }) {
               </p>
             )}
             {/* Progress bar */}
-            <div className="h-1 bg-bg-surface rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all duration-500"
+            <div className="h-2 overflow-hidden" style={{ background: '#1a1520', border: '1px solid #4a3860' }}>
+              <div className="h-full transition-all duration-500"
                 style={{ width: `${pct}%`, backgroundColor: ESTADO_COLOR[ruta.estado] }} />
             </div>
             <p className="text-[10px] text-text-muted mt-1">
@@ -55,7 +56,7 @@ export default function RutaCard({ ruta, camino }) {
 
       {/* Expanded */}
       {expanded && (
-        <div className="px-3 pb-3 border-t border-border-dark/50">
+        <div className="px-3 pb-3" style={{ borderTop: '1px solid #4a3860' }}>
           {/* Pasos */}
           <div className="mt-3 space-y-1">
             {ruta.pasos.map((paso, i) => (
@@ -83,17 +84,17 @@ export default function RutaCard({ ruta, camino }) {
             <div className="mt-3 flex flex-wrap gap-2">
               <button onClick={() => handle(() => avanzarPaso(ruta.id))}
                 disabled={ruta.pasoActual >= ruta.pasos.length || procesando}
-                className="px-3 py-2 bg-green-xp/10 border border-green-xp/40 rounded-lg
+                className="px-3 py-2 bg-green-xp/10 border border-green-xp/40 rounded-[2px]
                            text-xs text-green-xp disabled:opacity-30 min-h-[36px]">
                 Siguiente paso →
               </button>
               <button onClick={() => setShowPausaInput(true)}
-                className="px-3 py-2 bg-yellow-pause/10 border border-yellow-pause/40 rounded-lg
+                className="px-3 py-2 bg-yellow-pause/10 border border-yellow-pause/40 rounded-[2px]
                            text-xs text-yellow-pause min-h-[36px]">
                 Pausar
               </button>
               <button onClick={() => handle(() => completarRuta(ruta.id))}
-                className="px-3 py-2 bg-bg-surface border border-border-dark rounded-lg
+                className="px-3 py-2 bg-bg-surface border border-border-dark rounded-[2px]
                            text-xs text-text-muted min-h-[36px]">
                 Completar
               </button>
@@ -103,7 +104,7 @@ export default function RutaCard({ ruta, camino }) {
           {ruta.estado === 'pausa' && (
             <div className="mt-3 flex gap-2">
               <button onClick={() => handle(() => reanudarRuta(ruta.id))}
-                className="px-3 py-2 bg-green-xp/10 border border-green-xp/40 rounded-lg
+                className="px-3 py-2 bg-green-xp/10 border border-green-xp/40 rounded-[2px]
                            text-xs text-green-xp min-h-[36px]">
                 Reanudar
               </button>
@@ -114,13 +115,13 @@ export default function RutaCard({ ruta, camino }) {
             <div className="mt-2 flex gap-2">
               <input value={pausaMotivo} onChange={e => setPausaMotivo(e.target.value)}
                 placeholder="Motivo de la pausa..."
-                className="flex-1 bg-bg-surface border border-border-dark rounded-lg px-3 py-1.5
+                className="flex-1 bg-bg-surface border border-border-dark rounded-[2px] px-3 py-1.5
                            text-xs text-text-primary placeholder-text-muted outline-none
                            focus:border-accent/50 min-h-[36px]" />
               <button onClick={() => {
                 handle(() => pausarRuta(ruta.id, pausaMotivo))
                 setShowPausaInput(false)
-              }} className="px-3 py-1.5 bg-accent/20 border border-accent/40 rounded-lg
+              }} className="px-3 py-1.5 bg-accent/20 border border-accent/40 rounded-[2px]
                            text-xs text-accent min-h-[36px]">OK</button>
             </div>
           )}

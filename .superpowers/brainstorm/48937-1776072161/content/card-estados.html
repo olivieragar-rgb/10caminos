@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarjeta de Camino — Estados</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#0a0a0f; color:#e8e6e3; font-family:'Cinzel',serif; padding:16px; }
+
+h1 { font-family:'Cinzel',serif; font-size:15px; color:#ffd700; text-align:center; margin-bottom:4px; letter-spacing:2px; }
+.subtitle { font-family:sans-serif; font-size:11px; color:#8a8690; text-align:center; margin-bottom:20px; }
+
+.section-label {
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  color:#6a5880;
+  letter-spacing:2px;
+  text-align:center;
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+
+/* ─── Card base ─── */
+.camino-card {
+  background: linear-gradient(180deg, #2a2035 0%, #1a1520 100%);
+  border: 2px solid #4a3860;
+  border-left: 3px solid #4a3860;
+  border-radius: 2px;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.6);
+  padding: 12px;
+  margin-bottom: 20px;
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Header */
+.card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
+.card-title { font-family:'Cinzel',serif; font-weight:700; font-size:13px; color:#e8e6e3; }
+.card-icon { font-size:18px; margin-right:6px; }
+.card-left { display:flex; align-items:center; }
+.badge { font-family:'Press Start 2P',monospace; font-size:7px; background:#2a2035; border:1px solid #ffd700; color:#ffd700; padding:2px 5px; border-radius:1px; }
+.racha { font-family:'Press Start 2P',monospace; font-size:7px; color:#ff6d00; margin-right:6px; }
+
+/* XP bar */
+.xp-bar { height:5px; background:#1a1520; border:1px solid #2a2a3e; margin-bottom:10px; }
+.xp-fill { height:100%; background:linear-gradient(90deg,#ffd700,#f0c040); box-shadow:0 0 6px #ffd70060; }
+
+/* ─── ESTADO 1: Misión activa ─── */
+.card-estado1 { border-left-color: #50c878; }
+
+.mision-block {
+  background: linear-gradient(135deg, rgba(68,136,204,0.12) 0%, rgba(42,32,53,0.8) 100%);
+  border: 2px solid rgba(68,136,204,0.5);
+  border-left: 3px solid #4488cc;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 1px;
+}
+.mision-tag {
+  font-family:'Cinzel',serif;
+  font-size:7px;
+  letter-spacing:2px;
+  color:#4488cc;
+  margin-bottom:6px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.mision-ruta { color:#4a4654; font-size:7px; }
+.mision-accion {
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:14px;
+  color:#e8e6e3;
+  line-height:1.3;
+  margin-bottom:8px;
+}
+.mision-accion::before { content:'▸ '; color:#4488cc; }
+.mision-progress { height:3px; background:#1a1520; }
+.mision-progress-fill { height:100%; width:30%; background:linear-gradient(90deg,#4488cc,#66aaee); box-shadow:0 0 4px #4488cc80; }
+.playlist-peek {
+  margin-top:8px;
+  padding-top:6px;
+  border-top:1px solid rgba(68,136,204,0.2);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.playlist-next { font-family:sans-serif; font-size:10px; color:#4a4654; padding-left:8px; }
+.playlist-next::before { content:'▸ '; color:#2a3860; }
+.playlist-edit {
+  font-family:'Cinzel',serif;
+  font-size:7px;
+  color:#4488cc;
+  border:1px solid rgba(68,136,204,0.3);
+  padding:2px 6px;
+  border-radius:1px;
+  background:rgba(68,136,204,0.08);
+  cursor:pointer;
+  display:inline-block;
+  margin-top:4px;
+  letter-spacing:1px;
+}
+
+/* Botones estado 1 */
+.botones { display:flex; gap:6px; }
+.btn {
+  flex:1; padding:10px 4px;
+  border-radius:1px;
+  border:2px solid;
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:0.5px;
+  cursor:pointer;
+  text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+}
+.btn-logrado { background:rgba(80,200,120,0.12); border-color:#50c878; color:#50c878; }
+.btn-pendiente { background:rgba(240,192,64,0.12); border-color:#f0c040; color:#f0c040; }
+.btn-nohoy { background:rgba(112,96,96,0.1); border-color:#706060; color:#706060; }
+.btn-emoji { font-size:16px; }
+
+/* ─── ESTADO 2: Sin acción definida ─── */
+.card-estado2 { border-left-color: #ff6d00; }
+.mision-vacia {
+  background: rgba(255,109,0,0.06);
+  border: 2px solid rgba(255,109,0,0.4);
+  border-left: 3px solid #ff6d00;
+  padding: 10px 12px;
+  margin-bottom:10px;
+  border-radius:1px;
+}
+.mision-vacia-tag {
+  font-family:'Cinzel',serif;
+  font-size:7px;
+  letter-spacing:2px;
+  color:#ff6d00;
+  margin-bottom:6px;
+}
+.mision-vacia-msg {
+  font-family:sans-serif;
+  font-size:11px;
+  color:#c4a882;
+  font-style:italic;
+  margin-bottom:8px;
+}
+.btn-agregar {
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  color:#ff6d00;
+  border:2px solid rgba(255,109,0,0.5);
+  background:rgba(255,109,0,0.1);
+  padding:6px 12px;
+  border-radius:1px;
+  cursor:pointer;
+  width:100%;
+  text-align:center;
+  letter-spacing:1px;
+}
+.btn-bloqueado {
+  flex:1; padding:10px 4px;
+  border-radius:1px;
+  border:2px solid #2a2a3e;
+  background:#14141f;
+  color:#2a2a3e;
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  cursor:not-allowed;
+  text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+}
+
+/* ─── ESTADO 3: Sin ruta ─── */
+.card-estado3 { border-left-color: #e94560; }
+.sin-ruta {
+  background: rgba(233,69,96,0.06);
+  border: 2px solid rgba(233,69,96,0.3);
+  border-left: 3px solid #e94560;
+  padding: 10px 12px;
+  margin-bottom:10px;
+  border-radius:1px;
+}
+.sin-ruta-icon { font-size:20px; margin-bottom:4px; }
+.sin-ruta-title {
+  font-family:'Cinzel',serif;
+  font-size:9px;
+  color:#e94560;
+  letter-spacing:1px;
+  margin-bottom:4px;
+}
+.sin-ruta-sub { font-family:sans-serif; font-size:10px; color:#6a5880; margin-bottom:8px; }
+.btn-ia {
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  color:#c4a882;
+  border:2px solid rgba(196,168,130,0.3);
+  background:rgba(196,168,130,0.06);
+  padding:6px 12px;
+  border-radius:1px;
+  cursor:pointer;
+  width:100%;
+  text-align:center;
+  letter-spacing:1px;
+  margin-bottom:4px;
+}
+.btn-manual {
+  font-family:'Cinzel',serif;
+  font-size:8px;
+  color:#4a3860;
+  border:1px solid #2a2035;
+  background:transparent;
+  padding:6px 12px;
+  border-radius:1px;
+  cursor:pointer;
+  width:100%;
+  text-align:center;
+  letter-spacing:1px;
+}
+
+.note { font-family:sans-serif; font-size:10px; color:#4a4654; text-align:center; margin-top:-12px; margin-bottom:16px; }
+</style>
+</head>
+<body>
+
+<h1>⚔ Tarjeta de Camino</h1>
+<p class="subtitle">Tres estados según si hay misión definida o no</p>
+
+<!-- ESTADO 1 -->
+<p class="section-label">Estado 1 · Misión activa y clara</p>
+<div class="camino-card card-estado1">
+  <div class="card-header">
+    <div class="card-left">
+      <span class="card-icon">💪</span>
+      <span class="card-title">Sano y en Forma</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span class="racha">🔥5</span>
+      <span class="badge">NV.3</span>
+    </div>
+  </div>
+  <div class="xp-bar"><div class="xp-fill" style="width:45%"></div></div>
+
+  <div class="mision-block">
+    <div class="mision-tag">
+      <span>⚔ MISIÓN DE HOY</span>
+      <span class="mision-ruta">Ruta Maratón · 2/8</span>
+    </div>
+    <div class="mision-accion">Hacer 30 min de cardio al despertar</div>
+    <div class="mision-progress"><div class="mision-progress-fill"></div></div>
+    <div class="playlist-peek">
+      <div class="playlist-next" style="color:#6a5880">Mañana: Sesión de fuerza · piernas</div>
+      <div class="playlist-next" style="color:#4a3860">Después: Día de descanso activo</div>
+      <span class="playlist-edit">✏ Editar cola</span>
+    </div>
+  </div>
+
+  <div class="botones">
+    <div class="btn btn-logrado"><span class="btn-emoji">⚔</span>¡LOGRADO!</div>
+    <div class="btn btn-pendiente"><span class="btn-emoji">⏳</span>PENDIENTE</div>
+    <div class="btn btn-nohoy"><span class="btn-emoji">✗</span>HOY NO</div>
+  </div>
+</div>
+<p class="note">Botones activos · misión en grande · cola de pasos visible</p>
+
+<!-- ESTADO 2 -->
+<p class="section-label">Estado 2 · Ruta activa pero sin acción definida</p>
+<div class="camino-card card-estado2">
+  <div class="card-header">
+    <div class="card-left">
+      <span class="card-icon">📈</span>
+      <span class="card-title">Bienestar Económico</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span class="badge">NV.2</span>
+    </div>
+  </div>
+  <div class="xp-bar"><div class="xp-fill" style="width:20%"></div></div>
+
+  <div class="mision-vacia">
+    <div class="mision-vacia-tag">⚠ SIN MISIÓN PARA HOY</div>
+    <div class="mision-vacia-msg">La ruta «Ahorro Mensual» no tiene siguiente paso asignado.</div>
+    <div class="btn-agregar">+ Añadir acción a la cola</div>
+  </div>
+
+  <div class="botones">
+    <div class="btn-bloqueado"><span style="font-size:14px">⚔</span>¡LOGRADO!</div>
+    <div class="btn-bloqueado"><span style="font-size:14px">⏳</span>PENDIENTE</div>
+    <div class="btn-bloqueado"><span style="font-size:14px">✗</span>HOY NO</div>
+  </div>
+</div>
+<p class="note">Botones bloqueados · aviso naranja · CTA directo para añadir paso</p>
+
+<!-- ESTADO 3 -->
+<p class="section-label">Estado 3 · Sin ruta asignada</p>
+<div class="camino-card card-estado3">
+  <div class="card-header">
+    <div class="card-left">
+      <span class="card-icon">🎮</span>
+      <span class="card-title">Niño Interior</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span class="badge">NV.1</span>
+    </div>
+  </div>
+  <div class="xp-bar"><div class="xp-fill" style="width:10%"></div></div>
+
+  <div class="sin-ruta">
+    <div class="sin-ruta-icon">🗺</div>
+    <div class="sin-ruta-title">SIN RUTA ACTIVA</div>
+    <div class="sin-ruta-sub">No sabes hacia dónde avanzar en este camino.</div>
+    <div class="btn-ia">🤖 Pedir al Asistente que proponga una ruta</div>
+    <div class="btn-manual">+ Crear ruta manualmente</div>
+  </div>
+
+  <div class="botones">
+    <div class="btn-bloqueado"><span style="font-size:14px">⚔</span>¡LOGRADO!</div>
+    <div class="btn-bloqueado"><span style="font-size:14px">⏳</span>PENDIENTE</div>
+    <div class="btn-bloqueado"><span style="font-size:14px">✗</span>HOY NO</div>
+  </div>
+</div>
+<p class="note">Botones bloqueados · rojo · botón directo al chatbot</p>
+
+<p style="text-align:center;font-family:sans-serif;font-size:10px;color:#4a4654;margin-top:8px">
+  ¿Te convence esta estructura de estados? Dímelo en el chat
+</p>
+</body>
+</html>

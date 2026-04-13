@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipografía Medieval — 10 Caminos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Uncial+Antiqua&family=Pirata+One&family=MedievalSharp&family=IM+Fell+English:ital@0;1&family=Press+Start+2P&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0f;
+    color: #e8e6e3;
+    font-family: sans-serif;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+  .subtitle {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: #8a8690;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .option {
+    border: 2px solid #4a3860;
+    background: #14141f;
+    border-radius: 2px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .option:hover { border-color: #ffd700; background: #1a1520; }
+  .option.selected { border-color: #ffd700; background: #1e1830; }
+  .option.selected::after {
+    content: '✓ ELEGIDA';
+    position: absolute;
+    top: 8px; right: 10px;
+    font-size: 9px;
+    color: #ffd700;
+    font-family: 'Press Start 2P', monospace;
+  }
+  .tag {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #6a5880;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* Simulación de tarjeta de camino */
+  .card-sim {
+    background: #1e1e30;
+    border: 1px solid #2a2a3e;
+    border-radius: 2px;
+    padding: 10px 12px;
+    margin-top: 10px;
+  }
+  .card-sim .camino-nombre {
+    font-size: 13px;
+    color: #e8e6e3;
+    margin-bottom: 2px;
+  }
+  .card-sim .mision-label {
+    font-size: 8px;
+    color: #4488cc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .card-sim .mision-texto {
+    font-size: 14px;
+    color: #ffd700;
+    margin-bottom: 6px;
+  }
+  .card-sim .dashboard-title {
+    font-size: 16px;
+    color: #ffd700;
+    margin-bottom: 2px;
+  }
+  .card-sim .level-badge {
+    font-size: 9px;
+    color: #c4a882;
+    text-transform: uppercase;
+  }
+  .xp-bar {
+    height: 4px;
+    background: #2a2035;
+    border-radius: 0;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .xp-fill {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, #ffd700, #f0c040);
+  }
+
+  /* A — Cinzel */
+  .font-a .camino-nombre { font-family: 'Cinzel', serif; font-weight: 700; }
+  .font-a .mision-label  { font-family: 'Cinzel', serif; font-weight: 400; }
+  .font-a .mision-texto  { font-family: 'Cinzel', serif; font-weight: 900; font-size: 13px; color: #e8e6e3; }
+  .font-a .dashboard-title { font-family: 'Cinzel', serif; font-weight: 900; }
+  .font-a .level-badge   { font-family: 'Cinzel', serif; font-size: 8px; }
+
+  /* B — Uncial Antiqua */
+  .font-b .camino-nombre { font-family: 'Uncial Antiqua', cursive; }
+  .font-b .mision-label  { font-family: 'Uncial Antiqua', cursive; font-size: 10px; }
+  .font-b .mision-texto  { font-family: 'Uncial Antiqua', cursive; color: #e8e6e3; font-size: 14px; }
+  .font-b .dashboard-title { font-family: 'Uncial Antiqua', cursive; }
+  .font-b .level-badge   { font-family: 'Uncial Antiqua', cursive; font-size: 10px; }
+
+  /* C — Pirata One */
+  .font-c .camino-nombre { font-family: 'Pirata One', cursive; font-size: 16px; }
+  .font-c .mision-label  { font-family: 'Pirata One', cursive; font-size: 11px; }
+  .font-c .mision-texto  { font-family: 'Pirata One', cursive; color: #e8e6e3; font-size: 16px; }
+  .font-c .dashboard-title { font-family: 'Pirata One', cursive; font-size: 20px; }
+  .font-c .level-badge   { font-family: 'Pirata One', cursive; font-size: 12px; }
+
+  /* D — IM Fell English */
+  .font-d .camino-nombre { font-family: 'IM Fell English', serif; font-size: 14px; }
+  .font-d .mision-label  { font-family: 'IM Fell English', serif; font-size: 10px; font-style: italic; }
+  .font-d .mision-texto  { font-family: 'IM Fell English', serif; color: #e8e6e3; font-size: 14px; }
+  .font-d .dashboard-title { font-family: 'IM Fell English', serif; font-size: 17px; }
+  .font-d .level-badge   { font-family: 'IM Fell English', serif; font-size: 11px; }
+</style>
+</head>
+<body>
+<h1>⚔ Tipografía Medieval</h1>
+<p class="subtitle">¿Qué estilo encaja mejor con la identidad de la app?</p>
+
+<div class="options">
+
+  <!-- A: Cinzel -->
+  <div class="option font-a" data-choice="a" onclick="toggleSelect(this)">
+    <div class="tag">A — CINZEL (romano clásico)</div>
+    <div class="card-sim">
+      <div class="dashboard-title">⚔ Crónica de los Caminos</div>
+      <div class="level-badge">Semana del Guerrero · 5 avances</div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+    </div>
+    <div class="card-sim" style="margin-top:8px;">
+      <div class="camino-nombre">💪 Sano y en Forma</div>
+      <div class="mision-label">— Misión —</div>
+      <div class="mision-texto">Hacer 30 minutos de cardio al despertar</div>
+    </div>
+  </div>
+
+  <!-- B: Uncial Antiqua -->
+  <div class="option font-b" data-choice="b" onclick="toggleSelect(this)">
+    <div class="tag">B — UNCIAL ANTIQUA (manuscrito medieval)</div>
+    <div class="card-sim">
+      <div class="dashboard-title">⚔ Crónica de los Caminos</div>
+      <div class="level-badge">Semana del Guerrero · 5 avances</div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+    </div>
+    <div class="card-sim" style="margin-top:8px;">
+      <div class="camino-nombre">💪 Sano y en Forma</div>
+      <div class="mision-label">— Misión —</div>
+      <div class="mision-texto">Hacer 30 minutos de cardio al despertar</div>
+    </div>
+  </div>
+
+  <!-- C: Pirata One -->
+  <div class="option font-c" data-choice="c" onclick="toggleSelect(this)">
+    <div class="tag">C — PIRATA ONE (aventurero, épico)</div>
+    <div class="card-sim">
+      <div class="dashboard-title">⚔ Crónica de los Caminos</div>
+      <div class="level-badge">Semana del Guerrero · 5 avances</div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+    </div>
+    <div class="card-sim" style="margin-top:8px;">
+      <div class="camino-nombre">💪 Sano y en Forma</div>
+      <div class="mision-label">— Misión —</div>
+      <div class="mision-texto">Hacer 30 minutos de cardio al despertar</div>
+    </div>
+  </div>
+
+  <!-- D: IM Fell English -->
+  <div class="option font-d" data-choice="d" onclick="toggleSelect(this)">
+    <div class="tag">D — IM FELL ENGLISH (manuscrito inglés antiguo)</div>
+    <div class="card-sim">
+      <div class="dashboard-title">⚔ Crónica de los Caminos</div>
+      <div class="level-badge">Semana del Guerrero · 5 avances</div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
+    </div>
+    <div class="card-sim" style="margin-top:8px;">
+      <div class="camino-nombre">💪 Sano y en Forma</div>
+      <div class="mision-label">— Misión —</div>
+      <div class="mision-texto">Hacer 30 minutos de cardio al despertar</div>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center; font-size:11px; color:#4a4654; margin-top:20px;">
+  Haz click en la opción que más te guste · También puedes decirme en el chat
+</p>
+</body>
+</html>

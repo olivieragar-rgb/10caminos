@@ -2,7 +2,7 @@ export default function GlowCard({ children, className = '', onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`bg-bg-card border border-border-dark rounded-xl ${className}`}
+      className={`rpg-card ${onClick ? 'cursor-pointer rpg-card-hover' : ''} ${className}`}
     >
       {children}
     </div>

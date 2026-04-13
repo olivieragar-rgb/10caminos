@@ -1,5 +1,4 @@
 export default function ScoreDiario({ avances, total, pct }) {
-  // Tono Hara Hachi Bu — sin juicio, con calma
   const mensaje = avances === 0
     ? "Hoy descansaste. Mañana vuelves."
     : avances < 3
@@ -8,20 +7,26 @@ export default function ScoreDiario({ avances, total, pct }) {
     ? "Día tranquilo, mañana avanzas."
     : "Buen equilibrio ✨"
 
-  const barColor = pct >= 62 ? '#00e676' : pct >= 37 ? '#ffab00' : '#8a8690'
+  const barColor = pct >= 62 ? '#50c878' : pct >= 37 ? '#f0c040' : '#706060'
 
   return (
-    <div className="mx-4 mt-2 mb-3 p-3 bg-bg-surface rounded-xl border border-border-dark">
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs text-text-muted italic">{mensaje}</span>
-        <span className="font-mono text-xs font-semibold" style={{ color: barColor }}>
+    <div className="mx-4 mt-2 mb-3 p-3"
+         style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px', boxShadow: '4px 4px 0px rgba(0,0,0,0.5)' }}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-body text-[11px] text-text-muted italic">{mensaje}</span>
+        <span className="font-pixel text-[10px]" style={{ color: barColor }}>
           {avances}/{total}
         </span>
       </div>
-      <div className="h-1.5 bg-bg-card rounded-full overflow-hidden">
+      <div className="h-2 overflow-hidden"
+           style={{ background: '#1a1520', border: '2px solid #4a3860', borderRadius: '1px' }}>
         <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{ width: `${pct}%`, backgroundColor: barColor, boxShadow: `0 0 8px ${barColor}50` }}
+          className="h-full transition-all duration-700"
+          style={{
+            width: `${pct}%`,
+            backgroundColor: barColor,
+            boxShadow: `0 0 6px ${barColor}60`,
+          }}
         />
       </div>
     </div>

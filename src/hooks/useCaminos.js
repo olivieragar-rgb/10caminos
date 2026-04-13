@@ -11,3 +11,11 @@ export function useCaminosActivos() {
     [], []
   )
 }
+
+export async function updateCamino(id, updates) {
+  await db.caminos.update(id, updates)
+}
+
+export async function resetCaminoStats(id) {
+  await db.caminos.update(id, { xp: 0, nivel: 0, rachaActual: 0, rachaMejor: 0 })
+}

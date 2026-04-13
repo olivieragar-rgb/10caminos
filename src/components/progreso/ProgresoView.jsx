@@ -49,7 +49,7 @@ export default function ProgresoView() {
   const CustomTooltip = ({ active, payload }) => {
     if (!active || !payload?.length) return null
     return (
-      <div className="bg-bg-card border border-border-dark rounded-lg px-2 py-1">
+      <div className="bg-bg-card border border-border-dark rounded-[2px] px-2 py-1">
         <p className="text-xs text-text-primary">{payload[0]?.value}%</p>
       </div>
     )
@@ -57,7 +57,7 @@ export default function ProgresoView() {
 
   return (
     <div className="flex flex-col min-h-full px-4 pt-4 pb-4 space-y-5">
-      <h2 className="text-base font-medium text-text-primary">Progreso</h2>
+      <h2 className="font-pixel text-[10px] text-xp-bar">PROGRESO</h2>
 
       {/* Stats rápidos */}
       <div className="grid grid-cols-3 gap-2">
@@ -66,16 +66,16 @@ export default function ProgresoView() {
           { label: 'Racha actual', val: `${rachaActual}d`, sub: '🔥' },
           { label: 'Récord racha', val: `${mejorRacha}d`, sub: '🏆' },
         ].map(s => (
-          <div key={s.label} className="bg-bg-surface border border-border-dark rounded-xl p-2.5 text-center">
-            <p className="font-mono text-lg font-bold text-xp-bar">{s.val}</p>
-            <p className="text-[10px] text-text-muted">{s.label}</p>
+          <div key={s.label} className="bg-bg-surface border border-border-dark rounded-[2px] p-2.5 text-center">
+            <p className="font-pixel text-sm text-xp-bar">{s.val}</p>
+            <p className="font-pixel text-[7px] text-text-muted mt-1">{s.label}</p>
           </div>
         ))}
       </div>
 
       {/* Línea: score 30 días */}
-      <div className="bg-bg-surface border border-border-dark rounded-xl p-3">
-        <p className="text-xs text-text-muted mb-3">Score diario (30 días)</p>
+      <div className="bg-bg-surface border border-border-dark rounded-[2px] p-3">
+        <p className="font-pixel text-[7px] text-text-muted mb-3">Score diario (30 días)</p>
         <ResponsiveContainer width="100%" height={100}>
           <LineChart data={datosScore} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
             <XAxis dataKey="label" tick={{ fontSize: 8, fill: '#4a4654' }} tickLine={false}
@@ -91,21 +91,21 @@ export default function ProgresoView() {
 
       {/* Barras: XP por camino 4 semanas */}
       {datosXp.some(d => d.xp > 0) && (
-        <div className="bg-bg-surface border border-border-dark rounded-xl p-3">
-          <p className="text-xs text-text-muted mb-3">XP últimas 4 semanas</p>
+        <div className="bg-bg-surface border border-border-dark rounded-[2px] p-3">
+          <p className="font-pixel text-[7px] text-text-muted mb-3">XP últimas 4 semanas</p>
           <ResponsiveContainer width="100%" height={90}>
             <BarChart data={datosXp} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
               <XAxis dataKey="icono" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
               <YAxis tick={{ fontSize: 8, fill: '#4a4654' }} tickLine={false} axisLine={false} />
               <Tooltip content={({ active, payload }) =>
                 active && payload?.length
-                  ? <div className="bg-bg-card border border-border-dark rounded-lg px-2 py-1">
+                  ? <div className="bg-bg-card border border-border-dark rounded-[2px] px-2 py-1">
                       <p className="text-xs text-xp-bar">{payload[0]?.payload?.nombre}</p>
                       <p className="text-xs text-text-primary">{payload[0]?.value} XP</p>
                     </div>
                   : null
               } />
-              <Bar dataKey="xp" radius={[4, 4, 0, 0]}>
+              <Bar dataKey="xp" radius={[0, 0, 0, 0]}>
                 {datosXp.map((_, i) => (
                   <Cell key={i} fill="#ffd700" fillOpacity={0.7 - i * 0.05} />
                 ))}
@@ -116,18 +116,18 @@ export default function ProgresoView() {
       )}
 
       {/* Heatmap */}
-      <div className="bg-bg-surface border border-border-dark rounded-xl p-3">
+      <div className="bg-bg-surface border border-border-dark rounded-[2px] p-3">
         <Heatmap registros={registros30} totalCaminos={activos.length} />
       </div>
 
       {/* Camino más descuidado */}
       {camMasDescuidado.camino && camMasDescuidado.nadas > 0 && (
-        <div className="bg-red-alert/5 border border-red-alert/20 rounded-xl p-3">
-          <p className="text-xs text-text-muted mb-1">Camino más descuidado (30d)</p>
-          <p className="text-sm text-text-primary">
+        <div className="bg-red-alert/5 border border-red-alert/20 rounded-[2px] p-3">
+          <p className="font-pixel text-[7px] text-text-muted mb-1">CAMINO MÁS DESCUIDADO (30D)</p>
+          <p className="font-body text-sm text-text-primary">
             {camMasDescuidado.camino.icono} {camMasDescuidado.camino.nombre}
           </p>
-          <p className="text-xs text-red-alert">{camMasDescuidado.nadas} días con ○</p>
+          <p className="font-pixel text-[8px] text-red-alert mt-1">{camMasDescuidado.nadas} DÍAS CON ○</p>
         </div>
       )}
 

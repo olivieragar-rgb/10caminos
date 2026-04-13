@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -16,11 +14,12 @@
   }
 
   body {
-    background-color: #0a0a0f;
-    color: #e8e6e3;
+    background-color: #1a1520;
+    color: #f0e6d3;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
+    image-rendering: pixelated;
   }
 
   #root {
@@ -39,8 +38,8 @@
 }
 
 @keyframes nivelFlash {
-  0%, 100% { box-shadow: none; }
-  30%, 70% { box-shadow: 0 0 24px #ffd700, 0 0 48px #ffd70060; }
+  0%, 100% { box-shadow: 4px 4px 0px rgba(0,0,0,0.6); }
+  30%, 70%  { box-shadow: 4px 4px 0px #ffd700, 0 0 24px #ffd70080; }
 }
 
 @keyframes rachaPulse {
@@ -60,26 +59,132 @@
   100% { opacity: 0; }
 }
 
+/* ── Intro Scene Animations ── */
+@keyframes correrA {
+  0%   { transform: translate(0px,   0px); }
+  25%  { transform: translate(55px,  12px); }
+  50%  { transform: translate(0px,   24px); }
+  75%  { transform: translate(-55px, 12px); }
+  100% { transform: translate(0px,   0px); }
+}
+@keyframes correrB {
+  0%   { transform: translate(0px,   24px); }
+  25%  { transform: translate(-55px, 12px); }
+  50%  { transform: translate(0px,   0px); }
+  75%  { transform: translate(55px,  12px); }
+  100% { transform: translate(0px,   24px); }
+}
+@keyframes hamacaSway {
+  0%, 100% { transform: rotate(-1.5deg) translateX(-50%); }
+  50%       { transform: rotate(1.5deg)  translateX(-50%); }
+}
+@keyframes exclamacion {
+  0%   { transform: translateY(4px) scale(0); opacity: 0; }
+  60%  { transform: translateY(-6px) scale(1.3); opacity: 1; }
+  100% { transform: translateY(-10px) scale(1); opacity: 1; }
+}
+@keyframes standUp {
+  from { transform: translateY(16px); opacity: 0.6; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes blinkHint {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+@keyframes sunRays {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+@keyframes frameA {
+  0%, 49.9% { opacity: 1; }
+  50%, 100%  { opacity: 0; }
+}
+@keyframes frameB {
+  0%, 49.9% { opacity: 0; }
+  50%, 100%  { opacity: 1; }
+}
+
+/* ── Nuevas animaciones ── */
+@keyframes caminataHero {
+  0%   { left: 4%; }
+  10%  { left: 10%; }
+  20%  { left: 18%; }
+  30%  { left: 26%; }
+  40%  { left: 34%; }
+  50%  { left: 42%; }
+  60%  { left: 50%; }
+  70%  { left: 56%; }
+  80%  { left: 61%; }
+  90%  { left: 63%; }
+  100% { left: 64%; }
+}
+
 @keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(1);   opacity: 0.7; }
+  100% { transform: translateY(-60px) scale(0.6); opacity: 0; }
+}
+@keyframes pixelBounce {
+  0%, 100% { transform: translateY(0); }
+  25%       { transform: translateY(-4px); }
+  50%       { transform: translateY(-2px); }
+  75%       { transform: translateY(-5px); }
+}
+@keyframes acertijoReveal {
+  from { opacity: 0; transform: translateY(6px); clip-path: inset(0 100% 0 0); }
+  to   { opacity: 1; transform: translateY(0);   clip-path: inset(0 0% 0 0); }
+}
+@keyframes respuestaReveal {
+  from { opacity: 0; max-height: 0; }
+  to   { opacity: 1; max-height: 80px; }
+}
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 4px #6a588040; }
+  50%       { box-shadow: 4px 4px 0 rgba(0,0,0,0.6), 0 0 16px #6a588080; }
+}
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes curtainOut {
+  0%   { clip-path: inset(0 0% 0 0%); }
+  100% { clip-path: inset(0 50% 0 50%); }
+}
+@keyframes curtainIn {
+  0%   { clip-path: inset(0 50% 0 50%); }
+  100% { clip-path: inset(0 0% 0 0%); }
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to   { width: 100%; }
 }
 
 @layer utilities {
   .glow-xp {
-    box-shadow: 0 0 10px #ffd70040, 0 0 20px #ffd70020;
+    box-shadow: 0 0 8px #ffd70050;
   }
   .glow-accent {
-    box-shadow: 0 0 10px #e9456050, 0 0 20px #e9456025;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.6), 0 0 12px #e9456050;
   }
   .glow-green {
-    box-shadow: 0 0 10px #00e67640, 0 0 20px #00e67620;
+    box-shadow: 0 0 8px #50c87840;
   }
   .text-glow-xp {
     text-shadow: 0 0 8px #ffd70080;
   }
   .text-glow-accent {
     text-shadow: 0 0 8px #e9456080;
+  }
+  .text-pixel-outline {
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
   }
   .animate-xp-float {
     animation: xpFloat 1.2s ease-out forwards;
@@ -91,9 +196,63 @@
     animation: rachaPulse 1.4s ease-in-out infinite;
   }
   .animate-fade-in-up {
-    animation: fadeInUp 0.5s ease-out forwards;
+    animation: fadeInUp 0.4s steps(8) forwards;
   }
   .animate-wabi-sabi {
     animation: wabiSabiFade 3.5s ease-in-out forwards;
+  }
+  .animate-curtain-out {
+    animation: curtainOut 0.2s ease-in forwards;
+  }
+  .animate-curtain-in {
+    animation: curtainIn 0.2s ease-out forwards;
+  }
+  .animate-shimmer {
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+  .animate-float-up {
+    animation: floatUp 2s ease-out forwards;
+  }
+  .animate-pixel-bounce {
+    animation: pixelBounce 0.4s steps(4) 1;
+  }
+  .animate-acertijo {
+    animation: acertijoReveal 0.5s steps(10) forwards;
+  }
+  .animate-respuesta {
+    animation: respuestaReveal 0.3s ease-out forwards;
+    overflow: hidden;
+  }
+  .animate-glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  .animate-card-entrance {
+    animation: cardEntrance 0.3s steps(6) forwards;
+  }
+  /* XP bar shimmer overlay */
+  .xp-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+    animation: shimmer 2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  /* Tarjeta base estilo RPG */
+  .rpg-card {
+    background: linear-gradient(180deg, #2a2035 0%, rgba(26,21,32,0.85) 100%);
+    border: 2px solid #4a3860;
+    border-radius: 2px;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+  }
+  .rpg-card-hover:hover {
+    border-color: #6a5880;
+  }
+  /* Botón RPG base */
+  .rpg-btn {
+    border: 2px solid #4a3860;
+    border-radius: 2px;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    background: linear-gradient(180deg, #342848 0%, #2a2035 100%);
   }
 }

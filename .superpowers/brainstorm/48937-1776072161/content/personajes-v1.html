@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personajes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#04040c; color:#e8e6e3; padding:14px; font-family:'Share Tech Mono',monospace;
+  background-image: repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(0,200,255,0.01) 48px,rgba(0,200,255,0.01) 49px); }
+h1 { font-family:'Cinzel',serif; font-size:12px; color:#00d4ff; text-align:center; letter-spacing:4px; margin-bottom:3px; text-shadow:0 0 16px #00d4ff50; }
+.sub { font-size:9px; color:#1e2440; text-align:center; margin-bottom:16px; letter-spacing:2px; }
+.section-lbl { font-size:8px; letter-spacing:3px; color:#1a1e30; text-align:center; margin-bottom:10px; }
+
+/* ── Galería de sprites ampliados ── */
+.sprites-gallery {
+  display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+  margin-bottom:20px;
+}
+.sprite-card {
+  background:linear-gradient(160deg,#0d0d1c,#080812);
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:3px;
+  box-shadow:0 0 8px rgba(0,212,255,0.1);
+  padding:10px 10px 8px;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  width:80px; cursor:pointer; transition:all 0.2s;
+}
+.sprite-card:hover { border-color:rgba(255,215,0,0.4); box-shadow:0 0 12px rgba(255,215,0,0.15); }
+.sprite-card.locked { opacity:0.35; filter:grayscale(0.8); }
+.sprite-name { font-family:'Cinzel',serif; font-size:7px; color:#8a8690; letter-spacing:1px; text-align:center; }
+.sprite-unlock { font-size:7px; color:#3a3020; }
+.sprite-unlock.unlocked { color:#00a84a; }
+
+/* Pixel sprite SVG escalado */
+svg.pixel { image-rendering:pixelated; }
+
+/* ── Vista completa: tablón + columna personajes ── */
+.full-view {
+  max-width:380px; margin:0 auto;
+  display:flex; gap:0; align-items:flex-start;
+}
+.chars-sidebar {
+  width:46px; flex-shrink:0;
+  padding-top:18px;
+  display:flex; flex-direction:column; gap:3px;
+}
+.char-slot {
+  width:42px; height:42px;
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative; cursor:pointer;
+  background:rgba(255,255,255,0.01);
+}
+.char-slot.active { border-color:rgba(0,212,255,0.2); }
+.char-slot.active::after {
+  content:''; position:absolute; inset:0; border-radius:2px;
+  background:radial-gradient(ellipse at center, rgba(0,212,255,0.06) 0%, transparent 70%);
+}
+.char-slot.locked-slot {
+  background:rgba(0,0,0,0.3); opacity:0.25;
+}
+.char-slot .lock-icon { font-size:12px; opacity:0.3; }
+
+/* Tablón simulado compacto */
+.tablon-sim {
+  flex:1;
+  background:linear-gradient(175deg,#0f0e1c,#0a0916);
+  border:1px solid rgba(255,215,0,0.25);
+  border-radius:0 3px 3px 0;
+  box-shadow:0 0 10px rgba(255,215,0,0.08),inset 0 0 20px rgba(0,0,0,0.4);
+  position:relative; overflow:hidden;
+}
+.tablon-sim::before { content:''; position:absolute; top:0; left:8%; right:8%; height:1px; background:linear-gradient(90deg,transparent,rgba(255,215,0,0.5),transparent); box-shadow:0 0 6px rgba(255,215,0,0.3); }
+.tab-h { padding:8px 12px 6px; border-bottom:1px solid rgba(255,215,0,0.1); display:flex; justify-content:space-between; align-items:center; }
+.tab-title { font-family:'Cinzel',serif; font-weight:900; font-size:10px; color:#ffd700; letter-spacing:2px; text-shadow:0 0 8px rgba(255,215,0,0.3); }
+.tab-wk { font-size:7px; color:#3a3020; }
+.tab-b { padding:8px 12px 10px; }
+.score-row { display:flex; align-items:baseline; gap:5px; margin-bottom:8px; }
+.score-big { font-family:'Cinzel',serif; font-size:30px; font-weight:900; color:#ffd700; line-height:1; text-shadow:0 0 16px rgba(255,215,0,0.4); }
+.score-of { font-family:'Cinzel',serif; font-size:12px; color:#3a3020; }
+.score-lbl { font-size:7px; color:#2a2010; letter-spacing:1px; }
+.week-days { display:flex; gap:2px; margin-bottom:8px; }
+.wd { flex:1; height:16px; border-radius:1px; display:flex; align-items:center; justify-content:center; font-size:7px; font-family:'Cinzel',serif; }
+.wd-g { background:rgba(0,168,74,0.2); color:#00a84a; border:1px solid rgba(0,168,74,0.3); }
+.wd-p { background:rgba(200,150,0,0.15); color:#c89600; border:1px solid rgba(200,150,0,0.25); }
+.wd-n { background:rgba(60,60,80,0.15); color:#303050; border:1px solid rgba(60,60,80,0.2); }
+.wd-h { background:rgba(0,212,255,0.12); color:#00d4ff; border:1px solid rgba(0,212,255,0.3); }
+.camino-row { display:flex; align-items:center; gap:6px; margin-bottom:3px; }
+.ci { font-size:11px; width:16px; text-align:center; }
+.cn { font-family:'Cinzel',serif; font-size:7px; color:#4a4050; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cdots { display:flex; gap:1px; }
+.cd { width:8px; height:8px; border-radius:1px; }
+.cd-v { background:rgba(0,168,74,0.5); border:1px solid rgba(0,168,74,0.5); }
+.cd-p { background:rgba(200,150,0,0.4); border:1px solid rgba(200,150,0,0.4); }
+.cd-n { background:rgba(204,0,68,0.3); border:1px solid rgba(204,0,68,0.3); }
+.cd-e { background:rgba(30,30,50,0.3); border:1px solid rgba(40,40,60,0.3); }
+.cxp { font-size:7px; color:#2a2010; width:26px; text-align:right; }
+
+/* Tooltip hint */
+.char-tooltip {
+  position:absolute; left:46px; top:0; z-index:10;
+  background:#0d0d1c; border:1px solid rgba(255,215,0,0.3); border-radius:2px;
+  padding:5px 8px; white-space:nowrap; pointer-events:none;
+  font-size:8px; color:#c4a882; display:none;
+  box-shadow:0 0 8px rgba(255,215,0,0.1);
+}
+.char-slot:hover .char-tooltip { display:block; }
+</style>
+</head>
+<body>
+
+<h1>COMPAÑEROS DE CAMINO</h1>
+<p class="sub">// se van desbloqueando según tu nivel global //</p>
+
+<!-- ── SPRITES AMPLIADOS ── -->
+<p class="section-lbl">// los personajes · nivel de desbloqueo //</p>
+<div class="sprites-gallery">
+
+  <!-- GON — NV.1 starter -->
+  <div class="sprite-card">
+    <svg class="pixel" width="64" height="64" viewBox="0 0 16 16">
+      <!-- Gon: pelo negro rizado, ropa verde, piel morena clara -->
+      <!-- Pelo -->
+      <rect x="4" y="0" width="8" height="1" fill="#1a1a00"/>
+      <rect x="3" y="1" width="10" height="3" fill="#1a1a00"/>
+      <rect x="2" y="2" width="2" height="3" fill="#1a1a00"/>
+      <rect x="12" y="2" width="2" height="3" fill="#1a1a00"/>
+      <!-- Cara -->
+      <rect x="4" y="4" width="8" height="5" fill="#d4996a"/>
+      <rect x="3" y="5" width="1" height="3" fill="#d4996a"/>
+      <rect x="12" y="5" width="1" height="3" fill="#d4996a"/>
+      <!-- Ojos -->
+      <rect x="5" y="6" width="2" height="1" fill="#1a1a00"/>
+      <rect x="9" y="6" width="2" height="1" fill="#1a1a00"/>
+      <!-- Boca -->
+      <rect x="6" y="8" width="4" height="1" fill="#8a5040"/>
+      <!-- Cuello -->
+      <rect x="6" y="9" width="4" height="1" fill="#d4996a"/>
+      <!-- Cuerpo verde -->
+      <rect x="4" y="10" width="8" height="4" fill="#3a8a30"/>
+      <rect x="3" y="11" width="1" height="3" fill="#3a8a30"/>
+      <rect x="12" y="11" width="1" height="3" fill="#3a8a30"/>
+      <!-- Cuello camisa -->
+      <rect x="6" y="10" width="4" height="1" fill="#e8e8e8"/>
+      <!-- Piernas -->
+      <rect x="4" y="14" width="3" height="2" fill="#1a1a60"/>
+      <rect x="9" y="14" width="3" height="2" fill="#1a1a60"/>
+    </svg>
+    <span class="sprite-name">GON</span>
+    <span class="sprite-unlock unlocked">NV.1 ✓</span>
+  </div>
+
+  <!-- KILLUA — NV.3 -->
+  <div class="sprite-card">
+    <svg class="pixel" width="64" height="64" viewBox="0 0 16 16">
+      <!-- Killua: pelo blanco, ropa azul oscuro, ojos celestes -->
+      <!-- Pelo blanco -->
+      <rect x="3" y="0" width="10" height="4" fill="#e8e8f0"/>
+      <rect x="2" y="2" width="2" height="3" fill="#e8e8f0"/>
+      <rect x="12" y="2" width="2" height="4" fill="#e8e8f0"/>
+      <rect x="3" y="4" width="2" height="2" fill="#e8e8f0"/>
+      <rect x="11" y="4" width="2" height="2" fill="#e8e8f0"/>
+      <!-- Cara pálida -->
+      <rect x="4" y="4" width="8" height="5" fill="#ddd8d0"/>
+      <rect x="3" y="5" width="1" height="3" fill="#ddd8d0"/>
+      <rect x="12" y="5" width="1" height="3" fill="#ddd8d0"/>
+      <!-- Ojos celestes -->
+      <rect x="5" y="6" width="2" height="1" fill="#60b0e0"/>
+      <rect x="9" y="6" width="2" height="1" fill="#60b0e0"/>
+      <!-- Boca -->
+      <rect x="7" y="8" width="2" height="1" fill="#907070"/>
+      <!-- Cuerpo azul oscuro -->
+      <rect x="4" y="10" width="8" height="4" fill="#1a2040"/>
+      <rect x="3" y="11" width="1" height="3" fill="#1a2040"/>
+      <rect x="12" y="11" width="1" height="3" fill="#1a2040"/>
+      <!-- Shorts -->
+      <rect x="4" y="14" width="3" height="2" fill="#2a3060"/>
+      <rect x="9" y="14" width="3" height="2" fill="#2a3060"/>
+      <!-- Detalle ropa -->
+      <rect x="5" y="10" width="6" height="1" fill="#2a3060"/>
+    </svg>
+    <span class="sprite-name">KILLUA</span>
+    <span class="sprite-unlock">NV.3</span>
+  </div>
+
+  <!-- GOKU — NV.5 -->
+  <div class="sprite-card">
+    <svg class="pixel" width="64" height="64" viewBox="0 0 16 16">
+      <!-- Goku: pelo negro muy puntiagudo, gi naranja -->
+      <!-- Pelo negro puntiagudo -->
+      <rect x="5" y="0" width="6" height="1" fill="#0a0a0a"/>
+      <rect x="4" y="1" width="8" height="1" fill="#0a0a0a"/>
+      <rect x="3" y="2" width="10" height="2" fill="#0a0a0a"/>
+      <rect x="2" y="3" width="12" height="1" fill="#0a0a0a"/>
+      <!-- Puntas pelo -->
+      <rect x="2" y="1" width="1" height="3" fill="#0a0a0a"/>
+      <rect x="13" y="1" width="1" height="3" fill="#0a0a0a"/>
+      <rect x="1" y="2" width="1" height="2" fill="#0a0a0a"/>
+      <!-- Cara morena -->
+      <rect x="4" y="4" width="8" height="5" fill="#c87040"/>
+      <rect x="3" y="5" width="1" height="3" fill="#c87040"/>
+      <rect x="12" y="5" width="1" height="3" fill="#c87040"/>
+      <!-- Ojos negros -->
+      <rect x="5" y="6" width="2" height="1" fill="#0a0a0a"/>
+      <rect x="9" y="6" width="2" height="1" fill="#0a0a0a"/>
+      <!-- Boca -->
+      <rect x="6" y="8" width="4" height="1" fill="#7a4030"/>
+      <!-- Gi naranja -->
+      <rect x="3" y="10" width="10" height="4" fill="#e06820"/>
+      <!-- Cinturón azul -->
+      <rect x="3" y="12" width="10" height="1" fill="#1a40a0"/>
+      <!-- Piernas naranja -->
+      <rect x="4" y="14" width="3" height="2" fill="#e06820"/>
+      <rect x="9" y="14" width="3" height="2" fill="#e06820"/>
+      <!-- Cuello -->
+      <rect x="6" y="9" width="4" height="1" fill="#c87040"/>
+    </svg>
+    <span class="sprite-name">GOKU</span>
+    <span class="sprite-unlock">NV.5</span>
+  </div>
+
+  <!-- MAJIN BOO — NV.8 -->
+  <div class="sprite-card">
+    <svg class="pixel" width="64" height="64" viewBox="0 0 16 16">
+      <!-- Majin Boo: gordo, rosa, antena, ropa blanca/negra -->
+      <!-- Antena -->
+      <rect x="7" y="0" width="2" height="3" fill="#e860a0"/>
+      <rect x="6" y="2" width="4" height="1" fill="#e860a0"/>
+      <!-- Cabeza rosa grande -->
+      <rect x="3" y="3" width="10" height="6" fill="#f080c0"/>
+      <rect x="2" y="4" width="12" height="4" fill="#f080c0"/>
+      <!-- Ojos blancos redondos -->
+      <rect x="4" y="5" width="3" height="2" fill="#f8f0f0"/>
+      <rect x="9" y="5" width="3" height="2" fill="#f8f0f0"/>
+      <!-- Pupilas negras -->
+      <rect x="5" y="6" width="1" height="1" fill="#1a0a10"/>
+      <rect x="10" y="6" width="1" height="1" fill="#1a0a10"/>
+      <!-- Boca grande -->
+      <rect x="4" y="8" width="8" height="1" fill="#c04080"/>
+      <!-- Cuerpo gordo rosa -->
+      <rect x="2" y="9" width="12" height="5" fill="#f080c0"/>
+      <rect x="1" y="10" width="14" height="3" fill="#f080c0"/>
+      <!-- Pantalón negro/blanco -->
+      <rect x="3" y="13" width="10" height="1" fill="#1a1a1a"/>
+      <!-- Pies -->
+      <rect x="3" y="14" width="4" height="2" fill="#f8f0f0"/>
+      <rect x="9" y="14" width="4" height="2" fill="#f8f0f0"/>
+      <!-- Líneas negras decorativas boo -->
+      <rect x="2" y="11" width="1" height="1" fill="#c04080"/>
+      <rect x="13" y="11" width="1" height="1" fill="#c04080"/>
+    </svg>
+    <span class="sprite-name">MAJIN BOO</span>
+    <span class="sprite-unlock">NV.8</span>
+  </div>
+
+  <!-- SORPRESA — NV.12 -->
+  <div class="sprite-card locked">
+    <svg class="pixel" width="64" height="64" viewBox="0 0 16 16">
+      <rect x="4" y="2" width="8" height="12" fill="#1a1a2e"/>
+      <rect x="3" y="4" width="10" height="8" fill="#1a1a2e"/>
+      <rect x="6" y="6" width="4" height="4" fill="#12121e"/>
+      <rect x="7" y="7" width="2" height="2" fill="#ffd700" opacity="0.3"/>
+    </svg>
+    <span class="sprite-name">???</span>
+    <span class="sprite-unlock">NV.12</span>
+  </div>
+
+  <!-- SORPRESA — NV.16 -->
+  <div class="sprite-card locked">
+    <svg class="pixel" width="64" height="64" viewBox="0 0 16 16">
+      <rect x="4" y="2" width="8" height="12" fill="#1a1a2e"/>
+      <rect x="3" y="4" width="10" height="8" fill="#1a1a2e"/>
+      <rect x="6" y="6" width="4" height="4" fill="#12121e"/>
+      <rect x="7" y="7" width="2" height="2" fill="#ff0055" opacity="0.3"/>
+    </svg>
+    <span class="sprite-name">???</span>
+    <span class="sprite-unlock">NV.16</span>
+  </div>
+
+</div>
+
+<!-- ── VISTA COMPLETA INTEGRADA ── -->
+<p class="section-lbl">// así se ve en la app · personajes + tablón //</p>
+<div class="full-view">
+  <!-- Columna personajes -->
+  <div class="chars-sidebar">
+    <!-- Gon desbloqueado -->
+    <div class="char-slot active">
+      <div class="char-tooltip">Gon · NV.1 · Desbloqueado</div>
+      <svg class="pixel" width="32" height="32" viewBox="0 0 16 16">
+        <rect x="4" y="0" width="8" height="1" fill="#1a1a00"/>
+        <rect x="3" y="1" width="10" height="3" fill="#1a1a00"/>
+        <rect x="2" y="2" width="2" height="3" fill="#1a1a00"/>
+        <rect x="12" y="2" width="2" height="3" fill="#1a1a00"/>
+        <rect x="4" y="4" width="8" height="5" fill="#d4996a"/>
+        <rect x="3" y="5" width="1" height="3" fill="#d4996a"/>
+        <rect x="12" y="5" width="1" height="3" fill="#d4996a"/>
+        <rect x="5" y="6" width="2" height="1" fill="#1a1a00"/>
+        <rect x="9" y="6" width="2" height="1" fill="#1a1a00"/>
+        <rect x="6" y="8" width="4" height="1" fill="#8a5040"/>
+        <rect x="6" y="9" width="4" height="1" fill="#d4996a"/>
+        <rect x="4" y="10" width="8" height="4" fill="#3a8a30"/>
+        <rect x="3" y="11" width="1" height="3" fill="#3a8a30"/>
+        <rect x="12" y="11" width="1" height="3" fill="#3a8a30"/>
+        <rect x="6" y="10" width="4" height="1" fill="#e8e8e8"/>
+        <rect x="4" y="14" width="3" height="2" fill="#1a1a60"/>
+        <rect x="9" y="14" width="3" height="2" fill="#1a1a60"/>
+      </svg>
+    </div>
+    <!-- Killua desbloqueado -->
+    <div class="char-slot active" style="border-color:rgba(180,200,255,0.2)">
+      <div class="char-tooltip">Killua · NV.3 · Desbloqueado</div>
+      <svg class="pixel" width="32" height="32" viewBox="0 0 16 16">
+        <rect x="3" y="0" width="10" height="4" fill="#e8e8f0"/>
+        <rect x="2" y="2" width="2" height="3" fill="#e8e8f0"/>
+        <rect x="12" y="2" width="2" height="4" fill="#e8e8f0"/>
+        <rect x="4" y="4" width="8" height="5" fill="#ddd8d0"/>
+        <rect x="3" y="5" width="1" height="3" fill="#ddd8d0"/>
+        <rect x="12" y="5" width="1" height="3" fill="#ddd8d0"/>
+        <rect x="5" y="6" width="2" height="1" fill="#60b0e0"/>
+        <rect x="9" y="6" width="2" height="1" fill="#60b0e0"/>
+        <rect x="7" y="8" width="2" height="1" fill="#907070"/>
+        <rect x="4" y="10" width="8" height="4" fill="#1a2040"/>
+        <rect x="3" y="11" width="1" height="3" fill="#1a2040"/>
+        <rect x="12" y="11" width="1" height="3" fill="#1a2040"/>
+        <rect x="4" y="14" width="3" height="2" fill="#2a3060"/>
+        <rect x="9" y="14" width="3" height="2" fill="#2a3060"/>
+      </svg>
+    </div>
+    <!-- Goku bloqueado -->
+    <div class="char-slot locked-slot">
+      <div class="char-tooltip">??? · Desbloquea en NV.5</div>
+      <span class="lock-icon">🔒</span>
+    </div>
+    <!-- Boo bloqueado -->
+    <div class="char-slot locked-slot">
+      <div class="char-tooltip">??? · Desbloquea en NV.8</div>
+      <span class="lock-icon">🔒</span>
+    </div>
+    <!-- Sorpresa -->
+    <div class="char-slot locked-slot">
+      <div class="char-tooltip">??? · Misterio</div>
+      <span class="lock-icon">🔒</span>
+    </div>
+  </div>
+
+  <!-- Tablón simulado -->
+  <div class="tablon-sim">
+    <div class="tab-h">
+      <span class="tab-title">⚔ CRÓNICA SEMANAL</span>
+      <span class="tab-wk">7–13 ABR · 2026</span>
+    </div>
+    <div class="tab-b">
+      <div class="score-row">
+        <span class="score-big">34</span><span class="score-of">/56</span>
+        <span class="score-lbl" style="margin-left:6px">AVANCES</span>
+      </div>
+      <div class="week-days">
+        <div class="wd wd-g">L</div><div class="wd wd-g">M</div><div class="wd wd-p">X</div>
+        <div class="wd wd-g">J</div><div class="wd wd-n">V</div><div class="wd wd-n">S</div>
+        <div class="wd wd-h">H</div>
+      </div>
+      <div class="camino-row"><span class="ci">👨‍👧‍👦</span><span class="cn">Presente con mis hijos</span><div class="cdots"><div class="cd cd-v"></div><div class="cd cd-v"></div><div class="cd cd-p"></div><div class="cd cd-v"></div><div class="cd cd-n"></div><div class="cd cd-e"></div><div class="cd cd-e"></div></div><span class="cxp">+52</span></div>
+      <div class="camino-row"><span class="ci">💛</span><span class="cn">Feliz con Lou</span><div class="cdots"><div class="cd cd-v"></div><div class="cd cd-v"></div><div class="cd cd-v"></div><div class="cd cd-v"></div><div class="cd cd-n"></div><div class="cd cd-e"></div><div class="cd cd-e"></div></div><span class="cxp">+62</span></div>
+      <div class="camino-row"><span class="ci">💪</span><span class="cn">Sano y en forma</span><div class="cdots"><div class="cd cd-p"></div><div class="cd cd-v"></div><div class="cd cd-v"></div><div class="cd cd-v"></div><div class="cd cd-n"></div><div class="cd cd-e"></div><div class="cd cd-e"></div></div><span class="cxp">+44</span></div>
+      <div class="camino-row"><span class="ci">📈</span><span class="cn">Bienestar económico</span><div class="cdots"><div class="cd cd-n"></div><div class="cd cd-v"></div><div class="cd cd-p"></div><div class="cd cd-v"></div><div class="cd cd-e"></div><div class="cd cd-e"></div><div class="cd cd-e"></div></div><span class="cxp">+28</span></div>
+      <div class="camino-row"><span class="ci">🎒</span><span class="cn">Sin Mochila</span><div class="cdots"><div class="cd cd-v"></div><div class="cd cd-n"></div><div class="cd cd-n"></div><div class="cd cd-v"></div><div class="cd cd-e"></div><div class="cd cd-e"></div><div class="cd cd-e"></div></div><span class="cxp">+20</span></div>
+    </div>
+  </div>
+</div>
+
+<p style="font-size:8px;color:#1a1e28;text-align:center;margin-top:12px;letter-spacing:2px">// pasa el ratón por encima de los slots para ver los tooltips //</p>
+</body>
+</html>

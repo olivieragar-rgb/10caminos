@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galería Personajes</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="http://localhost:62151/helper.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#04040c; color:#e8e6e3; padding:14px; font-family:'Share Tech Mono',monospace;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(0,200,255,0.01) 48px,rgba(0,200,255,0.01) 49px); }
+h1 { font-family:'Cinzel',serif; font-size:13px; color:#ffd700; text-align:center; letter-spacing:4px; margin-bottom:3px; text-shadow:0 0 16px #ffd70050; }
+.sub { font-size:9px; color:#1e2440; text-align:center; margin-bottom:16px; letter-spacing:2px; }
+
+.gallery {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap:8px;
+  max-width:500px;
+  margin:0 auto 16px;
+}
+.sc {
+  background:linear-gradient(160deg,#0d0d1c,#080812);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px;
+  padding:8px 6px 6px;
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  transition:all 0.2s; position:relative;
+}
+.sc:hover { border-color:rgba(255,215,0,0.35); box-shadow:0 0 10px rgba(255,215,0,0.12); }
+.sc.locked { opacity:0.22; filter:grayscale(0.7); }
+.sc.locked:hover { opacity:0.35; }
+.sname { font-family:'Cinzel',serif; font-size:6.5px; color:#8a8690; letter-spacing:0.5px; text-align:center; line-height:1.2; }
+.slvl { font-size:7px; text-align:center; }
+.slvl.ok { color:#00a84a; }
+.slvl.no { color:#2a2010; }
+svg { image-rendering:pixelated; }
+
+/* Categorías */
+.cat-label { font-size:7px; letter-spacing:3px; color:#1a1e30; text-align:center; margin:12px 0 6px; grid-column:1/-1; }
+</style>
+</head>
+<body>
+<h1>⚔ COMPAÑEROS DE CAMINO</h1>
+<p class="sub">// 20 personajes · se desbloquean con el nivel global //</p>
+
+<div class="gallery">
+
+  <!-- ─────── DESBLOQUEADOS (simulando NV.6 global) ─────── -->
+  <div class="cat-label">// YA CONTIGO · NV.1 - 6 //</div>
+
+  <!-- GON NV.1 -->
+  <div class="sc">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <rect x="4" y="0" width="8" height="1" fill="#111100"/>
+      <rect x="3" y="1" width="10" height="3" fill="#1a1a00"/>
+      <rect x="2" y="2" width="2" height="3" fill="#1a1a00"/>
+      <rect x="12" y="2" width="2" height="3" fill="#1a1a00"/>
+      <rect x="4" y="4" width="8" height="5" fill="#d4996a"/>
+      <rect x="3" y="5" width="1" height="3" fill="#d4996a"/>
+      <rect x="12" y="5" width="1" height="3" fill="#d4996a"/>
+      <rect x="5" y="6" width="2" height="1" fill="#111100"/>
+      <rect x="9" y="6" width="2" height="1" fill="#111100"/>
+      <rect x="6" y="8" width="4" height="1" fill="#7a3020"/>
+      <rect x="6" y="9" width="4" height="1" fill="#d4996a"/>
+      <rect x="4" y="10" width="8" height="4" fill="#2a7a20"/>
+      <rect x="3" y="11" width="1" height="3" fill="#2a7a20"/>
+      <rect x="12" y="11" width="1" height="3" fill="#2a7a20"/>
+      <rect x="5" y="10" width="6" height="1" fill="#e0e0e0"/>
+      <rect x="4" y="14" width="3" height="2" fill="#1a1a60"/>
+      <rect x="9" y="14" width="3" height="2" fill="#1a1a60"/>
+    </svg>
+    <span class="sname">GON</span><span class="slvl ok">NV.1 ✓</span>
+  </div>
+
+  <!-- PIKACHU NV.2 -->
+  <div class="sc">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Orejas negra punta -->
+      <rect x="3" y="0" width="2" height="3" fill="#1a1a00"/>
+      <rect x="11" y="0" width="2" height="3" fill="#1a1a00"/>
+      <rect x="3" y="3" width="2" height="2" fill="#f8d030"/>
+      <rect x="11" y="3" width="2" height="2" fill="#f8d030"/>
+      <!-- Cuerpo -->
+      <rect x="4" y="4" width="8" height="6" fill="#f8d030"/>
+      <rect x="3" y="5" width="10" height="5" fill="#f8d030"/>
+      <rect x="2" y="6" width="12" height="3" fill="#f8d030"/>
+      <!-- Ojos -->
+      <rect x="5" y="6" width="2" height="2" fill="#1a1a00"/>
+      <rect x="9" y="6" width="2" height="2" fill="#1a1a00"/>
+      <rect x="5" y="6" width="1" height="1" fill="#303030"/>
+      <rect x="9" y="6" width="1" height="1" fill="#303030"/>
+      <!-- Mejillas rojas -->
+      <rect x="3" y="8" width="3" height="2" fill="#e03020" opacity="0.8"/>
+      <rect x="10" y="8" width="3" height="2" fill="#e03020" opacity="0.8"/>
+      <!-- Nariz -->
+      <rect x="7" y="7" width="2" height="1" fill="#1a1a00"/>
+      <!-- Boca -->
+      <rect x="6" y="9" width="4" height="1" fill="#1a1a00"/>
+      <!-- Cuerpo bajo -->
+      <rect x="4" y="10" width="8" height="3" fill="#f8d030"/>
+      <rect x="3" y="10" width="10" height="2" fill="#f8d030"/>
+      <!-- Franja marrón oscuro espalda -->
+      <rect x="4" y="10" width="8" height="1" fill="#c0901a"/>
+      <!-- Patas -->
+      <rect x="4" y="13" width="3" height="2" fill="#f8d030"/>
+      <rect x="9" y="13" width="3" height="2" fill="#f8d030"/>
+      <!-- Cola rayo (lateral) -->
+      <rect x="13" y="9" width="2" height="1" fill="#f8d030"/>
+      <rect x="14" y="8" width="2" height="1" fill="#f8d030"/>
+      <rect x="13" y="7" width="2" height="1" fill="#f8d030"/>
+    </svg>
+    <span class="sname">PIKACHU</span><span class="slvl ok">NV.2 ✓</span>
+  </div>
+
+  <!-- KILLUA NV.3 -->
+  <div class="sc">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <rect x="3" y="0" width="10" height="4" fill="#e8e8f0"/>
+      <rect x="2" y="2" width="2" height="3" fill="#e8e8f0"/>
+      <rect x="12" y="2" width="2" height="4" fill="#e8e8f0"/>
+      <rect x="4" y="4" width="8" height="5" fill="#ddd8d0"/>
+      <rect x="3" y="5" width="1" height="3" fill="#ddd8d0"/>
+      <rect x="12" y="5" width="1" height="3" fill="#ddd8d0"/>
+      <rect x="5" y="6" width="2" height="1" fill="#60b0e0"/>
+      <rect x="9" y="6" width="2" height="1" fill="#60b0e0"/>
+      <rect x="7" y="8" width="2" height="1" fill="#907070"/>
+      <rect x="4" y="10" width="8" height="4" fill="#1a2040"/>
+      <rect x="3" y="11" width="1" height="3" fill="#1a2040"/>
+      <rect x="12" y="11" width="1" height="3" fill="#1a2040"/>
+      <rect x="5" y="10" width="6" height="1" fill="#2a3060"/>
+      <rect x="4" y="14" width="3" height="2" fill="#2a3060"/>
+      <rect x="9" y="14" width="3" height="2" fill="#2a3060"/>
+    </svg>
+    <span class="sname">KILLUA</span><span class="slvl ok">NV.3 ✓</span>
+  </div>
+
+  <!-- TOTORO NV.4 -->
+  <div class="sc">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Orejas puntiagudas -->
+      <rect x="3" y="0" width="3" height="3" fill="#606870"/>
+      <rect x="10" y="0" width="3" height="3" fill="#606870"/>
+      <rect x="4" y="1" width="2" height="2" fill="#80909a"/>
+      <rect x="10" y="1" width="2" height="2" fill="#80909a"/>
+      <!-- Cabeza grande -->
+      <rect x="2" y="3" width="12" height="6" fill="#7a8a94"/>
+      <rect x="1" y="4" width="14" height="4" fill="#7a8a94"/>
+      <!-- Ojos grandes -->
+      <rect x="4" y="5" width="3" height="3" fill="#f0f0f0"/>
+      <rect x="9" y="5" width="3" height="3" fill="#f0f0f0"/>
+      <rect x="5" y="6" width="2" height="2" fill="#1a2a10"/>
+      <rect x="10" y="6" width="2" height="2" fill="#1a2a10"/>
+      <rect x="5" y="6" width="1" height="1" fill="#ffffff"/>
+      <rect x="10" y="6" width="1" height="1" fill="#ffffff"/>
+      <!-- Nariz -->
+      <rect x="7" y="7" width="2" height="1" fill="#4a3a3a"/>
+      <!-- Bigotes -->
+      <rect x="2" y="7" width="4" height="1" fill="#4a3a3a" opacity="0.6"/>
+      <rect x="10" y="7" width="4" height="1" fill="#4a3a3a" opacity="0.6"/>
+      <!-- Panza blanca grande -->
+      <rect x="3" y="9" width="10" height="6" fill="#d8d0c0"/>
+      <rect x="2" y="10" width="12" height="4" fill="#d8d0c0"/>
+      <!-- Cuerpo gris -->
+      <rect x="1" y="9" width="2" height="4" fill="#7a8a94"/>
+      <rect x="13" y="9" width="2" height="4" fill="#7a8a94"/>
+      <!-- Marcas panza -->
+      <rect x="6" y="11" width="4" height="1" fill="#b0a898" opacity="0.5"/>
+      <rect x="5" y="12" width="6" height="1" fill="#b0a898" opacity="0.4"/>
+      <!-- Patas -->
+      <rect x="3" y="13" width="4" height="3" fill="#7a8a94"/>
+      <rect x="9" y="13" width="4" height="3" fill="#7a8a94"/>
+    </svg>
+    <span class="sname">TOTORO</span><span class="slvl ok">NV.4 ✓</span>
+  </div>
+
+  <!-- GOKU NV.5 -->
+  <div class="sc">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <rect x="5" y="0" width="6" height="1" fill="#080808"/>
+      <rect x="4" y="1" width="8" height="1" fill="#080808"/>
+      <rect x="3" y="2" width="10" height="2" fill="#080808"/>
+      <rect x="2" y="3" width="12" height="1" fill="#080808"/>
+      <rect x="2" y="1" width="1" height="3" fill="#080808"/>
+      <rect x="13" y="1" width="1" height="3" fill="#080808"/>
+      <rect x="4" y="4" width="8" height="5" fill="#c87040"/>
+      <rect x="3" y="5" width="1" height="3" fill="#c87040"/>
+      <rect x="12" y="5" width="1" height="3" fill="#c87040"/>
+      <rect x="5" y="6" width="2" height="1" fill="#080808"/>
+      <rect x="9" y="6" width="2" height="1" fill="#080808"/>
+      <rect x="6" y="8" width="4" height="1" fill="#7a4030"/>
+      <rect x="6" y="9" width="4" height="1" fill="#c87040"/>
+      <!-- Gi naranja -->
+      <rect x="3" y="10" width="10" height="3" fill="#e06820"/>
+      <rect x="3" y="12" width="10" height="1" fill="#1a40a0"/>
+      <rect x="4" y="13" width="8" height="1" fill="#e06820"/>
+      <!-- Brazos -->
+      <rect x="2" y="10" width="1" height="4" fill="#e06820"/>
+      <rect x="13" y="10" width="1" height="4" fill="#e06820"/>
+      <!-- Piernas -->
+      <rect x="4" y="14" width="3" height="2" fill="#e06820"/>
+      <rect x="9" y="14" width="3" height="2" fill="#e06820"/>
+    </svg>
+    <span class="sname">GOKU</span><span class="slvl ok">NV.5 ✓</span>
+  </div>
+
+  <!-- NARUTO NV.6 -->
+  <div class="sc">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Pelo rubio puntiagudo -->
+      <rect x="4" y="0" width="8" height="1" fill="#f0c020"/>
+      <rect x="3" y="1" width="10" height="3" fill="#f0c020"/>
+      <rect x="2" y="2" width="2" height="4" fill="#f0c020"/>
+      <rect x="12" y="2" width="2" height="4" fill="#f0c020"/>
+      <rect x="1" y="3" width="1" height="3" fill="#f0c020"/>
+      <!-- Cara -->
+      <rect x="4" y="4" width="8" height="5" fill="#e8a060"/>
+      <rect x="3" y="5" width="1" height="3" fill="#e8a060"/>
+      <rect x="12" y="5" width="1" height="3" fill="#e8a060"/>
+      <!-- Ojos azules -->
+      <rect x="5" y="6" width="2" height="1" fill="#2060d0"/>
+      <rect x="9" y="6" width="2" height="1" fill="#2060d0"/>
+      <!-- Bigotes (3 cada lado) -->
+      <rect x="3" y="7" width="3" height="1" fill="#c07040" opacity="0.8"/>
+      <rect x="10" y="7" width="3" height="1" fill="#c07040" opacity="0.8"/>
+      <!-- Boca -->
+      <rect x="7" y="8" width="2" height="1" fill="#904030"/>
+      <!-- Banda cabeza -->
+      <rect x="3" y="4" width="10" height="1" fill="#6a6a6a"/>
+      <rect x="6" y="3" width="4" height="2" fill="#a0a0a0"/>
+      <rect x="7" y="3" width="2" height="2" fill="#c0c0c0"/>
+      <!-- Chaqueta naranja -->
+      <rect x="3" y="10" width="10" height="4" fill="#e06020"/>
+      <rect x="2" y="11" width="1" height="3" fill="#e06020"/>
+      <rect x="13" y="11" width="1" height="3" fill="#e06020"/>
+      <!-- Pantalón azul -->
+      <rect x="4" y="14" width="3" height="2" fill="#2040a0"/>
+      <rect x="9" y="14" width="3" height="2" fill="#2040a0"/>
+      <!-- Cuello -->
+      <rect x="7" y="9" width="2" height="1" fill="#e8a060"/>
+    </svg>
+    <span class="sname">NARUTO</span><span class="slvl ok">NV.6 ✓</span>
+  </div>
+
+  <!-- ─────── BLOQUEADOS ─────── -->
+  <div class="cat-label">// POR DESBLOQUEAR //</div>
+
+  <!-- MEGAMAN NV.7 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Casco azul redondo -->
+      <rect x="4" y="1" width="8" height="7" fill="#2060d0"/>
+      <rect x="3" y="2" width="10" height="5" fill="#2060d0"/>
+      <rect x="2" y="3" width="12" height="3" fill="#2060d0"/>
+      <!-- Cara blanca/azul claro -->
+      <rect x="4" y="5" width="8" height="4" fill="#80c0f0"/>
+      <rect x="3" y="6" width="10" height="3" fill="#80c0f0"/>
+      <!-- Ojos -->
+      <rect x="5" y="6" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="9" y="6" width="2" height="2" fill="#1a1a1a"/>
+      <rect x="5" y="6" width="1" height="1" fill="#ffffff"/>
+      <rect x="9" y="6" width="1" height="1" fill="#ffffff"/>
+      <!-- Boca -->
+      <rect x="6" y="8" width="4" height="1" fill="#2060d0"/>
+      <!-- Cuerpo azul -->
+      <rect x="4" y="9" width="8" height="5" fill="#2060d0"/>
+      <rect x="3" y="10" width="10" height="3" fill="#2060d0"/>
+      <!-- Cañón (brazo izq) -->
+      <rect x="1" y="10" width="3" height="3" fill="#2060d0"/>
+      <rect x="0" y="11" width="2" height="2" fill="#4080e0"/>
+      <!-- Piernas -->
+      <rect x="4" y="14" width="3" height="2" fill="#1040a0"/>
+      <rect x="9" y="14" width="3" height="2" fill="#1040a0"/>
+    </svg>
+    <span class="sname">MEGAMAN</span><span class="slvl no">NV.7 🔒</span>
+  </div>
+
+  <!-- MAJIN BOO NV.8 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <rect x="7" y="0" width="2" height="3" fill="#e060a0"/>
+      <rect x="6" y="2" width="4" height="1" fill="#e060a0"/>
+      <rect x="3" y="3" width="10" height="6" fill="#f080c0"/>
+      <rect x="2" y="4" width="12" height="4" fill="#f080c0"/>
+      <rect x="4" y="5" width="3" height="2" fill="#f0f0f0"/>
+      <rect x="9" y="5" width="3" height="2" fill="#f0f0f0"/>
+      <rect x="5" y="6" width="1" height="1" fill="#1a0a10"/>
+      <rect x="10" y="6" width="1" height="1" fill="#1a0a10"/>
+      <rect x="4" y="8" width="8" height="1" fill="#c04080"/>
+      <rect x="2" y="9" width="12" height="5" fill="#f080c0"/>
+      <rect x="1" y="10" width="14" height="3" fill="#f080c0"/>
+      <rect x="3" y="13" width="10" height="1" fill="#1a1a1a"/>
+      <rect x="3" y="14" width="4" height="2" fill="#f0f0f0"/>
+      <rect x="9" y="14" width="4" height="2" fill="#f0f0f0"/>
+    </svg>
+    <span class="sname">MAJIN BOO</span><span class="slvl no">NV.8 🔒</span>
+  </div>
+
+  <!-- SASUKE NV.9 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Pelo negro con flequillo -->
+      <rect x="3" y="0" width="10" height="5" fill="#0a0a14"/>
+      <rect x="2" y="1" width="12" height="4" fill="#0a0a14"/>
+      <rect x="1" y="2" width="2" height="3" fill="#0a0a14"/>
+      <rect x="13" y="1" width="2" height="5" fill="#0a0a14"/>
+      <!-- Cara pálida -->
+      <rect x="4" y="5" width="8" height="5" fill="#e8d8c8"/>
+      <rect x="3" y="6" width="1" height="3" fill="#e8d8c8"/>
+      <rect x="12" y="6" width="1" height="3" fill="#e8d8c8"/>
+      <!-- Ojos Sharingan -->
+      <rect x="5" y="7" width="2" height="1" fill="#c83020"/>
+      <rect x="9" y="7" width="2" height="1" fill="#c83020"/>
+      <!-- Boca -->
+      <rect x="7" y="9" width="2" height="1" fill="#906050"/>
+      <!-- Ropa azul marino -->
+      <rect x="3" y="10" width="10" height="4" fill="#1a1a40"/>
+      <rect x="2" y="11" width="1" height="3" fill="#1a1a40"/>
+      <rect x="13" y="11" width="1" height="3" fill="#1a1a40"/>
+      <!-- Collar Uchiha -->
+      <rect x="7" y="10" width="2" height="1" fill="#c83020"/>
+      <!-- Pantalón -->
+      <rect x="4" y="14" width="3" height="2" fill="#0a0a20"/>
+      <rect x="9" y="14" width="3" height="2" fill="#0a0a20"/>
+    </svg>
+    <span class="sname">SASUKE</span><span class="slvl no">NV.9 🔒</span>
+  </div>
+
+  <!-- DONKEY KONG NV.10 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Cuerpo gorila marrón oscuro -->
+      <rect x="3" y="2" width="10" height="5" fill="#3a2010"/>
+      <rect x="2" y="3" width="12" height="4" fill="#3a2010"/>
+      <!-- Cara -->
+      <rect x="4" y="4" width="8" height="5" fill="#5a3520"/>
+      <rect x="3" y="5" width="10" height="3" fill="#5a3520"/>
+      <!-- Hocico crema -->
+      <rect x="5" y="7" width="6" height="3" fill="#c8a080"/>
+      <!-- Ojos -->
+      <rect x="5" y="5" width="2" height="2" fill="#f0f0f0"/>
+      <rect x="9" y="5" width="2" height="2" fill="#f0f0f0"/>
+      <rect x="5" y="5" width="1" height="1" fill="#1a1a1a"/>
+      <rect x="9" y="5" width="1" height="1" fill="#1a1a1a"/>
+      <!-- Nariz -->
+      <rect x="7" y="8" width="2" height="1" fill="#2a1808"/>
+      <!-- Boca -->
+      <rect x="6" y="9" width="4" height="1" fill="#2a1808"/>
+      <!-- Corbata roja -->
+      <rect x="7" y="10" width="2" height="4" fill="#c82020"/>
+      <rect x="6" y="10" width="4" height="1" fill="#c82020"/>
+      <!-- Cuerpo -->
+      <rect x="3" y="9" width="10" height="5" fill="#3a2010"/>
+      <rect x="2" y="10" width="12" height="3" fill="#3a2010"/>
+      <!-- Brazos -->
+      <rect x="0" y="9" width="3" height="4" fill="#3a2010"/>
+      <rect x="13" y="9" width="3" height="4" fill="#3a2010"/>
+      <!-- Puños -->
+      <rect x="4" y="14" width="3" height="2" fill="#3a2010"/>
+      <rect x="9" y="14" width="3" height="2" fill="#3a2010"/>
+    </svg>
+    <span class="sname">DONKEY KONG</span><span class="slvl no">NV.10 🔒</span>
+  </div>
+
+  <!-- FRIEREN NV.11 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Pelo plateado muy largo -->
+      <rect x="4" y="0" width="8" height="2" fill="#d0d0e0"/>
+      <rect x="3" y="1" width="10" height="4" fill="#d0d0e0"/>
+      <rect x="2" y="2" width="2" height="10" fill="#d0d0e0"/>
+      <rect x="12" y="2" width="2" height="10" fill="#d0d0e0"/>
+      <!-- Orejas elficas -->
+      <rect x="1" y="5" width="2" height="1" fill="#e8c8a0"/>
+      <rect x="13" y="5" width="2" height="1" fill="#e8c8a0"/>
+      <rect x="0" y="4" width="2" height="1" fill="#e8c8a0"/>
+      <rect x="14" y="4" width="2" height="1" fill="#e8c8a0"/>
+      <!-- Cara pálida -->
+      <rect x="4" y="4" width="8" height="5" fill="#f0e0d0"/>
+      <rect x="3" y="5" width="10" height="3" fill="#f0e0d0"/>
+      <!-- Ojos verdes -->
+      <rect x="5" y="6" width="2" height="1" fill="#60a060"/>
+      <rect x="9" y="6" width="2" height="1" fill="#60a060"/>
+      <!-- Boca pequeña -->
+      <rect x="7" y="8" width="2" height="1" fill="#c09080"/>
+      <!-- Capa verde -->
+      <rect x="3" y="9" width="10" height="5" fill="#4a7a40"/>
+      <rect x="2" y="10" width="12" height="3" fill="#4a7a40"/>
+      <!-- Detalle negro capa -->
+      <rect x="3" y="9" width="10" height="1" fill="#1a2a18"/>
+      <!-- Bastón (lateral) -->
+      <rect x="14" y="7" width="1" height="8" fill="#8a6040"/>
+      <rect x="13" y="6" width="3" height="1" fill="#c0a060"/>
+      <!-- Piernas -->
+      <rect x="5" y="14" width="2" height="2" fill="#2a5020"/>
+      <rect x="9" y="14" width="2" height="2" fill="#2a5020"/>
+    </svg>
+    <span class="sname">FRIEREN</span><span class="slvl no">NV.11 🔒</span>
+  </div>
+
+  <!-- ITADORI NV.12 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Pelo rosado corto -->
+      <rect x="4" y="0" width="8" height="4" fill="#e060a0"/>
+      <rect x="3" y="1" width="10" height="3" fill="#e060a0"/>
+      <rect x="2" y="2" width="2" height="2" fill="#e060a0"/>
+      <rect x="12" y="2" width="2" height="2" fill="#e060a0"/>
+      <!-- Cara -->
+      <rect x="4" y="4" width="8" height="5" fill="#e0b890"/>
+      <rect x="3" y="5" width="1" height="3" fill="#e0b890"/>
+      <rect x="12" y="5" width="1" height="3" fill="#e0b890"/>
+      <!-- Ojos marrones -->
+      <rect x="5" y="6" width="2" height="1" fill="#603020"/>
+      <rect x="9" y="6" width="2" height="1" fill="#603020"/>
+      <!-- Marcas maldición (líneas negras) -->
+      <rect x="4" y="5" width="2" height="1" fill="#1a0808" opacity="0.6"/>
+      <rect x="10" y="5" width="2" height="1" fill="#1a0808" opacity="0.6"/>
+      <!-- Boca -->
+      <rect x="6" y="8" width="4" height="1" fill="#904040"/>
+      <!-- Uniforme escolar negro -->
+      <rect x="3" y="10" width="10" height="4" fill="#1a1a2a"/>
+      <rect x="2" y="11" width="12" height="3" fill="#1a1a2a"/>
+      <!-- Cuello uniforme -->
+      <rect x="6" y="9" width="4" height="2" fill="#f0f0f0"/>
+      <rect x="7" y="9" width="2" height="2" fill="#1a1a2a"/>
+      <!-- Pantalón -->
+      <rect x="4" y="14" width="3" height="2" fill="#0a0a1a"/>
+      <rect x="9" y="14" width="3" height="2" fill="#0a0a1a"/>
+    </svg>
+    <span class="sname">ITADORI</span><span class="slvl no">NV.12 🔒</span>
+  </div>
+
+  <!-- JIRAIYA NV.13 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Pelo blanco largo -->
+      <rect x="3" y="0" width="10" height="4" fill="#e0e0e0"/>
+      <rect x="2" y="1" width="12" height="3" fill="#e0e0e0"/>
+      <rect x="1" y="2" width="2" height="8" fill="#e0e0e0"/>
+      <rect x="13" y="2" width="2" height="8" fill="#e0e0e0"/>
+      <!-- Cara curtida -->
+      <rect x="4" y="4" width="8" height="5" fill="#c08050"/>
+      <rect x="3" y="5" width="10" height="3" fill="#c08050"/>
+      <!-- Marcas rojas en cara -->
+      <rect x="3" y="6" width="3" height="1" fill="#c03030"/>
+      <rect x="10" y="6" width="3" height="1" fill="#c03030"/>
+      <!-- Ojos -->
+      <rect x="5" y="6" width="2" height="1" fill="#1a1a00"/>
+      <rect x="9" y="6" width="2" height="1" fill="#1a1a00"/>
+      <!-- Bigote / boca -->
+      <rect x="5" y="8" width="6" height="1" fill="#808080"/>
+      <!-- Ropa verde/roja -->
+      <rect x="3" y="9" width="10" height="5" fill="#4a8030"/>
+      <rect x="2" y="10" width="12" height="3" fill="#4a8030"/>
+      <!-- Chaleco rojo -->
+      <rect x="5" y="9" width="6" height="4" fill="#c03030"/>
+      <!-- Piernas -->
+      <rect x="4" y="14" width="3" height="2" fill="#2a5020"/>
+      <rect x="9" y="14" width="3" height="2" fill="#2a5020"/>
+    </svg>
+    <span class="sname">JIRAIYA</span><span class="slvl no">NV.13 🔒</span>
+  </div>
+
+  <!-- MAGMAR NV.14 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Llama cabeza -->
+      <rect x="5" y="0" width="6" height="2" fill="#ff8c00"/>
+      <rect x="6" y="0" width="4" height="1" fill="#ffc040"/>
+      <rect x="4" y="1" width="8" height="3" fill="#e05020"/>
+      <!-- Cuerpo rojo/naranja -->
+      <rect x="3" y="4" width="10" height="6" fill="#c83020"/>
+      <rect x="2" y="5" width="12" height="4" fill="#c83020"/>
+      <!-- Pecho amarillo -->
+      <rect x="5" y="5" width="6" height="4" fill="#f0c040"/>
+      <!-- Cara pico amarillo -->
+      <rect x="4" y="4" width="8" height="4" fill="#e05020"/>
+      <rect x="5" y="5" width="6" height="3" fill="#f0c040"/>
+      <!-- Ojos -->
+      <rect x="5" y="5" width="2" height="2" fill="#f0f080"/>
+      <rect x="9" y="5" width="2" height="2" fill="#f0f080"/>
+      <rect x="5" y="5" width="1" height="1" fill="#c03020"/>
+      <rect x="9" y="5" width="1" height="1" fill="#c03020"/>
+      <!-- Boca/pico -->
+      <rect x="6" y="7" width="4" height="1" fill="#c08020"/>
+      <!-- Brazos con garras -->
+      <rect x="1" y="5" width="2" height="4" fill="#c83020"/>
+      <rect x="13" y="5" width="2" height="4" fill="#c83020"/>
+      <rect x="0" y="7" width="2" height="1" fill="#ff8c00"/>
+      <rect x="14" y="7" width="2" height="1" fill="#ff8c00"/>
+      <!-- Cola llama -->
+      <rect x="6" y="10" width="4" height="2" fill="#ff8c00"/>
+      <rect x="7" y="12" width="2" height="2" fill="#ffc040"/>
+      <!-- Piernas -->
+      <rect x="4" y="10" width="3" height="4" fill="#c83020"/>
+      <rect x="9" y="10" width="3" height="4" fill="#c83020"/>
+    </svg>
+    <span class="sname">MAGMAR</span><span class="slvl no">NV.14 🔒</span>
+  </div>
+
+  <!-- DON QUIJOTE NV.15 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Yelmo metálico -->
+      <rect x="4" y="0" width="8" height="6" fill="#909090"/>
+      <rect x="3" y="1" width="10" height="5" fill="#a0a0a0"/>
+      <rect x="2" y="2" width="12" height="3" fill="#b0b0b0"/>
+      <!-- Visera -->
+      <rect x="4" y="4" width="8" height="2" fill="#707070"/>
+      <rect x="5" y="5" width="6" height="1" fill="#505050"/>
+      <!-- Pluma -->
+      <rect x="11" y="0" width="1" height="4" fill="#e04040"/>
+      <rect x="10" y="1" width="3" height="1" fill="#e04040"/>
+      <!-- Cara bajo yelmo -->
+      <rect x="5" y="6" width="6" height="3" fill="#d4a070"/>
+      <!-- Bigote -->
+      <rect x="5" y="8" width="6" height="1" fill="#8a6040"/>
+      <!-- Armadura delgada -->
+      <rect x="5" y="9" width="6" height="5" fill="#909090"/>
+      <rect x="4" y="10" width="8" height="3" fill="#a0a0a0"/>
+      <!-- Cruz en armadura -->
+      <rect x="7" y="10" width="2" height="3" fill="#c0c0c0"/>
+      <rect x="5" y="11" width="6" height="1" fill="#c0c0c0"/>
+      <!-- Lanza (lateral) -->
+      <rect x="13" y="0" width="1" height="16" fill="#8a6040"/>
+      <rect x="13" y="0" width="2" height="2" fill="#c0c0c0"/>
+      <!-- Piernas -->
+      <rect x="5" y="14" width="2" height="2" fill="#808080"/>
+      <rect x="9" y="14" width="2" height="2" fill="#808080"/>
+    </svg>
+    <span class="sname">DON QUIJOTE</span><span class="slvl no">NV.15 🔒</span>
+  </div>
+
+  <!-- FRIEZA NV.16 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Cabeza con cuernos -->
+      <rect x="4" y="0" width="8" height="6" fill="#e8e0f0"/>
+      <rect x="3" y="1" width="10" height="5" fill="#e8e0f0"/>
+      <!-- Cuernos púrpura -->
+      <rect x="3" y="0" width="2" height="3" fill="#8040c0"/>
+      <rect x="11" y="0" width="2" height="3" fill="#8040c0"/>
+      <!-- Marcas púrpura cara -->
+      <rect x="3" y="3" width="3" height="2" fill="#9050d0"/>
+      <rect x="10" y="3" width="3" height="2" fill="#9050d0"/>
+      <!-- Ojos rojos -->
+      <rect x="5" y="4" width="2" height="1" fill="#d02020"/>
+      <rect x="9" y="4" width="2" height="1" fill="#d02020"/>
+      <!-- Boca -->
+      <rect x="6" y="6" width="4" height="1" fill="#c0b0e0"/>
+      <!-- Cuerpo blanco -->
+      <rect x="4" y="7" width="8" height="5" fill="#e8e0f0"/>
+      <rect x="3" y="8" width="10" height="4" fill="#e8e0f0"/>
+      <!-- Marcas pecho -->
+      <rect x="3" y="7" width="4" height="3" fill="#9050d0"/>
+      <rect x="9" y="7" width="4" height="3" fill="#9050d0"/>
+      <!-- Cola -->
+      <rect x="7" y="12" width="2" height="3" fill="#9050d0"/>
+      <rect x="8" y="14" width="3" height="1" fill="#9050d0"/>
+      <!-- Piernas -->
+      <rect x="4" y="12" width="3" height="3" fill="#e8e0f0"/>
+      <rect x="9" y="12" width="3" height="3" fill="#e8e0f0"/>
+    </svg>
+    <span class="sname">FRIEZA</span><span class="slvl no">NV.16 🔒</span>
+  </div>
+
+  <!-- HISOKA NV.17 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Pelo rosa/magenta puntiagudo -->
+      <rect x="5" y="0" width="6" height="1" fill="#e040a0"/>
+      <rect x="4" y="1" width="8" height="3" fill="#e040a0"/>
+      <rect x="3" y="2" width="2" height="4" fill="#e040a0"/>
+      <rect x="11" y="1" width="3" height="4" fill="#e040a0"/>
+      <!-- Cara pálida -->
+      <rect x="4" y="4" width="8" height="5" fill="#f0e8e0"/>
+      <rect x="3" y="5" width="10" height="3" fill="#f0e8e0"/>
+      <!-- Maquillaje: estrella y rombo -->
+      <rect x="4" y="6" width="2" height="1" fill="#e03060"/>
+      <rect x="10" y="5" width="2" height="2" fill="#40a0c0"/>
+      <rect x="11" y="6" width="1" height="1" fill="#40a0c0"/>
+      <!-- Ojos -->
+      <rect x="5" y="6" width="2" height="1" fill="#d0a020"/>
+      <rect x="9" y="6" width="2" height="1" fill="#d0a020"/>
+      <!-- Sonrisa -->
+      <rect x="6" y="8" width="4" height="1" fill="#c06040"/>
+      <!-- Traje a cuadros (rojo/azul) -->
+      <rect x="3" y="9" width="5" height="5" fill="#c02020"/>
+      <rect x="8" y="9" width="5" height="5" fill="#2060c0"/>
+      <rect x="3" y="11" width="5" height="1" fill="#2060c0"/>
+      <rect x="8" y="11" width="5" height="1" fill="#c02020"/>
+      <!-- Piernas -->
+      <rect x="4" y="14" width="3" height="2" fill="#1a1a40"/>
+      <rect x="9" y="14" width="3" height="2" fill="#1a1a40"/>
+    </svg>
+    <span class="sname">HISOKA</span><span class="slvl no">NV.17 🔒</span>
+  </div>
+
+  <!-- CHAINSAW MAN NV.18 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Sierra (cabeza) - dientes grises -->
+      <rect x="3" y="0" width="10" height="6" fill="#808090"/>
+      <rect x="2" y="1" width="12" height="4" fill="#9090a0"/>
+      <!-- Dientes sierra superior -->
+      <rect x="3" y="0" width="2" height="2" fill="#c0c0c0"/>
+      <rect x="7" y="0" width="2" height="2" fill="#c0c0c0"/>
+      <rect x="11" y="0" width="2" height="2" fill="#c0c0c0"/>
+      <!-- Motor central rojo -->
+      <rect x="6" y="2" width="4" height="2" fill="#cc2020"/>
+      <!-- Ojos rojos -->
+      <rect x="5" y="3" width="2" height="1" fill="#ff2020"/>
+      <rect x="9" y="3" width="2" height="1" fill="#ff2020"/>
+      <!-- Cuerpo traje oscuro manchado sangre -->
+      <rect x="3" y="6" width="10" height="6" fill="#1a1a2a"/>
+      <rect x="2" y="7" width="12" height="4" fill="#1a1a2a"/>
+      <!-- Sangre roja -->
+      <rect x="5" y="7" width="2" height="2" fill="#aa1010" opacity="0.8"/>
+      <rect x="9" y="8" width="3" height="1" fill="#aa1010" opacity="0.7"/>
+      <!-- Brazos con sierra -->
+      <rect x="0" y="7" width="3" height="2" fill="#808090"/>
+      <rect x="13" y="7" width="3" height="2" fill="#1a1a2a"/>
+      <!-- Dientes sierra brazo -->
+      <rect x="0" y="6" width="1" height="1" fill="#c0c0c0"/>
+      <rect x="0" y="8" width="1" height="1" fill="#c0c0c0"/>
+      <!-- Piernas -->
+      <rect x="4" y="12" width="3" height="4" fill="#0a0a1a"/>
+      <rect x="9" y="12" width="3" height="4" fill="#0a0a1a"/>
+    </svg>
+    <span class="sname">CHAINSAW MAN</span><span class="slvl no">NV.18 🔒</span>
+  </div>
+
+  <!-- SOOT SPRITES NV.19 (fantasmas negros) -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <!-- Grupo de 3 fantasmitas negros peludos -->
+      <!-- Grande central -->
+      <rect x="6" y="4" width="5" height="5" fill="#1a1a20"/>
+      <rect x="5" y="5" width="7" height="3" fill="#1a1a20"/>
+      <!-- Pelitos -->
+      <rect x="5" y="3" width="1" height="2" fill="#1a1a20"/>
+      <rect x="7" y="3" width="1" height="2" fill="#1a1a20"/>
+      <rect x="9" y="3" width="1" height="2" fill="#1a1a20"/>
+      <rect x="11" y="4" width="1" height="2" fill="#1a1a20"/>
+      <rect x="4" y="5" width="1" height="2" fill="#1a1a20"/>
+      <!-- Ojos blancos grande -->
+      <rect x="6" y="5" width="2" height="2" fill="#f0f0f0"/>
+      <rect x="9" y="5" width="2" height="2" fill="#f0f0f0"/>
+      <rect x="7" y="6" width="1" height="1" fill="#1a1a20"/>
+      <rect x="10" y="6" width="1" height="1" fill="#1a1a20"/>
+      <!-- Pequeño izquierda -->
+      <rect x="2" y="8" width="3" height="3" fill="#1a1a20"/>
+      <rect x="1" y="9" width="5" height="2" fill="#1a1a20"/>
+      <rect x="2" y="7" width="1" height="2" fill="#1a1a20"/>
+      <rect x="4" y="7" width="1" height="1" fill="#1a1a20"/>
+      <rect x="2" y="9" width="1" height="1" fill="#f0f0f0"/>
+      <rect x="4" y="9" width="1" height="1" fill="#f0f0f0"/>
+      <!-- Pequeño derecha -->
+      <rect x="11" y="9" width="3" height="3" fill="#1a1a20"/>
+      <rect x="10" y="10" width="5" height="2" fill="#1a1a20"/>
+      <rect x="11" y="8" width="1" height="2" fill="#1a1a20"/>
+      <rect x="13" y="8" width="1" height="2" fill="#1a1a20"/>
+      <rect x="11" y="10" width="1" height="1" fill="#f0f0f0"/>
+      <rect x="13" y="10" width="1" height="1" fill="#f0f0f0"/>
+    </svg>
+    <span class="sname">SUSUWATARI</span><span class="slvl no">NV.19 🔒</span>
+  </div>
+
+  <!-- SORPRESA LEYENDA NV.20 -->
+  <div class="sc locked">
+    <svg width="56" height="56" viewBox="0 0 16 16">
+      <rect x="4" y="2" width="8" height="12" fill="#0a0a14"/>
+      <rect x="3" y="4" width="10" height="8" fill="#0a0a14"/>
+      <rect x="7" y="7" width="2" height="2" fill="#ffd700" opacity="0.25"/>
+      <rect x="6" y="6" width="4" height="4" fill="#ffd700" opacity="0.08"/>
+    </svg>
+    <span class="sname">??? LEYENDA</span><span class="slvl no">NV.20 🔒</span>
+  </div>
+
+</div>
+
+<p style="font-size:8px;color:#101020;text-align:center;letter-spacing:2px">// 20 personajes · todos sorpresa excepto el primero //</p>
+</body>
+</html>
