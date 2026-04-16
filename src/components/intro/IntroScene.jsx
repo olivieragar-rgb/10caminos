@@ -182,27 +182,27 @@ export default function IntroScene({ onComplete }) {
         </div>
       )}
 
-      {/* ── Niños corriendo ── */}
-      {/* Niño (5 años) — órbita A */}
+      {/* ── Niños jugando en el césped ── */}
+      {/* Niño mayor (5 años) — lado izquierdo */}
       <div style={{
         position: 'absolute',
-        bottom: 'calc(30% + 20px)',
-        left: '50%',
-        animation: 'correrA 2.8s linear infinite',
+        bottom: 'calc(30% + 10px)',
+        left: '22%',
+        animation: 'correrA 2.2s ease-in-out infinite',
         zIndex: 2,
       }}>
         <NinoSprite width={36} height={64} />
       </div>
 
-      {/* Niña (3 años) — órbita B (opuesta) */}
+      {/* Niño pequeño (3 años) — lado derecho */}
       <div style={{
         position: 'absolute',
-        bottom: 'calc(30% + 16px)',
-        left: '50%',
-        animation: 'correrB 2.8s linear infinite',
+        bottom: 'calc(30% + 6px)',
+        left: '68%',
+        animation: 'correrB 1.8s ease-in-out infinite',
         zIndex: 2,
       }}>
-        <NinaSprite width={32} height={56} />
+        <NinaSprite width={28} height={48} />
       </div>
 
       {/* ── Césped ── */}

@@ -623,6 +623,113 @@ async function ejecutarTool(name, input) {
   }
 }
 
+// ── Generador de desafío inmediato ───────────────────────────────────────────
+export async function generarDesafioIA(personaje, caminos, registros14d, apiKey) {
+  const caminosConScore = caminos.map(c => ({
+    ...c,
+    avances: registros14d.filter(r => r.caminoId === c.id && r.marca === 'avance').length,
+  })).sort((a, b) => a.avances - b.avances)
+
+  const top3 = caminosConScore.slice(0, Math.min(3, caminosConScore.length))
+  const caminosInfo = top3.map(c =>
+    `[ID:${c.id}] ${c.icono} ${c.nombre} | Nv.${c.nivel} Racha:${c.rachaActual}d | 14d: ${c.avances} avances`
+  ).join('\n')
+
+  const prompt = `Eres ${personaje.nombre}. Debes desafiar a Olivier con una pregunta que pueda responder AHORA MISMO.
+
+La pregunta debe estar relacionada con la filosofía de "${personaje.nombre}" o con el desarrollo personal, conectada a uno de sus caminos:
+${caminosInfo}
+
+Crea UNA pregunta de opción múltiple que sea desafiante pero respondible. Que se sienta como un reto de sabiduría real.
+
+Responde ÚNICAMENTE con JSON válido (sin texto extra, sin bloques de código):
+{
+  "caminoId": <uno de los IDs de arriba>,
+  "pregunta": "<pregunta clara y estimulante, máx 90 chars>",
+  "opciones": ["<opción A>", "<opción B>", "<opción C>", "<opción D>"],
+  "correcta": <índice 0-3>,
+  "xpPremio": <número entre 25 y 55>,
+  "explicacion": "<frase motivadora de ${personaje.nombre} si acierta, máx 70 chars>",
+  "consolacion": "<frase corta si falla, máx 60 chars>"
+}`
+
+  const resp = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 600,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  })
+  if (!resp.ok) throw new Error(`Error ${resp.status}`)
+  const data = await resp.json()
+  const text = data.content?.find(b => b.type === 'text')?.text ?? ''
+  const jsonMatch = text.match(/\{[\s\S]*?\}/)
+  if (!jsonMatch) throw new Error('No JSON en respuesta')
+  return JSON.parse(jsonMatch[0])
+}
+
+// ── Generador de retos IA ─────────────────────────────────────────────────────
+export async function generarRetosIA(personaje, caminos, registros14d, apiKey) {
+  const caminosInfo = caminos.map(c => {
+    const avances = registros14d.filter(r => r.caminoId === c.id && r.marca === 'avance').length
+    const nadas   = registros14d.filter(r => r.caminoId === c.id && r.marca === 'nada').length
+    const pausas  = registros14d.filter(r => r.caminoId === c.id && r.marca === 'pausa').length
+    return `[ID:${c.id}] ${c.icono} ${c.nombre} | Nv.${c.nivel} Racha:${c.rachaActual}d | 14d: ${avances}✓ ${pausas}→ ${nadas}✗`
+  }).join('\n')
+
+  const prompt = `Eres ${personaje.nombre}.
+Propón 3 retos a Olivier para 3 caminos DIFERENTES. Cada reto debe reflejar tu filosofía y ajustarse al historial real del camino. Si un camino va bien, sube la dificultad. Si va mal, hazlo alcanzable.
+
+CAMINOS:
+${caminosInfo}
+
+Responde ÚNICAMENTE con JSON válido (sin texto extra, sin markdown):
+[
+  {
+    "caminoId": <número>,
+    "titulo": "<título corto, máx 28 chars>",
+    "descripcion": "<qué debe hacer exactamente, máx 75 chars>",
+    "duracionDias": <3, 7 o 14>,
+    "meta": <avances mínimos requeridos>,
+    "xpPremio": <30-250>,
+    "xpPenalty": <10-70>,
+    "emoji": "<emoji único>"
+  },
+  { ... },
+  { ... }
+]
+Elige 3 caminos distintos. Varía las duraciones. Sé directo y motivador.`
+
+  const resp = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 800,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  })
+
+  if (!resp.ok) throw new Error(`Error ${resp.status}`)
+  const data = await resp.json()
+  const text = data.content?.find(b => b.type === 'text')?.text ?? ''
+  const jsonMatch = text.match(/\[[\s\S]*\]/)
+  if (!jsonMatch) throw new Error('No JSON en respuesta IA')
+  return JSON.parse(jsonMatch[0])
+}
+
 // ── Llamada principal con soporte de múltiples rondas de tool use ─────────────
 export async function llamarClaude(mensajeUsuario, historial, apiKey) {
   const systemPrompt = await buildSystemPrompt()
