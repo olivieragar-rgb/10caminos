@@ -2,6 +2,8 @@
 // Datos de las 8 entidades del Codex de la Psique.
 // Las 4 secretas tienen secreto: true — sus nombres no se revelan en la UI hasta que se desbloquean.
 
+// desafio.respuestaCorrecta: string index ('0','1','2'...) or null (any answer = correct, e.g. Joker)
+// Consuming components MUST compare with: String(selectedIdx) === String(respuestaCorrecta)
 export const ENTIDADES = [
   // ── CONOCIDAS ──────────────────────────────────────────────────────────────
 
@@ -255,7 +257,7 @@ export const ENTIDADES = [
         tipo: 'opciones',
         enunciado: 'L coloca tres fichas. "Alguien rompió su hábito de 15 días. (1) Ese día tenía energía normal. (2) Ese día cambió su rutina matutina. (3) Ese día dijo que \'lo haría mañana\'. ¿Cuál fue la causa real?"',
         opciones: [
-          'Energía baja — el cuerpo fallò.',
+          'Energía baja — el cuerpo falló.',
           'Cambio de rutina — el entorno falló.',
           'Procrastinación — la mente falló.',
           'Las tres juntas — un sistema frágil.',
