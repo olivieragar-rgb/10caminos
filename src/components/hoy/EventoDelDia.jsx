@@ -1,5 +1,5 @@
 // src/components/hoy/EventoDelDia.jsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { hoyISO } from '../../utils/dates'
 import { PERSONAJES, PersonajeSprite } from '../../constants'
 import RetoProposalModal from './RetoProposalModal'
@@ -159,9 +159,22 @@ function EventoCompanero({ personaje, onClose }) {
   const dia    = diaDelAno(hoyISO())
   const frase  = frases.length > 0 ? frases[dia % frases.length] : '...'
   const [showDesafio, setShowDesafio] = useState(false)
+  const [showFlash,   setShowFlash]   = useState(true)
+
+  useEffect(() => {
+    const id = setTimeout(() => setShowFlash(false), 1400)
+    return () => clearTimeout(id)
+  }, [])
 
   return (
     <>
+      {/* Encounter flash */}
+      {showFlash && (
+        <div className="animate-encounter-flash" style={{
+          position: 'fixed', inset: 0, zIndex: 100, pointerEvents: 'none',
+        }} />
+      )}
+
       <div className="mx-4 mb-3 p-3 animate-card-entrance" style={{
         background: 'linear-gradient(180deg, #2a2035 0%, #1a1520 100%)',
         border: `2px solid ${personaje.glowColor}60`,
