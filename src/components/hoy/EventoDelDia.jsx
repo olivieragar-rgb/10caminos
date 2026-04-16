@@ -1,5 +1,6 @@
 // src/components/hoy/EventoDelDia.jsx
 import { useState, useEffect } from 'react'
+import { db } from '../../db'
 import { hoyISO } from '../../utils/dates'
 import { PERSONAJES, PersonajeSprite } from '../../constants'
 import RetoProposalModal from './RetoProposalModal'
@@ -234,19 +235,47 @@ function EventoCompanero({ personaje, onClose }) {
 }
 
 // ── Export principal ──────────────────────────────────────────────────────────
+// La clave guardada en DB: { key: 'eventoVistoDia', value: 'YYYY-MM-DD' }
+// Al montar: si ya hay fecha de hoy → no mostrar nunca más hoy.
+// Si no → marcar inmediatamente y mostrar (persiste incluso si refresca).
 export default function EventoDelDia() {
-  const [cerrado, setCerrado] = useState(false)
+  const [cerrado, setCerrado] = useState(true)  // true hasta confirmar con DB
+  const [listo,   setListo]   = useState(false)
   const evento = getEventoHoy()
 
-  if (cerrado || !evento) return null
+  useEffect(() => {
+    if (!evento) { setListo(true); return }
+    async function init() {
+      try {
+        const cfg = await db.configuracion.get('eventoVistoDia')
+        if (cfg?.value === hoyISO()) {
+          // Ya visto hoy → no mostrar
+          setCerrado(true)
+        } else {
+          // Primer vez hoy → marcar en DB ahora mismo y mostrar
+          await db.configuracion.put({ key: 'eventoVistoDia', value: hoyISO() })
+          setCerrado(false)
+        }
+      } catch {
+        setCerrado(false) // en caso de error de DB, mostrar igual
+      } finally {
+        setListo(true)
+      }
+    }
+    init()
+  }, []) // eslint-disable-line
+
+  if (!listo || cerrado || !evento) return null
+
+  const cerrar = () => setCerrado(true)
 
   if (evento.tipo === 'suerte')
-    return <EventoSuerte onClose={() => setCerrado(true)} />
+    return <EventoSuerte onClose={cerrar} />
   if (evento.tipo === 'doblexp')
-    return <EventoDobleXp onClose={() => setCerrado(true)} />
+    return <EventoDobleXp onClose={cerrar} />
   if (evento.tipo === 'companero') {
     const personaje = PERSONAJES[evento.personajeIdx % PERSONAJES.length]
-    return <EventoCompanero personaje={personaje} onClose={() => setCerrado(true)} />
+    return <EventoCompanero personaje={personaje} onClose={cerrar} />
   }
   return null
 }
