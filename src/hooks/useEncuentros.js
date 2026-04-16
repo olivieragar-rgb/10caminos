@@ -4,7 +4,6 @@ import { db } from '../db'
 import { hoyISO } from '../utils/dates'
 import { nivelGlobal, xpANivel } from '../utils/xp'
 import { v4 as uuidv4 } from 'uuid'
-import { getEntidad } from '../entidades'
 
 /** Retorna todos los encuentros ordenados por fecha desc */
 export function useHistorialEncuentros() {
@@ -41,7 +40,7 @@ async function diasDesdeUltimoEncuentro(entidadId) {
     .reverse()
     .first()
   if (!ultimo) return Infinity
-  const diff = new Date(hoyISO()) - new Date(ultimo.fecha + 'T00:00:00')
+  const diff = new Date(hoyISO() + 'T00:00:00') - new Date(ultimo.fecha + 'T00:00:00')
   return Math.floor(diff / (1000 * 60 * 60 * 24))
 }
 
@@ -99,7 +98,6 @@ export async function evaluarTriggers(caminos, registrosHoy) {
   // Uranai Baba: nivel global subió respecto a la última vez que apareció
   const nivelVisto = await db.configuracion.get('uranaiNivelVisto')
   if (nivelG > (nivelVisto?.value ?? -1)) {
-    await db.configuracion.put({ key: 'uranaiNivelVisto', value: nivelG })
     return 'uranai_baba'
   }
 
@@ -129,6 +127,15 @@ export async function guardarEncuentro({ entidadId, desafioIdx, respuesta, corre
     visto: false,
   })
 
+  // Update uranai_baba level tracking after saving the encounter
+  if (entidadId === 'uranai_baba') {
+    const activos = await db.caminos.filter(c => c.activo).toArray()
+    const nivelG = activos.length
+      ? Math.floor(activos.reduce((s, c) => s + Math.floor((c.xp || 0) / 100), 0) / activos.length)
+      : 0
+    await db.configuracion.put({ key: 'uranaiNivelVisto', value: nivelG })
+  }
+
   // Desbloquear codex si es el primer encuentro ever
   const total = await db.encuentros.count()
   if (total === 1) {
@@ -144,6 +151,6 @@ export async function otorgarXpEncuentro(xpRecompensa) {
   if (!activos.length) return
   const minCamino = activos.reduce((min, c) => (c.xp < min.xp ? c : min))
   const nuevoXp = (minCamino.xp ?? 0) + xpRecompensa
-  const nuevoNivel = Math.floor(nuevoXp / 100)
+  const nuevoNivel = xpANivel(nuevoXp)
   await db.caminos.update(minCamino.id, { xp: nuevoXp, nivel: nuevoNivel })
 }
