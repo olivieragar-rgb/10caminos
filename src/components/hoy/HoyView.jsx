@@ -7,6 +7,8 @@ import { scoreDiario } from '../../utils/stats'
 import { nivelGlobal, nombreNivel } from '../../utils/xp'
 import { hoyISO, haceNDiasISO, formatearFechaLarga } from '../../utils/dates'
 import { v4 as uuidv4 } from 'uuid'
+import NavCards from './NavCards'
+import { Sliders } from '@phosphor-icons/react'
 import CaminoCard from './CaminoCard'
 import PlanBanner from './PlanBanner'
 import ScoreDiario from './ScoreDiario'
@@ -19,7 +21,7 @@ import EventoDelDia from './EventoDelDia'
 import EncuentroDelDia from './EncuentroDelDia'
 import DashboardSemanal from './DashboardSemanal'
 
-export default function HoyView() {
+export default function HoyView({ onTabChange }) {
   // ── TODOS los hooks primero, sin excepciones ──────────────────────────────
   const hoy = hoyISO()
   const caminos      = useCaminosActivos()
@@ -95,19 +97,25 @@ export default function HoyView() {
           </div>
           <button
             onClick={() => setShowManager(true)}
-            className="font-pixel text-[8px] px-3 py-2 active:translate-y-[1px] active:translate-x-[1px]"
+            className="flex items-center gap-1.5 px-3 py-2 active:scale-[0.97] transition-transform"
             style={{
-              background: 'linear-gradient(180deg, #342848, #2a2035)',
-              border: '2px solid #6a5880',
-              borderRadius: '2px',
-              color: '#c4a882',
-              boxShadow: '3px 3px 0 rgba(0,0,0,0.6)',
+              background: '#2d2b47',
+              border: '1px solid #4a4770',
+              borderRadius: '8px',
+              color: '#9590a8',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
             }}
             title="Gestionar caminos"
-          >⚙ CAMINOS</button>
+          >
+            <Sliders size={14} weight="duotone" />
+            <span className="font-body text-xs font-semibold tracking-wide">CAMINOS</span>
+          </button>
         </div>
         <XpBar xp={xpGlobal} />
       </div>
+
+      {/* Navegación a otras secciones */}
+      {onTabChange && <NavCards onNavigate={onTabChange} />}
 
       {/* Frase Ikigai del día */}
       <div className="mt-3">
@@ -148,26 +156,30 @@ export default function HoyView() {
       {/* FAB planificar mañana */}
       <button
         onClick={abrirModal}
-        className="fixed bottom-20 right-4 font-pixel text-[9px] z-40
-                   active:translate-y-[1px] active:translate-x-[1px] transition-transform"
+        className="fixed bottom-24 right-4 flex items-center gap-2 z-40
+                   active:scale-[0.97] transition-transform duration-100"
         style={{
-          background: 'linear-gradient(180deg, #e94560, #c03040)',
-          border: '2px solid #ff6080',
-          borderRadius: '2px',
-          boxShadow: '4px 4px 0px rgba(0,0,0,0.7)',
+          background: 'linear-gradient(135deg, #e94560, #c03040)',
+          border: 'none',
+          borderRadius: '100px',
+          boxShadow: '0 4px 20px rgba(233,69,96,0.4)',
           color: '#fff',
-          padding: '10px 14px',
+          padding: '12px 18px',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: '13px',
+          fontWeight: 600,
+          letterSpacing: '0.03em',
         }}
       >
-        📋 MAÑANA
+        📋 Mañana
       </button>
 
       {/* Modal planificación */}
       {showPlanModal && (
         <div className="fixed inset-0 bg-black/75 flex items-end justify-center z-50 p-4"
              onClick={e => e.target === e.currentTarget && setShowPlanModal(false)}>
-          <div className="w-full max-w-[480px] p-4 mb-16 animate-fade-in-up"
-               style={{ background: 'linear-gradient(180deg, #2a2035 0%, #1a1520 100%)', border: '2px solid #4a3860', borderRadius: '2px', boxShadow: '4px 4px 0px rgba(0,0,0,0.8)' }}>
+          <div className="w-full max-w-[480px] p-5 mb-20 animate-fade-in-up"
+               style={{ background: '#181726', border: '1px solid #302e4e', borderRadius: '16px', boxShadow: '0 8px 40px rgba(0,0,0,0.7)' }}>
             <h3 className="font-pixel text-[11px] text-text-primary mb-4">PLANIFICAR MAÑANA</h3>
 
             <div className="mb-4">
@@ -182,7 +194,7 @@ export default function HoyView() {
                 rows={3}
                 className="w-full px-3 py-2 font-body text-sm text-text-primary
                            placeholder-text-muted outline-none resize-none"
-                style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}
+                style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '8px' }}
               />
             </div>
 
@@ -197,20 +209,20 @@ export default function HoyView() {
                 rows={2}
                 className="w-full px-3 py-2 font-body text-sm text-text-primary
                            placeholder-text-muted outline-none resize-none"
-                style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}
+                style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '8px' }}
               />
             </div>
 
             <div className="flex gap-2">
               <button onClick={() => setShowPlanModal(false)}
                 className="flex-1 py-2.5 font-pixel text-[9px] text-text-muted"
-                style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
+                style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '8px', color: '#9590a8' }}>
                 CANCELAR
               </button>
               <button onClick={guardarPlan} disabled={guardandoPlan}
                 className="flex-1 py-2.5 font-pixel text-[9px] text-white disabled:opacity-50
                            active:translate-y-[1px] active:translate-x-[1px]"
-                style={{ background: 'linear-gradient(180deg, #e94560, #c03040)', border: '2px solid #ff6080', borderRadius: '2px', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
+                style={{ background: 'linear-gradient(135deg, #e94560, #c03040)', border: 'none', borderRadius: '8px' }}>
                 GUARDAR
               </button>
             </div>

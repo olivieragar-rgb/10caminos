@@ -75,7 +75,10 @@ export default function App() {
             <CodexView />
           </div>
         ) : (
-          <Vista onAbrirCodex={tabActivo === 'progreso' ? () => setMostrarCodex(true) : undefined} />
+          <Vista
+            onAbrirCodex={tabActivo === 'progreso' ? () => setMostrarCodex(true) : undefined}
+            onTabChange={tabActivo === 'hoy' ? handleTabChange : undefined}
+          />
         )}
       </main>
       <Navigation tabActivo={tabActivo} onTabChange={handleTabChange} />
