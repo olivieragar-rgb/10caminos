@@ -35,6 +35,7 @@ export default function EncuentroDelDia({ caminos, registrosHoy }) {
   useEffect(() => {
     if (!caminos?.length) return
     let cancelled = false
+    let tid = null
     async function init() {
       const hoy = hoyISO()
       // ¿Ya hubo encuentro hoy?
@@ -51,12 +52,12 @@ export default function EncuentroDelDia({ caminos, registrosHoy }) {
       setDesafioData(elegirDesafio(entidad, hoy))
       setFase('flash')
 
-      setTimeout(() => {
+      tid = setTimeout(() => {
         if (!cancelled) setFase('tarjeta')
       }, 1400)
     }
     init()
-    return () => { cancelled = true }
+    return () => { cancelled = true; if (tid) clearTimeout(tid) }
   }, [caminos, registrosHoy]) // eslint-disable-line
 
   if (fase === 'evaluando' || fase === 'cerrado') return null
