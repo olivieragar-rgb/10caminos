@@ -25,14 +25,18 @@ export default function RutasView() {
         <div className="flex gap-2">
           {FILTROS.map(f => (
             <button key={f} onClick={() => setFiltro(f)}
-              className={`flex-1 py-2 font-pixel text-[8px] active:translate-y-[1px] min-h-[44px]
+              className={`flex-1 py-2 font-body font-bold text-[12px] active:translate-y-[1px] min-h-[44px]
                 ${filtro === f
-                  ? 'bg-accent/20 border-2 border-accent text-accent'
-                  : 'border-2 text-text-muted'}`}
-              style={{ borderColor: filtro === f ? '#e94560' : '#4a3860', borderRadius: '2px', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
+                  ? 'bg-accent/20 text-accent'
+                  : 'text-text-muted'}`}
+              style={{
+                border: filtro === f ? '1px solid #e94560' : '1px solid #302e4e',
+                borderRadius: '100px',
+                boxShadow: filtro === f ? '0 4px 12px rgba(233,69,96,0.2)' : '0 4px 12px rgba(0,0,0,0.4)',
+              }}>
               {FILTRO_LABEL[f]}
               {f === 'activa' && (
-                <span className="ml-1 text-[10px] opacity-70">
+                <span className="ml-1 text-[11px] opacity-70">
                   ({todasRutas.filter(r => r.estado === 'activa').length})
                 </span>
               )}
@@ -61,9 +65,14 @@ export default function RutasView() {
 
       {/* FAB crear */}
       <button onClick={() => setShowForm(true)}
-        className="fixed bottom-20 right-4 font-pixel text-[18px] text-white z-40
-                   w-12 h-12 flex items-center justify-center active:translate-y-[1px] active:translate-x-[1px]"
-        style={{ background: 'linear-gradient(180deg, #e94560, #c03040)', border: '2px solid #ff6080', borderRadius: '2px', boxShadow: '4px 4px 0 rgba(0,0,0,0.7)' }}>
+        className="fixed bottom-20 right-4 font-body font-bold text-[22px] text-white z-40
+                   w-14 h-14 flex items-center justify-center active:scale-95 transition-transform"
+        style={{
+          background: 'linear-gradient(135deg, #e94560, #c03040)',
+          border: 'none',
+          borderRadius: '100px',
+          boxShadow: '0 4px 20px rgba(233,69,96,0.4)',
+        }}>
         +
       </button>
 
