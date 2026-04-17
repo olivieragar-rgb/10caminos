@@ -14,12 +14,11 @@
   }
 
   body {
-    background-color: #1a1520;
-    color: #f0e6d3;
+    background-color: #0e0e1a;
+    color: #ede9e1;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior: none;
-    image-rendering: pixelated;
   }
 
   #root {
@@ -168,19 +167,19 @@
 
 @layer utilities {
   .glow-xp {
-    box-shadow: 0 0 8px #ffd70050;
+    box-shadow: 0 0 10px #f0c04050;
   }
   .glow-accent {
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.6), 0 0 12px #e9456050;
+    box-shadow: 0 0 12px #e9456050;
   }
   .glow-green {
-    box-shadow: 0 0 8px #50c87840;
+    box-shadow: 0 0 10px #4ade8040;
   }
   .text-glow-xp {
-    text-shadow: 0 0 8px #ffd70080;
+    text-shadow: 0 0 10px #f0c04080;
   }
   .text-glow-accent {
-    text-shadow: 0 0 8px #e9456080;
+    text-shadow: 0 0 10px #e9456080;
   }
   .text-pixel-outline {
     text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
@@ -239,20 +238,20 @@
   }
   /* Tarjeta base estilo RPG */
   .rpg-card {
-    background: linear-gradient(180deg, #2a2035 0%, rgba(26,21,32,0.85) 100%);
-    border: 2px solid #4a3860;
-    border-radius: 2px;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+    background: linear-gradient(180deg, #181726 0%, #0e0e1a 100%);
+    border: 1px solid #302e4e;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
   }
   .rpg-card-hover:hover {
-    border-color: #6a5880;
+    border-color: #4a4770;
   }
   /* Botón RPG base */
   .rpg-btn {
-    border: 2px solid #4a3860;
-    border-radius: 2px;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
-    background: linear-gradient(180deg, #342848 0%, #2a2035 100%);
+    border: 1px solid #4a4770;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    background: linear-gradient(180deg, #2d2b47 0%, #23213a 100%);
   }
 }
 
