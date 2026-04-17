@@ -60,7 +60,7 @@ export default function App() {
   return (
     <div className="flex flex-col flex-1 bg-bg-deep min-h-dvh">
       <main
-        className={`flex-1 flex flex-col pb-14 overflow-y-auto
+        className={`flex-1 flex flex-col ${tabActivo === 'hoy' ? 'pb-4' : 'pb-24'} overflow-y-auto
           ${curtain === 'out' ? 'animate-curtain-out' : ''}
           ${curtain === 'in'  ? 'animate-curtain-in'  : ''}`}
       >
