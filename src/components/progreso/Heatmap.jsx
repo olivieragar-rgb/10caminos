@@ -1,15 +1,15 @@
 import { hoyISO } from '../../utils/dates'
 
 const NIVELES = [
-  { min: 0,   max: 0,   color: '#2a2035' },
-  { min: 1,   max: 39,  color: '#e9456040' },
-  { min: 40,  max: 69,  color: '#f0c04060' },
-  { min: 70,  max: 99,  color: '#50c87880' },
-  { min: 100, max: 999, color: '#50c878' },
+  { min: 0,   max: 0,   color: '#181726' },
+  { min: 1,   max: 39,  color: '#4ade8030' },
+  { min: 40,  max: 69,  color: '#4ade8060' },
+  { min: 70,  max: 99,  color: '#4ade8090' },
+  { min: 100, max: 999, color: '#4ade80' },
 ]
 
 function getColor(pct) {
-  return NIVELES.find(n => pct >= n.min && pct <= n.max)?.color ?? '#2a2035'
+  return NIVELES.find(n => pct >= n.min && pct <= n.max)?.color ?? '#181726'
 }
 
 export default function Heatmap({ registros, totalCaminos }) {
@@ -45,9 +45,9 @@ export default function Heatmap({ registros, totalCaminos }) {
               return (
                 <div key={fecha}
                   title={`${fecha}: ${pct}%`}
-                  className={`w-3.5 h-3.5 rounded-none flex-shrink-0
+                  className={`w-3.5 h-3.5 flex-shrink-0
                     ${esHoy ? 'ring-1 ring-accent' : ''}`}
-                  style={{ backgroundColor: getColor(pct) }}
+                  style={{ backgroundColor: getColor(pct), borderRadius: '3px' }}
                 />
               )
             })}
@@ -57,7 +57,7 @@ export default function Heatmap({ registros, totalCaminos }) {
       <div className="flex items-center gap-2 mt-2">
         <span className="text-[10px] text-text-muted">Menos</span>
         {NIVELES.map((n, i) => (
-          <div key={i} className="w-3 h-3 rounded-none" style={{ backgroundColor: n.color }} />
+          <div key={i} className="w-3 h-3" style={{ backgroundColor: n.color, borderRadius: '3px' }} />
         ))}
         <span className="text-[10px] text-text-muted">Más</span>
       </div>

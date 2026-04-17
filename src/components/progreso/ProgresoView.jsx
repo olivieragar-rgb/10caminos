@@ -1,3 +1,4 @@
+import { BookOpen } from '@phosphor-icons/react'
 import { useCaminos } from '../../hooks/useCaminos'
 import { useCodexDesbloqueado } from '../../hooks/useEncuentros'
 import { useRegistros30Dias } from '../../hooks/useRegistros'
@@ -51,7 +52,7 @@ export default function ProgresoView({ onAbrirCodex }) {
   const CustomTooltip = ({ active, payload }) => {
     if (!active || !payload?.length) return null
     return (
-      <div className="bg-bg-card border border-border-dark rounded-[2px] px-2 py-1">
+      <div className="bg-bg-card border border-border-dark rounded-[8px] px-2 py-1">
         <p className="text-xs text-text-primary">{payload[0]?.value}%</p>
       </div>
     )
@@ -61,17 +62,18 @@ export default function ProgresoView({ onAbrirCodex }) {
     <div className="flex flex-col min-h-full px-4 pt-4 pb-4 space-y-5">
       {codexDesbloqueado && (
         <button
-          onClick={() => onAbrirCodex && onAbrirCodex()}
-          className="mx-4 mt-4 mb-2 w-full py-3 font-pixel text-[9px] active:translate-y-[1px] flex items-center justify-center gap-2"
+          onClick={onAbrirCodex}
+          className="flex items-center gap-2.5 px-4 py-3.5 w-full mt-4
+                     active:scale-[0.99] transition-transform duration-100"
           style={{
-            background: 'linear-gradient(180deg, #1a1228, #0c0a18)',
-            border: '2px solid #d4a84370',
-            borderRadius: 2,
-            color: '#d4a843',
-            boxShadow: '2px 2px 0 rgba(0,0,0,0.6), 0 0 16px #d4a84320',
+            background: '#181726',
+            border: '1px solid #302e4e',
+            borderRadius: '10px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
           }}
         >
-          📜 CODEX DE LA PSIQUE
+          <BookOpen size={20} weight="duotone" color="#e94560" />
+          <span className="font-body font-semibold text-sm" style={{ color: '#9590a8' }}>CODEX DE LA PSIQUE</span>
         </button>
       )}
       <h2 className="font-pixel text-[10px] text-xp-bar">PROGRESO</h2>
@@ -83,7 +85,7 @@ export default function ProgresoView({ onAbrirCodex }) {
           { label: 'Racha actual', val: `${rachaActual}d`, sub: '🔥' },
           { label: 'Récord racha', val: `${mejorRacha}d`, sub: '🏆' },
         ].map(s => (
-          <div key={s.label} className="bg-bg-surface border border-border-dark rounded-[2px] p-2.5 text-center">
+          <div key={s.label} className="bg-bg-surface border border-border-dark rounded-[8px] p-2.5 text-center">
             <p className="font-pixel text-sm text-xp-bar">{s.val}</p>
             <p className="font-pixel text-[7px] text-text-muted mt-1">{s.label}</p>
           </div>
@@ -91,13 +93,13 @@ export default function ProgresoView({ onAbrirCodex }) {
       </div>
 
       {/* Línea: score 30 días */}
-      <div className="bg-bg-surface border border-border-dark rounded-[2px] p-3">
+      <div className="bg-bg-surface border border-border-dark rounded-[8px] p-3">
         <p className="font-pixel text-[7px] text-text-muted mb-3">Score diario (30 días)</p>
         <ResponsiveContainer width="100%" height={100}>
           <LineChart data={datosScore} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-            <XAxis dataKey="label" tick={{ fontSize: 8, fill: '#4a4654' }} tickLine={false}
+            <XAxis dataKey="label" tick={{ fontSize: 8, fill: '#4a4770' }} tickLine={false}
               interval={6} axisLine={false} />
-            <YAxis domain={[0, 100]} tick={{ fontSize: 8, fill: '#4a4654' }} tickLine={false}
+            <YAxis domain={[0, 100]} tick={{ fontSize: 8, fill: '#4a4770' }} tickLine={false}
               axisLine={false} />
             <Tooltip content={<CustomTooltip />} />
             <Line type="monotone" dataKey="pct" stroke="#e94560" strokeWidth={2}
@@ -108,23 +110,23 @@ export default function ProgresoView({ onAbrirCodex }) {
 
       {/* Barras: XP por camino 4 semanas */}
       {datosXp.some(d => d.xp > 0) && (
-        <div className="bg-bg-surface border border-border-dark rounded-[2px] p-3">
+        <div className="bg-bg-surface border border-border-dark rounded-[8px] p-3">
           <p className="font-pixel text-[7px] text-text-muted mb-3">XP últimas 4 semanas</p>
           <ResponsiveContainer width="100%" height={90}>
             <BarChart data={datosXp} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
               <XAxis dataKey="icono" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
-              <YAxis tick={{ fontSize: 8, fill: '#4a4654' }} tickLine={false} axisLine={false} />
+              <YAxis tick={{ fontSize: 8, fill: '#4a4770' }} tickLine={false} axisLine={false} />
               <Tooltip content={({ active, payload }) =>
                 active && payload?.length
-                  ? <div className="bg-bg-card border border-border-dark rounded-[2px] px-2 py-1">
+                  ? <div className="bg-bg-card border border-border-dark rounded-[8px] px-2 py-1">
                       <p className="text-xs text-xp-bar">{payload[0]?.payload?.nombre}</p>
                       <p className="text-xs text-text-primary">{payload[0]?.value} XP</p>
                     </div>
                   : null
               } />
-              <Bar dataKey="xp" radius={[0, 0, 0, 0]}>
+              <Bar dataKey="xp" radius={[4, 4, 0, 0]}>
                 {datosXp.map((_, i) => (
-                  <Cell key={i} fill="#ffd700" fillOpacity={0.7 - i * 0.05} />
+                  <Cell key={i} fill="#f0c040" fillOpacity={0.7 - i * 0.05} />
                 ))}
               </Bar>
             </BarChart>
@@ -133,13 +135,13 @@ export default function ProgresoView({ onAbrirCodex }) {
       )}
 
       {/* Heatmap */}
-      <div className="bg-bg-surface border border-border-dark rounded-[2px] p-3">
+      <div className="bg-bg-surface border border-border-dark rounded-[8px] p-3">
         <Heatmap registros={registros30} totalCaminos={activos.length} />
       </div>
 
       {/* Camino más descuidado */}
       {camMasDescuidado.camino && camMasDescuidado.nadas > 0 && (
-        <div className="bg-red-alert/5 border border-red-alert/20 rounded-[2px] p-3">
+        <div className="bg-red-alert/5 border border-red-alert/20 rounded-[8px] p-3">
           <p className="font-pixel text-[7px] text-text-muted mb-1">CAMINO MÁS DESCUIDADO (30D)</p>
           <p className="font-body text-sm text-text-primary">
             {camMasDescuidado.camino.icono} {camMasDescuidado.camino.nombre}

@@ -36,11 +36,11 @@ function RecompensaItem({ r, caminos }) {
     setEditando(false)
   }
 
-  const inputStyle = { background: '#2a2035', border: '2px solid #4a3860', borderRadius: '2px' }
+  const inputStyle = { background: '#181726', border: '1px solid #302e4e', borderRadius: '8px' }
 
   if (editando) {
     return (
-      <div className="p-3 animate-card-entrance" style={{ background: '#342848', border: '2px solid #6a5880', borderRadius: '2px', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
+      <div className="p-3 animate-card-entrance" style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.35)' }}>
         <div className="flex gap-2 mb-2">
           <input value={form.icono} onChange={e => setForm(f => ({ ...f, icono: e.target.value }))}
             maxLength={2} className="w-10 text-center text-lg outline-none py-1" style={inputStyle} />
@@ -69,13 +69,13 @@ function RecompensaItem({ r, caminos }) {
         <div className="flex gap-2">
           <button onClick={() => setEditando(false)}
             className="flex-1 py-1.5 font-pixel text-[7px] text-text-muted active:translate-y-[1px]"
-            style={{ border: '2px solid #4a3860', borderRadius: '2px' }}>CANCELAR</button>
+            style={{ border: '1px solid #302e4e', borderRadius: '8px' }}>CANCELAR</button>
           <button onClick={handleEliminar}
             className="py-1.5 px-2 font-pixel text-[7px] text-red-alert active:translate-y-[1px]"
-            style={{ border: '2px solid #e9456040', borderRadius: '2px' }}>✕</button>
+            style={{ border: '1px solid #e9456040', borderRadius: '8px' }}>✕</button>
           <button onClick={handleGuardar}
             className="flex-1 py-1.5 font-pixel text-[8px] text-white active:translate-y-[1px]"
-            style={{ background: 'linear-gradient(180deg, #ffd700, #b8960c)', border: '2px solid #ffd700', borderRadius: '2px', color: '#1a1520' }}>
+            style={{ background: 'linear-gradient(180deg, #f0c040, #b8960c)', border: '1px solid #f0c040', borderRadius: '8px', color: '#0e0e1a' }}>
             GUARDAR
           </button>
         </div>
@@ -86,10 +86,10 @@ function RecompensaItem({ r, caminos }) {
   return (
     <div className={`p-3 transition-all ${r.reclamada ? 'opacity-60' : ''}`}
       style={{
-        background: '#342848',
-        border: `2px solid ${desbloqueada && !r.reclamada ? '#ffd700' : '#4a3860'}`,
-        borderRadius: '2px',
-        boxShadow: '2px 2px 0 rgba(0,0,0,0.5)',
+        background: '#2d2b47',
+        border: `1px solid ${desbloqueada && !r.reclamada ? '#f0c040' : '#302e4e'}`,
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
       }}>
       <div className="flex items-center justify-between mb-1.5">
         <div className="flex items-center gap-2 min-w-0">
@@ -108,12 +108,12 @@ function RecompensaItem({ r, caminos }) {
           {!r.reclamada && (
             <button onClick={() => setEditando(true)}
               className="font-pixel text-[7px] text-text-muted px-1.5 py-1 active:translate-y-[1px]"
-              style={{ border: '1px solid #4a3860', borderRadius: '2px' }}>✏</button>
+              style={{ border: '1px solid #302e4e', borderRadius: '8px' }}>✏</button>
           )}
           {desbloqueada && !r.reclamada && (
             <button onClick={handleReclamar}
               className="font-pixel text-[8px] text-xp-bar px-2 py-1.5 active:translate-y-[1px]"
-              style={{ background: 'rgba(255,215,0,0.1)', border: '2px solid #ffd700', borderRadius: '2px' }}>
+              style={{ background: 'rgba(240,192,64,0.1)', border: '1px solid #f0c040', borderRadius: '8px' }}>
               🎁 RECLAMAR
             </button>
           )}
@@ -126,14 +126,14 @@ function RecompensaItem({ r, caminos }) {
         </div>
       </div>
       {!desbloqueada && (
-        <div className="h-2 overflow-hidden" style={{ background: '#1a1520', border: '1px solid #4a3860' }}>
-          <div className="h-full transition-all duration-500"
-            style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #ffd700, #f0c040)' }} />
+        <div className="h-2 overflow-hidden rounded-[4px]" style={{ background: '#0e0e1a', border: '1px solid #302e4e' }}>
+          <div className="h-full transition-all duration-500 rounded-[4px]"
+            style={{ width: `${pct}%`, background: 'linear-gradient(90deg, #f0c040, #e0a830)' }} />
         </div>
       )}
       {desbloqueada && !r.reclamada && (
-        <div className="h-2"
-          style={{ background: 'linear-gradient(90deg, #ffd700, #f0c040)', boxShadow: '0 0 6px #ffd70050' }} />
+        <div className="h-2 rounded-[4px]"
+          style={{ background: 'linear-gradient(90deg, #f0c040, #e0a830)', boxShadow: '0 0 6px #f0c04050' }} />
       )}
     </div>
   )
@@ -164,10 +164,10 @@ function CrearRecompensaForm({ caminos, onClose }) {
     onClose()
   }
 
-  const inputStyle = { background: '#2a2035', border: '2px solid #4a3860', borderRadius: '2px' }
+  const inputStyle = { background: '#181726', border: '1px solid #302e4e', borderRadius: '8px' }
 
   return (
-    <div className="mt-3 p-3 animate-fade-in-up" style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}>
+    <div className="mt-3 p-3 animate-fade-in-up" style={{ background: '#2d2b47', border: '1px solid #302e4e', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.35)' }}>
       <p className="font-pixel text-[8px] text-text-secondary mb-3">NUEVA RECOMPENSA</p>
 
       <div className="flex gap-2 mb-2">
@@ -215,12 +215,12 @@ function CrearRecompensaForm({ caminos, onClose }) {
       <div className="flex gap-2">
         <button onClick={onClose}
           className="flex-1 py-2 font-pixel text-[8px] text-text-muted active:translate-y-[1px]"
-          style={{ background: '#2a2035', border: '2px solid #4a3860', borderRadius: '2px' }}>
+          style={{ background: '#181726', border: '1px solid #302e4e', borderRadius: '8px' }}>
           CANCELAR
         </button>
         <button onClick={guardar} disabled={guardando || !nombre.trim()}
           className="flex-1 py-2 font-pixel text-[8px] text-white disabled:opacity-50 active:translate-y-[1px]"
-          style={{ background: 'linear-gradient(180deg, #e94560, #c03040)', border: '2px solid #ff6080', borderRadius: '2px' }}>
+          style={{ background: 'linear-gradient(180deg, #e94560, #c03040)', border: '1px solid #ff6080', borderRadius: '8px' }}>
           CREAR
         </button>
       </div>
@@ -248,7 +248,7 @@ export default function RecompensasList({ caminos }) {
         <button
           onClick={() => setShowForm(v => !v)}
           className="font-pixel text-[8px] text-accent px-2 py-1 active:translate-y-[1px]"
-          style={{ border: '2px solid #e9456050', borderRadius: '2px' }}
+          style={{ border: '1px solid #e9456050', borderRadius: '8px' }}
         >
           {showForm ? 'CANCELAR' : '+ NUEVA'}
         </button>
