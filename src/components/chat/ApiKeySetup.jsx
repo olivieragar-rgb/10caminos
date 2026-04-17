@@ -20,7 +20,13 @@ export default function ApiKeySetup({ onGuardar }) {
         Se guarda localmente en tu dispositivo.
       </p>
 
-      <div className="w-full space-y-3">
+      <div className="w-full space-y-3"
+        style={{
+          background: '#181726',
+          border: '1px solid #302e4e',
+          borderRadius: '12px',
+          padding: '16px',
+        }}>
         <input
           type="password"
           value={apiKey}
@@ -28,13 +34,13 @@ export default function ApiKeySetup({ onGuardar }) {
           onKeyDown={e => e.key === 'Enter' && handleGuardar()}
           placeholder="sk-ant-..."
           className="w-full px-4 py-3 font-body text-sm text-text-primary placeholder-text-muted outline-none min-h-[48px]"
-          style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}
+          style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '8px' }}
         />
         <button
           onClick={handleGuardar}
           disabled={!apiKey.trim() || guardando}
           className="w-full py-3 font-pixel text-[9px] text-white disabled:opacity-40 min-h-[48px] active:translate-y-[1px]"
-          style={{ background: 'linear-gradient(180deg, #e94560, #c03040)', border: '2px solid #ff6080', borderRadius: '2px', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}
+          style={{ background: 'linear-gradient(180deg, #e94560, #c03040)', border: '1px solid #ff6080', borderRadius: '8px', boxShadow: '0 4px 12px rgba(233,69,96,0.3)' }}
         >
           {guardando ? 'GUARDANDO...' : 'GUARDAR API KEY'}
         </button>

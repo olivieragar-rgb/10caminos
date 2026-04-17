@@ -4,10 +4,12 @@ export default function ChatBubble({ mensaje }) {
     <div className={`flex ${esUser ? 'justify-end' : 'justify-start'} mb-2 px-4`}>
       <div className="max-w-[80%] px-3 py-2"
         style={{
-          background: esUser ? 'rgba(233,69,96,0.15)' : '#342848',
-          border: `2px solid ${esUser ? 'rgba(233,69,96,0.4)' : '#4a3860'}`,
-          borderRadius: '2px',
-          boxShadow: '2px 2px 0 rgba(0,0,0,0.4)',
+          background: esUser
+            ? 'linear-gradient(135deg, #e94560, #c03040)'
+            : '#181726',
+          border: esUser ? 'none' : '1px solid #302e4e',
+          borderRadius: esUser ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
         }}>
         <p className="font-body text-sm text-text-primary leading-relaxed whitespace-pre-wrap">
           {mensaje.mensaje}

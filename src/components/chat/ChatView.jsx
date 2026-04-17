@@ -25,10 +25,10 @@ function NotasPersonalesPanel({ onClose }) {
   return (
     <div className="flex flex-col flex-1 min-h-0">
       <div className="px-4 pt-4 pb-2 flex items-center gap-3"
-           style={{ borderBottom: '2px solid #4a3860' }}>
+           style={{ borderBottom: '1px solid #302e4e' }}>
         <button onClick={onClose}
           className="font-pixel text-[8px] text-text-muted px-2 py-1.5 active:translate-y-[1px]"
-          style={{ border: '2px solid #4a3860', borderRadius: '2px', background: '#342848' }}>
+          style={{ border: '1px solid #302e4e', borderRadius: '8px', background: '#2d2b47' }}>
           ← VOLVER
         </button>
         <div>
@@ -47,9 +47,9 @@ function NotasPersonalesPanel({ onClose }) {
           placeholder="Mis notas, contexto, objetivos profundos, extractos de otros cuadernos..."
           className="w-full font-body text-sm text-text-primary placeholder-text-muted outline-none resize-none"
           style={{
-            background: '#2a2035',
-            border: '2px solid #4a3860',
-            borderRadius: '2px',
+            background: '#181726',
+            border: '1px solid #302e4e',
+            borderRadius: '12px',
             padding: '12px',
             minHeight: '320px',
           }}
@@ -59,17 +59,17 @@ function NotasPersonalesPanel({ onClose }) {
         </p>
       </div>
 
-      <div className="px-4 pb-4 pt-2" style={{ borderTop: '1px solid #4a3860' }}>
+      <div className="px-4 pb-4 pt-2" style={{ borderTop: '1px solid #302e4e' }}>
         <button onClick={guardar}
           className="w-full py-3 font-pixel text-[9px] active:translate-y-[1px]"
           style={{
             background: guardado
               ? 'linear-gradient(180deg, #50c878, #3a9858)'
-              : 'linear-gradient(180deg, #342848, #2a2035)',
-            border: `2px solid ${guardado ? '#50c878' : '#6a5880'}`,
-            borderRadius: '2px',
-            color: guardado ? '#1a2035' : '#c4a882',
-            boxShadow: '3px 3px 0 rgba(0,0,0,0.5)',
+              : 'linear-gradient(180deg, #2d2b47, #181726)',
+            border: `1px solid ${guardado ? '#50c878' : '#4a4770'}`,
+            borderRadius: '8px',
+            color: guardado ? '#0e0e1a' : '#c4a882',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
           }}>
           {guardado ? '✓ GUARDADO' : '💾 GUARDAR NOTAS'}
         </button>
@@ -113,7 +113,7 @@ export default function ChatView() {
     <div className="flex flex-col flex-1 min-h-0">
       {/* Header */}
       <div className="px-4 pt-4 pb-2 flex items-center justify-between"
-           style={{ borderBottom: '2px solid #4a3860' }}>
+           style={{ borderBottom: '1px solid #302e4e' }}>
         <div className="flex items-center gap-2">
           <span className="text-lg">🤖</span>
           <div>
@@ -124,13 +124,13 @@ export default function ChatView() {
         <div className="flex items-center gap-2">
           <button onClick={() => setShowNotas(true)}
             className="font-pixel text-[7px] text-blue-mana px-2 py-1.5 active:translate-y-[1px]"
-            style={{ border: '2px solid #4488cc60', borderRadius: '2px', background: 'rgba(68,136,204,0.1)' }}
+            style={{ border: '1px solid #4488cc60', borderRadius: '8px', background: 'rgba(68,136,204,0.1)' }}
             title="Mi cuaderno de notas">
             📓 NOTAS
           </button>
           <button onClick={() => { if (confirm('¿Limpiar historial?')) limpiarHistorial() }}
             className="font-pixel text-[7px] text-text-muted px-2 py-1.5"
-            style={{ border: '1px solid #4a3860', borderRadius: '2px' }}>
+            style={{ border: '1px solid #302e4e', borderRadius: '8px' }}>
             🗑
           </button>
         </div>
@@ -153,7 +153,7 @@ export default function ChatView() {
               ].map((s, i) => (
                 <button key={i} onClick={() => { setInput(s.replace(/"/g, '')); }}
                   className="w-full text-left px-3 py-2 font-body text-[11px] text-text-muted active:translate-y-[1px]"
-                  style={{ background: '#2a2035', border: '1px solid #4a3860', borderRadius: '2px' }}>
+                  style={{ background: '#181726', border: '1px solid #302e4e', borderRadius: '8px' }}>
                   {s}
                 </button>
               ))}
@@ -165,7 +165,7 @@ export default function ChatView() {
 
         {enviando && (
           <div className="px-4 flex justify-start mb-2">
-            <div className="px-4 py-3" style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}>
+            <div className="px-4 py-3" style={{ background: '#2d2b47', border: '1px solid #302e4e', borderRadius: '14px 14px 14px 4px', boxShadow: '0 4px 12px rgba(0,0,0,0.35)' }}>
               <div className="flex gap-1">
                 {[0, 1, 2].map(i => (
                   <div key={i} className="w-1.5 h-1.5 bg-text-muted animate-bounce"
@@ -178,11 +178,11 @@ export default function ChatView() {
       </div>
 
       {/* Input */}
-      <div className="px-3 pb-3 pt-2" style={{ borderTop: '2px solid #4a3860' }}>
+      <div className="px-3 pb-3 pt-2" style={{ borderTop: '1px solid #302e4e' }}>
         <div className="flex gap-2 items-end">
           <VoiceButton onResult={handleVoiceResult} disabled={enviando} />
           <div className="flex-1 flex items-end gap-2 px-3 py-2"
-               style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}>
+               style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '12px' }}>
             <textarea
               value={input}
               onChange={e => setInput(e.target.value)}
@@ -198,7 +198,7 @@ export default function ChatView() {
             <button onClick={handleSend} disabled={!input.trim() || enviando}
               className="flex-shrink-0 w-8 h-8 flex items-center justify-center
                          disabled:opacity-40 active:translate-y-[1px] font-pixel text-[14px] text-white"
-              style={{ background: '#e94560', border: '2px solid #ff6080', borderRadius: '2px', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
+              style={{ background: '#e94560', borderRadius: '100px', boxShadow: '0 4px 12px rgba(233,69,96,0.3)' }}>
               ↑
             </button>
           </div>
