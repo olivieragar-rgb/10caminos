@@ -7,6 +7,7 @@ import RutasView     from './components/rutas/RutasView'
 import ProgresoView  from './components/progreso/ProgresoView'
 import ChatView      from './components/chat/ChatView'
 import IntroScene    from './components/intro/IntroScene'
+import CodexView     from './components/codex/CodexView'
 
 const VISTAS = {
   hoy:      HoyView,
@@ -21,6 +22,7 @@ export default function App() {
   const [dbLista, setDbLista]       = useState(false)
   const [introDone, setIntroDone]   = useState(false)
   const [curtain, setCurtain]       = useState(null) // null | 'out' | 'in'
+  const [mostrarCodex, setMostrarCodex] = useState(false)
   const pendingTab = useRef(null)
 
   useEffect(() => {
@@ -31,6 +33,7 @@ export default function App() {
 
   const handleTabChange = (newTab) => {
     if (newTab === tabActivo || curtain) return
+    setMostrarCodex(false)
     pendingTab.current = newTab
     setCurtain('out')
     setTimeout(() => {
@@ -61,7 +64,19 @@ export default function App() {
           ${curtain === 'out' ? 'animate-curtain-out' : ''}
           ${curtain === 'in'  ? 'animate-curtain-in'  : ''}`}
       >
-        <Vista />
+        {mostrarCodex ? (
+          <div className="flex flex-col min-h-full">
+            <button
+              onClick={() => setMostrarCodex(false)}
+              className="px-4 pt-4 pb-2 font-pixel text-[8px] text-text-muted text-left flex items-center gap-1"
+            >
+              ‹ VOLVER
+            </button>
+            <CodexView />
+          </div>
+        ) : (
+          <Vista onAbrirCodex={tabActivo === 'progreso' ? () => setMostrarCodex(true) : undefined} />
+        )}
       </main>
       <Navigation tabActivo={tabActivo} onTabChange={handleTabChange} />
     </div>

@@ -16,6 +16,7 @@ import CaminosManager from './CaminosManager'
 import PersonajeHeader from './PersonajeHeader'
 import AcertijoDelDia, { debeAparecerHoy } from './AcertijoDelDia'
 import EventoDelDia from './EventoDelDia'
+import EncuentroDelDia from './EncuentroDelDia'
 import DashboardSemanal from './DashboardSemanal'
 
 export default function HoyView() {
@@ -115,6 +116,9 @@ export default function HoyView() {
 
       {/* Evento del día */}
       <EventoDelDia />
+
+      {/* Encuentro secreto del día */}
+      <EncuentroDelDia caminos={todosCaminos || []} registrosHoy={registrosHoy} />
 
       {/* Acertijo (cada 3 días) */}
       {debeAparecerHoy() && <AcertijoDelDia />}
