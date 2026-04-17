@@ -12,48 +12,35 @@ import { useRetoCamino, evaluarRetosExpirados, abandonarReto } from '../../hooks
 import RecompensaUnlockModal from '../shared/RecompensaUnlockModal'
 
 const MARCAS = [
-  { id: 'avance', label: '✓', full: 'LOGRADO!', color: '#50c878', bg: 'rgba(80,200,120,0.12)', border: '#50c878' },
-  { id: 'pausa',  label: '→', full: 'PEND.HOY', color: '#f0c040', bg: 'rgba(240,192,64,0.12)',  border: '#f0c040' },
-  { id: 'nada',   label: '○', full: 'HOY NO',   color: '#706060', bg: 'rgba(112,96,96,0.12)',   border: '#706060' },
+  { id: 'avance', label: '✓', full: 'LOGRADO', color: '#4ade80', bg: 'rgba(74,222,128,0.12)',  border: '#4ade80' },
+  { id: 'pausa',  label: '→', full: 'PEND.',   color: '#fbbf24', bg: 'rgba(251,191,36,0.12)',  border: '#fbbf24' },
+  { id: 'nada',   label: '○', full: 'NO HOY',  color: '#6b7280', bg: 'rgba(107,114,128,0.10)', border: '#6b7280' },
 ]
 
 function mensajeWabiSabi() {
   return MENSAJES_WABI_SABI[Math.floor(Math.random() * MENSAJES_WABI_SABI.length)]
 }
 
-// ── Escudo pixelado con número ──────────────────────────────────────────────
-function PixelShield({ numero }) {
+// ── Number badge ────────────────────────────────────────────────────────────
+function NumberBadge({ numero }) {
   return (
-    <div style={{ position: 'relative', width: 22, height: 28, flexShrink: 0 }}>
-      <svg viewBox="0 0 11 14" width={22} height={28}
-           style={{ imageRendering: 'pixelated', position: 'absolute', top: 0, left: 0 }}>
-        {/* Relleno escudo */}
-        <rect x="0" y="0"  width="11" height="10" fill="#2a2035"/>
-        <rect x="1" y="10" width="9"  height="2"  fill="#2a2035"/>
-        <rect x="2" y="12" width="7"  height="1"  fill="#2a2035"/>
-        <rect x="4" y="13" width="3"  height="1"  fill="#2a2035"/>
-        {/* Borde exterior */}
-        <rect x="0" y="0"  width="11" height="1"  fill="#6a5880"/>
-        <rect x="0" y="0"  width="1"  height="10" fill="#6a5880"/>
-        <rect x="10" y="0" width="1"  height="10" fill="#6a5880"/>
-        <rect x="0" y="10" width="1"  height="2"  fill="#6a5880"/>
-        <rect x="10" y="10" width="1" height="2"  fill="#6a5880"/>
-        <rect x="1" y="12" width="1"  height="1"  fill="#6a5880"/>
-        <rect x="9" y="12" width="1"  height="1"  fill="#6a5880"/>
-        <rect x="2" y="13" width="2"  height="1"  fill="#6a5880"/>
-        <rect x="7" y="13" width="2"  height="1"  fill="#6a5880"/>
-        <rect x="5" y="14" width="1"  height="0"  fill="#6a5880"/>
-        {/* Brillo interior */}
-        <rect x="1" y="1"  width="9"  height="1"  fill="#4a3860"/>
-        <rect x="1" y="1"  width="1"  height="8"  fill="#4a3860"/>
-      </svg>
+    <div style={{
+      width: 26,
+      height: 26,
+      borderRadius: '50%',
+      background: '#2d2b47',
+      border: '1px solid #4a4770',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexShrink: 0,
+    }}>
       <span style={{
-        position: 'absolute', top: '32%', left: '50%',
-        transform: 'translate(-50%, -50%)',
-        fontFamily: '"Press Start 2P", cursive',
-        fontSize: 7, color: '#ffd700',
-        textShadow: '1px 1px 0 #1a1a1a',
-        lineHeight: 1, pointerEvents: 'none',
+        fontFamily: 'Inter, system-ui, sans-serif',
+        fontSize: '10px',
+        fontWeight: 700,
+        color: '#9590a8',
+        lineHeight: 1,
       }}>{numero}</span>
     </div>
   )
@@ -65,10 +52,10 @@ function MenuContextual({ camino, rutaActiva, onEditar, onClose }) {
     <div
       className="absolute top-0 left-0 right-0 z-20 animate-fade-in-up"
       style={{
-        background: 'linear-gradient(180deg, #342848 0%, #2a2035 100%)',
-        border: '2px solid #6a5880',
-        borderRadius: '2px',
-        boxShadow: '6px 6px 0 rgba(0,0,0,0.7)',
+        background: '#181726',
+        border: '1px solid #4a4770',
+        borderRadius: '10px',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
         padding: '8px',
       }}
       onClick={e => e.stopPropagation()}
@@ -81,7 +68,7 @@ function MenuContextual({ camino, rutaActiva, onEditar, onClose }) {
         <button
           onClick={onEditar}
           className="text-left px-2 py-2 font-pixel text-[10px] active:translate-x-[1px]"
-          style={{ border: '2px solid #6a5880', borderRadius: '2px', color: '#c4a882', background: '#2a2035' }}
+          style={{ border: '1px solid #4a4770', borderRadius: '8px', color: '#9590a8', background: '#2d2b47' }}
         >✏ EDITAR CAMINO</button>
 
         {rutaActiva && (
@@ -142,15 +129,15 @@ function RetoIndicator({ reto, onAbandonar }) {
 
   return (
     <div className="mb-2" style={{
-      background: 'linear-gradient(135deg, rgba(255,215,0,0.06) 0%, rgba(42,32,53,0.8) 100%)',
-      border: '2px solid #b8960c',
-      borderRadius: '2px',
+      background: 'linear-gradient(135deg, rgba(240,192,64,0.06) 0%, rgba(24,23,38,0.8) 100%)',
+      border: '1px solid rgba(240,192,64,0.3)',
+      borderRadius: '8px',
       padding: '8px 10px',
     }}>
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center gap-1.5">
           <span style={{
-            fontFamily: '"Press Start 2P", cursive', fontSize: '6px',
+            fontFamily: 'Inter, system-ui, sans-serif', fontSize: '9px', fontWeight: 700, letterSpacing: '0.08em',
             color: '#ffd700', background: 'rgba(255,215,0,0.12)',
             border: '1px solid #b8960c60', padding: '2px 4px', borderRadius: '1px',
           }}>RETO</span>
@@ -252,21 +239,21 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
   }
 
   const marcaHoy = registroHoy?.marca
-  const borderAccentColor = marcaHoy === 'avance' ? '#50c878'
-    : marcaHoy === 'pausa' ? '#f0c040'
-    : marcaHoy === 'nada' ? '#706060'
-    : '#4a3860'
+  const borderAccentColor = marcaHoy === 'avance' ? '#4ade80'
+    : marcaHoy === 'pausa' ? '#fbbf24'
+    : marcaHoy === 'nada' ? '#6b7280'
+    : '#302e4e'
 
   return (
     <div
       className={`relative mx-4 mb-3 p-3 transition-all duration-300 ${nivelUp ? 'animate-nivel-flash' : 'animate-card-entrance'}`}
       style={{
-        background: 'linear-gradient(180deg, #2a2035 0%, rgba(26,21,32,0.85) 100%)',
-        border: '2px solid #4a3860',
+        background: 'linear-gradient(160deg, #181726 0%, #1a1828 100%)',
+        border: '1px solid #302e4e',
         borderLeftColor: borderAccentColor,
         borderLeftWidth: '3px',
-        borderRadius: '2px',
-        boxShadow: '4px 4px 0px rgba(0,0,0,0.6)',
+        borderRadius: '10px',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
       }}
       onMouseDown={startLongPress}
       onMouseUp={cancelLongPress}
@@ -301,7 +288,7 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
       {/* Header: escudo + icono + nombre + racha/nivel */}
       <div className="flex items-start justify-between gap-2 mb-1">
         <div className="flex items-center gap-2 min-w-0">
-          <PixelShield numero={camino.id} />
+          <NumberBadge numero={camino.id} />
           <span className="text-lg leading-none flex-shrink-0">{camino.icono}</span>
           <span className="font-pixel text-[12px] text-text-primary leading-tight truncate">{camino.nombre}</span>
         </div>
@@ -334,32 +321,35 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
         const pct      = total > 0 ? Math.round((pasoIdx / total) * 100) : 0
         return (
           <div className="mb-2" style={{
-            background: 'linear-gradient(135deg, rgba(68,136,204,0.08) 0%, rgba(42,32,53,0.6) 100%)',
-            border: '2px solid #4488cc50',
-            borderLeft: '3px solid #4488cc',
-            borderRadius: '2px',
+            background: 'linear-gradient(135deg, rgba(96,165,250,0.06) 0%, rgba(24,23,38,0.8) 100%)',
+            border: '1px solid rgba(96,165,250,0.2)',
+            borderLeft: '3px solid #60a5fa',
+            borderRadius: '8px',
             padding: '8px 10px',
           }}>
             {/* Etiqueta + nombre ruta */}
             <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-1.5">
                 <span style={{
-                  fontFamily: '"Press Start 2P", cursive',
-                  fontSize: '6px',
-                  color: '#4488cc',
-                  background: 'rgba(68,136,204,0.15)',
-                  border: '1px solid #4488cc60',
-                  padding: '2px 4px',
-                  borderRadius: '1px',
+                  fontFamily: 'Inter, system-ui, sans-serif',
+                  fontSize: '9px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  color: '#60a5fa',
+                  background: 'rgba(96,165,250,0.12)',
+                  border: '1px solid rgba(96,165,250,0.25)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
                 }}>MISIÓN</span>
                 <span className="font-body text-[10px] text-text-muted truncate" style={{ maxWidth: '120px' }}>
                   {rutaActiva.nombre}
                 </span>
               </div>
               <span style={{
-                fontFamily: '"Press Start 2P", cursive',
-                fontSize: '7px',
-                color: '#4488cc99',
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: '10px',
+                fontWeight: 600,
+                color: '#60a5fa80',
               }}>{pasoIdx + 1}/{total}</span>
             </div>
 
@@ -376,13 +366,13 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
             )}
 
             {/* Barra de progreso de la ruta */}
-            <div style={{ height: '4px', background: '#1a1520', borderRadius: '0' }}>
+            <div style={{ height: '3px', background: '#302e4e', borderRadius: '100px' }}>
               <div style={{
                 height: '100%',
                 width: `${pct}%`,
-                background: 'linear-gradient(90deg, #4488cc, #66aaee)',
+                background: 'linear-gradient(90deg, #60a5fa, #93c5fd)',
                 transition: 'width 0.5s ease',
-                boxShadow: '0 0 6px #4488cc80',
+                boxShadow: '0 0 6px #60a5fa60',
               }} />
             </div>
           </div>
@@ -397,7 +387,7 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
       {/* Botones de marca */}
       {!rutaActiva ? (
         <div className="flex flex-col items-center justify-center py-3 gap-1"
-             style={{ border: '2px dashed #4a3860', borderRadius: '2px', background: 'rgba(42,32,53,0.3)' }}>
+             style={{ border: '1px dashed #302e4e', borderRadius: '8px', background: 'rgba(24,23,38,0.5)' }}>
           <p className="font-pixel text-[8px]" style={{ color: '#6b5e52' }}>Sin misión asignada</p>
           <p className="font-body text-[11px]" style={{ color: '#4a3860' }}>Ve a Rutas para añadir una misión</p>
         </div>
@@ -414,10 +404,10 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
                            flex flex-col items-center justify-center gap-0.5
                            active:translate-y-[1px] active:translate-x-[1px]"
                 style={{
-                  background: activo ? m.bg : 'rgba(52,40,72,0.5)',
-                  border: `2px solid ${activo ? m.border : '#4a3860'}`,
-                  borderRadius: '2px',
-                  boxShadow: activo ? '2px 2px 0 rgba(0,0,0,0.6)' : '2px 2px 0 rgba(0,0,0,0.4)',
+                  background: activo ? m.bg : 'rgba(45,43,71,0.5)',
+                  border: `1px solid ${activo ? m.border : '#4a4770'}`,
+                  borderRadius: '8px',
+                  boxShadow: activo ? `0 0 8px ${m.border}40` : 'none',
                   color: activo ? m.color : '#6b5e52',
                   opacity: procesando ? 0.5 : 1,
                   cursor: procesando ? 'not-allowed' : 'pointer',
@@ -453,11 +443,11 @@ export default function CaminoCard({ camino, registroHoy, rutaActiva, onAbrirMan
             placeholder="Nota opcional..."
             className="flex-1 px-3 py-1.5 font-body text-sm text-text-primary
                        placeholder-text-muted outline-none min-h-[36px]"
-            style={{ background: '#342848', border: '2px solid #4a3860', borderRadius: '2px' }}
+            style={{ background: '#2d2b47', border: '1px solid #4a4770', borderRadius: '8px' }}
           />
           <button onClick={handleGuardarNota}
             className="px-3 py-1.5 font-pixel text-[11px] min-h-[36px] active:translate-y-[1px]"
-            style={{ background: 'rgba(80,200,120,0.15)', border: '2px solid #50c878', borderRadius: '2px', color: '#50c878', boxShadow: '2px 2px 0 rgba(0,0,0,0.5)' }}>
+            style={{ background: 'rgba(74,222,128,0.12)', border: '1px solid #4ade80', borderRadius: '8px', color: '#4ade80' }}>
             OK
           </button>
           <button onClick={() => setShowNota(false)}
