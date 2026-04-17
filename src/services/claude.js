@@ -2,6 +2,7 @@ import { db } from '../db'
 import { hoyISO, haceNDiasISO } from '../utils/dates'
 import { xpANivel, nombreNivel, calcularXpMarca, actualizarRacha } from '../utils/xp'
 import { v4 as uuidv4 } from 'uuid'
+import { PERSONALIDADES } from '../personaje'
 
 const MODEL   = 'claude-sonnet-4-6'
 const API_URL = 'https://api.anthropic.com/v1/messages'
@@ -15,7 +16,7 @@ async function buildSystemPrompt() {
   const manana  = haceNDiasISO(-1)
 
   const [caminos, todasRutas, registros7, planHoy, planManana,
-         recompensas, reflexiones7, notasCtx] = await Promise.all([
+         recompensas, reflexiones7, notasCtx, personajeRec] = await Promise.all([
     db.caminos.orderBy('orden').toArray(),
     db.rutas.toArray(),
     db.registros.where('fecha').anyOf(fechas7).toArray(),
@@ -24,6 +25,7 @@ async function buildSystemPrompt() {
     db.recompensas.toArray(),
     db.reflexiones.where('fecha').anyOf(fechas7).sortBy('fecha'),
     db.configuracion.get('notasPersonales'),
+    db.configuracion.get('personaje'),
   ])
 
   const caminosInfo = caminos.map(c => {
@@ -56,7 +58,18 @@ async function buildSystemPrompt() {
     ? `\nNOTAS PERSONALES DE OLIVIER:\n${notasCtx.value}`
     : ''
 
-  return `Eres el guía y asistente de desarrollo personal de Olivier para el sistema "10 Caminos". Tienes acceso completo a la base de datos de la app y puedes modificar cualquier cosa.
+  const p = personajeRec?.value
+  const personajeInfo = p
+    ? (() => {
+        const pers = PERSONALIDADES[p.personalidad]
+        let txt = `\nUSUARIO: ${p.nombre || 'Viajero'}`
+        if (pers) txt += ` | Personalidad: ${pers.label} — ${pers.desc}`
+        if (p.bio) txt += `\nSobre él: ${p.bio}`
+        return txt + '\n'
+      })()
+    : ''
+
+  return `Eres el guía y asistente de desarrollo personal de ${p?.nombre || 'Olivier'} para el sistema "10 Caminos". Tienes acceso completo a la base de datos de la app y puedes modificar cualquier cosa.${personajeInfo}
 
 FILOSOFÍA: Ikigai (propósito) y Wabi-Sabi (belleza de la imperfección). Nunca juzgas, siempre apoyas. Cuando Olivier falla, lo ayudas a ver el valor en la pausa. Cuando avanza, celebras con él.
 
