@@ -13,6 +13,7 @@ export default function CodexView() {
 
   if (entidadSeleccionada) {
     const entidad   = getEntidad(entidadSeleccionada)
+    if (!entidad) { setEntidadSeleccionada(null); return null }
     const encuentros = historial.filter(e => e.entidadId === entidadSeleccionada)
     return (
       <EntidadDetalle

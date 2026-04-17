@@ -14,7 +14,7 @@ export default function EntidadCard({ entidad, encuentros, desbloqueada, onClick
   if (!desbloqueada) {
     return (
       <button
-        onClick={onClick}
+        onClick={undefined}
         className="flex items-center gap-3 p-3 w-full text-left"
         style={{
           background: '#0c0a18',
