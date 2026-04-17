@@ -128,7 +128,7 @@ function Camino() {
           top: '4px',
           width: '8px',
           height: '4px',
-          background: i % 2 === 0 ? '#6b5e52' : '#4a3860',
+          background: i % 2 === 0 ? '#6b5e52' : '#302e4e',
           imageRendering: 'pixelated',
         }} />
       ))}
@@ -197,17 +197,17 @@ export default function RecompensaUnlockModal({ recompensa, onClose }) {
       <div className="w-full max-w-[420px] px-4">
         {/* Título */}
         <p className="font-pixel text-[8px] text-center text-xp-bar mb-6 animate-fade-in-up"
-           style={{ textShadow: '0 0 12px #ffd70080' }}>
+           style={{ textShadow: '0 0 12px #f0c04080' }}>
           ✦ RECOMPENSA DESBLOQUEADA ✦
         </p>
 
         {/* Escena del camino */}
         <div className="relative" style={{
-          background: 'linear-gradient(180deg, #1a1530 0%, #2a1a10 60%, #1a1008 100%)',
-          border: '2px solid #4a3860',
-          borderRadius: '2px',
+          background: 'linear-gradient(180deg, #181726 0%, #2a1a10 60%, #1a1008 100%)',
+          border: '1px solid #302e4e',
+          borderRadius: '16px',
           padding: '20px 12px 12px',
-          boxShadow: '4px 4px 0 rgba(0,0,0,0.8)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
           overflow: 'hidden',
           minHeight: '120px',
         }}>
@@ -241,7 +241,7 @@ export default function RecompensaUnlockModal({ recompensa, onClose }) {
               left: `${p.x}%`,
               top: `${p.y}%`,
               width: 4, height: 4,
-              background: p.id % 3 === 0 ? '#ffd700' : p.id % 3 === 1 ? '#50c878' : '#e94560',
+              background: p.id % 3 === 0 ? '#f0c040' : p.id % 3 === 1 ? '#4ade80' : '#e94560',
               animation: `floatUp 1.2s ease-out ${p.delay}s forwards`,
             }} />
           ))}
@@ -263,7 +263,7 @@ export default function RecompensaUnlockModal({ recompensa, onClose }) {
           <div className="mt-4 text-center animate-fade-in-up">
             <div className="text-5xl mb-2">{recompensa.icono}</div>
             <p className="font-pixel text-[11px] text-xp-bar mb-1"
-               style={{ textShadow: '0 0 8px #ffd70080' }}>
+               style={{ textShadow: '0 0 8px #f0c04080' }}>
               {recompensa.nombre}
             </p>
             <p className="font-pixel text-[7px] text-text-muted mb-4">
@@ -274,9 +274,9 @@ export default function RecompensaUnlockModal({ recompensa, onClose }) {
               className="w-full py-3 font-pixel text-[10px] text-white active:translate-y-[1px] animate-glow-pulse"
               style={{
                 background: 'linear-gradient(180deg, #e94560, #c03040)',
-                border: '2px solid #ff6080',
-                borderRadius: '2px',
-                boxShadow: '4px 4px 0 rgba(0,0,0,0.7)',
+                border: '1px solid #ff6080',
+                borderRadius: '8px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
               }}
             >
               🎁 ¡RECLAMAR RECOMPENSA!
@@ -284,7 +284,7 @@ export default function RecompensaUnlockModal({ recompensa, onClose }) {
             <button
               onClick={onClose}
               className="mt-2 w-full py-2 font-pixel text-[8px] text-text-muted"
-              style={{ border: '1px solid #4a3860', borderRadius: '2px' }}
+              style={{ border: '1px solid #302e4e', borderRadius: '8px' }}
             >
               GUARDAR PARA DESPUÉS
             </button>

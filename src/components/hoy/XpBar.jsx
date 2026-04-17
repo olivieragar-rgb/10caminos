@@ -7,13 +7,13 @@ export default function XpBar({ xp, className = '' }) {
   return (
     <div className={`flex items-center gap-2 ${className}`}>
       {/* Barra exterior con borde dorado */}
-      <div className="flex-1" style={{ border: '2px solid #b8960c', borderRadius: '2px', padding: '1px', background: '#1a1520' }}>
+      <div className="flex-1" style={{ border: '1px solid #b8960c', borderRadius: '100px', padding: '1px', background: '#302e4e' }}>
         <div
           className="h-2 transition-all duration-500 relative overflow-hidden xp-shimmer"
           style={{
             width: `${pct}%`,
-            background: 'linear-gradient(90deg, #ffd700, #ffec80)',
-            borderRadius: '1px',
+            background: 'linear-gradient(90deg, #f0c040, #ffec80)',
+            borderRadius: '100px',
             minWidth: pct > 0 ? '4px' : '0',
           }}
         />

@@ -9,7 +9,7 @@ function MarcaSemana({ registros, fechas }) {
     <div style={{ display: 'flex', gap: 2 }}>
       {fechas.map((f, i) => {
         const r = registros.find(x => x.fecha === f)
-        const color = !r ? '#2a2035'
+        const color = !r ? '#302e4e'
           : r.marca === 'avance' ? '#50c878'
           : r.marca === 'pausa'  ? '#f0c040'
           : '#706060'
@@ -17,7 +17,7 @@ function MarcaSemana({ registros, fechas }) {
           <div key={i} style={{
             width: 8, height: 8,
             background: color,
-            border: '1px solid #4a3860',
+            border: '1px solid #302e4e',
             flexShrink: 0,
           }} />
         )
@@ -55,17 +55,17 @@ export default function DashboardSemanal() {
 
   return (
     <div className="mx-4 mb-3 p-3 animate-card-entrance" style={{
-      background: 'linear-gradient(180deg, #2a1e38 0%, #1a1520 100%)',
-      border: '2px solid #6a5080',
-      borderRadius: '2px',
-      boxShadow: '4px 4px 0 rgba(0,0,0,0.7)',
+      background: '#181726',
+      border: '1px solid #302e4e',
+      borderRadius: '8px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
     }}>
       {/* Título tablón */}
       <div className="flex items-center justify-between mb-2">
-        <span className="font-pixel text-[10px]" style={{ color: '#c4a882' }}>
+        <span className="font-pixel text-[10px]" style={{ color: '#9590a8' }}>
           📋 TABLÓN DE CAMPAÑA
         </span>
-        <span className="font-pixel text-[9px]" style={{ color: '#6b5e52' }}>
+        <span className="font-pixel text-[9px]" style={{ color: '#5c5875' }}>
           SEMANA ACTUAL
         </span>
       </div>
@@ -78,11 +78,11 @@ export default function DashboardSemanal() {
             <div key={i} style={{
               width: 8, textAlign: 'center',
               fontFamily: '"Press Start 2P", cursive',
-              fontSize: 6, color: fechas[i] === hoy ? '#ffd700' : '#6b5e52',
+              fontSize: 6, color: fechas[i] === hoy ? '#f0c040' : '#5c5875',
             }}>{d}</div>
           ))}
         </div>
-        <div style={{ marginLeft: 6, fontFamily: '"Press Start 2P", cursive', fontSize: 7, color: '#6b5e52' }}>✓</div>
+        <div style={{ marginLeft: 6, fontFamily: '"Press Start 2P", cursive', fontSize: 7, color: '#5c5875' }}>✓</div>
       </div>
 
       {/* Fila por camino */}
@@ -92,7 +92,7 @@ export default function DashboardSemanal() {
           <div style={{
             width: 80, flexShrink: 0, overflow: 'hidden',
             fontFamily: 'Inter, sans-serif',
-            fontSize: 9, color: '#a89b8c',
+            fontSize: 9, color: '#9590a8',
             whiteSpace: 'nowrap', textOverflow: 'ellipsis',
             paddingRight: 4,
           }}>
@@ -111,11 +111,11 @@ export default function DashboardSemanal() {
       ))}
 
       {/* Resumen footer */}
-      <div className="flex items-center justify-between mt-2 pt-2" style={{ borderTop: '1px solid #4a3860' }}>
+      <div className="flex items-center justify-between mt-2 pt-2" style={{ borderTop: '1px solid #302e4e' }}>
         <span className="font-pixel text-[9px]" style={{ color: '#50c878' }}>
           🏆 {mejor?.camino?.icono} {mejor?.camino?.nombre?.slice(0, 10)}
         </span>
-        <span className="font-pixel text-[9px]" style={{ color: '#ffd700' }}>
+        <span className="font-pixel text-[9px]" style={{ color: '#f0c040' }}>
           {totalAvances}/{totalPosible}
         </span>
         {peor?.avances < mejor?.avances && (

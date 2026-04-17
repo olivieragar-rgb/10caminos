@@ -25,11 +25,11 @@ export default function FraseIkigai() {
 
   return (
     <div className="mx-4 mb-3 px-4 py-3"
-         style={{ background: 'linear-gradient(180deg, #2a2035 0%, #1a1520 100%)', border: '2px solid #4a3860', borderRadius: '2px', boxShadow: '4px 4px 0px rgba(0,0,0,0.5)' }}>
-      <p className="font-pixel text-[7px] uppercase tracking-wider mb-2" style={{ color: '#c4a882' }}>
+         style={{ background: '#181726', border: '1px solid #302e4e', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.35)' }}>
+      <p className="font-pixel text-[7px] uppercase tracking-wider mb-2" style={{ color: '#9590a8' }}>
         ✦ IKIGAI DEL DÍA
       </p>
-      <p className="font-body text-[12px] italic leading-relaxed min-h-[1.5em]" style={{ color: '#a89b8c' }}>
+      <p className="font-body text-[12px] italic leading-relaxed min-h-[1.5em]" style={{ color: '#ede9e1' }}>
         "{visible}<span style={{ opacity: visible.length < frase.length ? 1 : 0 }}>▌</span>"
       </p>
     </div>
