@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../../db'
 import { useCaminosActivos } from '../../hooks/useCaminos'
@@ -17,7 +17,9 @@ import ScoreDiario from './ScoreDiario'
 import XpBar from './XpBar'
 import FraseIkigai from './FraseIkigai'
 import CaminosManager from './CaminosManager'
-import PersonajeHeader from './PersonajeHeader'
+import AvatarPersonaje from '../personaje/AvatarPersonaje'
+import PersonajeEditor from '../personaje/PersonajeEditor'
+import { usePersonaje } from '../../hooks/usePersonaje'
 import AcertijoDelDia, { debeAparecerHoy } from './AcertijoDelDia'
 import EventoDelDia from './EventoDelDia'
 import EncuentroDelDia from './EncuentroDelDia'
@@ -31,6 +33,17 @@ export default function HoyView({ onTabChange }) {
   const planHoy      = useLiveQuery(() => db.planificacion.where('fecha').equals(hoy).first(), [hoy])
   const rutasActivas = useLiveQuery(() => db.rutas.where('estado').equals('activa').toArray(), [], [])
   const todosCaminos = useLiveQuery(() => db.caminos.toArray(), [], [])
+
+  const personajeConfig = usePersonaje()
+  const [showEditor,     setShowEditor]     = useState(false)
+  const avatarPressTimer = useRef(null)
+
+  const startAvatarPress = () => {
+    avatarPressTimer.current = setTimeout(() => setShowEditor(true), 600)
+  }
+  const cancelAvatarPress = () => {
+    if (avatarPressTimer.current) clearTimeout(avatarPressTimer.current)
+  }
 
   const [showManager,    setShowManager]    = useState(false)
   const [showPlanModal,  setShowPlanModal]  = useState(false)
@@ -102,7 +115,18 @@ export default function HoyView({ onTabChange }) {
         <p className="font-body text-xs text-text-muted capitalize mb-1.5">{formatearFechaLarga(hoy)}</p>
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <PersonajeHeader nivel={nivelG} />
+            <div
+              onMouseDown={startAvatarPress}
+              onMouseUp={cancelAvatarPress}
+              onMouseLeave={cancelAvatarPress}
+              onTouchStart={startAvatarPress}
+              onTouchEnd={cancelAvatarPress}
+              onTouchMove={cancelAvatarPress}
+              style={{ cursor: 'pointer', position: 'relative' }}
+              title="Mantén pulsado para editar tu personaje"
+            >
+              <AvatarPersonaje config={personajeConfig} nivel={nivelG} size={44} />
+            </div>
             <div>
               <span className="font-pixel text-sm text-xp-bar text-glow-xp">
                 {nombreNivel(nivelG)}
@@ -276,6 +300,15 @@ export default function HoyView({ onTabChange }) {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Editor de personaje */}
+      {showEditor && (
+        <PersonajeEditor
+          config={personajeConfig}
+          nivel={nivelG}
+          onClose={() => setShowEditor(false)}
+        />
       )}
     </div>
   )
