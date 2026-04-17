@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../../db'
 import { useCaminosActivos } from '../../hooks/useCaminos'
@@ -8,8 +8,10 @@ import { nivelGlobal, nombreNivel } from '../../utils/xp'
 import { hoyISO, haceNDiasISO, formatearFechaLarga } from '../../utils/dates'
 import { v4 as uuidv4 } from 'uuid'
 import NavCards from './NavCards'
-import { Sliders } from '@phosphor-icons/react'
+import { Sliders, CaretDown, CaretUp } from '@phosphor-icons/react'
 import CaminoCard from './CaminoCard'
+import SinFaltasButton from './SinFaltasButton'
+import CaminoCompacto from './CaminoCompacto'
 import PlanBanner from './PlanBanner'
 import ScoreDiario from './ScoreDiario'
 import XpBar from './XpBar'
@@ -35,6 +37,19 @@ export default function HoyView({ onTabChange }) {
   const [planTexto,      setPlanTexto]      = useState('')
   const [gratitudTexto,  setGratitudTexto]  = useState('')
   const [guardandoPlan,  setGuardandoPlan]  = useState(false)
+  const [caminosExpandidos, setCaminosExpandidos] = useState(true)
+
+  useEffect(() => {
+    db.configuracion.get('caminosExpandidos').then(rec => {
+      if (rec?.value === false) setCaminosExpandidos(false)
+    })
+  }, [])
+
+  const toggleCaminos = () => {
+    const next = !caminosExpandidos
+    setCaminosExpandidos(next)
+    db.configuracion.put({ key: 'caminosExpandidos', value: next })
+  }
   // ─────────────────────────────────────────────────────────────────────────
 
   if (showManager) {
@@ -114,6 +129,13 @@ export default function HoyView({ onTabChange }) {
         <XpBar xp={xpGlobal} />
       </div>
 
+      {/* Sin Faltas de Hoy */}
+      <SinFaltasButton
+        caminos={todosCaminos}
+        registrosHoy={registrosHoy}
+        rutasActivas={rutasActivas}
+      />
+
       {/* Navegación a otras secciones */}
       {onTabChange && <NavCards onNavigate={onTabChange} />}
 
@@ -137,9 +159,23 @@ export default function HoyView({ onTabChange }) {
       {/* Plan banner */}
       <PlanBanner texto={planHoy?.texto} />
 
-      {/* Camino cards */}
-      <div className="flex-1 pt-1">
-        {caminos.map(camino => (
+      {/* Caminos — colapsable */}
+      <div className="flex-1">
+        <button
+          onClick={toggleCaminos}
+          className="w-full flex items-center justify-between px-4 py-3 select-none"
+          style={{ borderTop: '1px solid #302e4e', borderBottom: '1px solid #302e4e' }}
+        >
+          <span className="font-pixel text-xs text-text-muted tracking-wider">
+            CAMINOS ({caminos.length})
+          </span>
+          {caminosExpandidos
+            ? <CaretUp size={14} color="#5c5875" />
+            : <CaretDown size={14} color="#5c5875" />
+          }
+        </button>
+
+        {caminosExpandidos && caminos.map(camino => (
           <CaminoCard
             key={camino.id}
             camino={camino}
@@ -148,6 +184,18 @@ export default function HoyView({ onTabChange }) {
             onAbrirManager={() => setShowManager(true)}
           />
         ))}
+
+        {!caminosExpandidos && (
+          <div style={{ background: '#181726' }}>
+            {caminos.map(camino => (
+              <CaminoCompacto
+                key={camino.id}
+                camino={camino}
+                registroHoy={getRegistroHoy(camino.id)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Score diario */}
